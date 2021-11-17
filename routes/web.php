@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\DataTrainingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +17,17 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/User', [UserController::class, 'index'])->name('users.index');
+Route::get('/User/Create', [UserController::class, 'create'])->name('users.create');
+Route::POST('/User', [UserController::class, 'store'])->name('users.store');
+Route::get('/User/Edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+Route::patch('/User', [UserController::class, 'store'])->name('users.update');
+Route::delete('/User/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/Data-Training', [DataTrainingController::class, 'index'])->name('datatraining.index');

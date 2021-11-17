@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataTraining;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DataTrainingController extends Controller
 {
@@ -14,7 +15,14 @@ class DataTrainingController extends Controller
      */
     public function index()
     {
-        //
+        /*
+         $data_training = DB::table('data_trainings')
+         ->join('rhesus_categories', 'rhesus_categories.id', '=', 'data_trainings.rhesus_id')
+         ->select('data_trainings.Name as Data_Trainings_Name', 'Gender', 'rhesus_categories.Name as Rhesus_Categories_Name', 'Status')->get();
+        */
+
+        $data_training = DataTraining::with('Rhesus_Connection')->get();
+        return view('DataTraining.index', compact('data_training'));
     }
 
     /**

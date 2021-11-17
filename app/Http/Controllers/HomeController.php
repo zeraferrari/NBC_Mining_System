@@ -24,5 +24,10 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+        // return view('layouts.dashboard');
+    }
+
+    public function test(){
+        return view('layouts.dashboard');
     }
 }

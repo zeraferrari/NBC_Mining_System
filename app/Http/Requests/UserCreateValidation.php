@@ -1,75 +1,45 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Requests;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
-
-class RegisterController extends Controller
+class UserCreateValidation extends FormRequest
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
+     * Determine if the user is authorized to make this request.
      *
-     * @var string
+     * @return bool
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
-    protected $redirectTo = '/login';
-
-    
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function authorize()
     {
-        $this->middleware('guest');
+        return true;
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Get the validation rules that apply to the request.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return array
      */
-    protected function validator(array $data)
+    public function rules()
     {
-        /* Validasi User Registrasi */
-        return Validator::make($data, [
+        return [
             'name' => ['required', 'regex:/^[\pL\s\-]+$/u' , 'min:3' ,'max:100'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'roles' => ['required'],
             'NIK' => ['required', 'numeric', 'digits:16', 'unique:users'],
             'Gender' => ['required'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
             'profile_picture' => ['nullable'],
             'Rhesus_id' => ['nullable']
-        ],
+        ];
+    }
 
-        /* Pesan custom diparsing ke-view jika 
-        validasi false atau tidak sesuai validasi */
-        [
-
-        // Pesan kolom nama
+    public function messages()
+    {
+        return [
             'name.required'     => 'Mohon field ini diisi !',
             'name.regex'        => 'Inputan hanya berupa huruf !',
             'name.min'          => 'Minimal 3 inputan huruf !',
@@ -85,6 +55,7 @@ class RegisterController extends Controller
             'password.required' =>  'Mohon field ini diisi !',
             'password.min'      =>  'Minimal 6 Inputan',
         //========================================================
+            'roles.required'    => 'Field ini belum dipilih !',
         //Pesan kolom NIK
             'NIK.required'      =>  'Mohon field ini diisi !',
             'NIK.numeric'       =>  'Inputan hanya berupa angka !',
@@ -103,29 +74,6 @@ class RegisterController extends Controller
             'alamat.required'   =>  'Mohon field ini diisi !',
             'alamat.max'        =>  'Maksimal 100 inputan karakter !',
         // ========================================================
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
-    {
-        $data_user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'NIK'       => $data['NIK'],
-            'Gender'    => $data['Gender'],
-            'phone_number' => $data['phone_number'],
-            'alamat'    => $data['alamat'],
-            'Status_Donor' => 'Belum Mendonor'
-        ]);
-
-        $data_user->assignRole('Pendonor');
-        return $data_user;
+        ];
     }
 }

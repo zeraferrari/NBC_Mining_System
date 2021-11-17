@@ -78,7 +78,11 @@
                             <label for="Gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
 
                             <div class="col-md-6">
-                                <input id="Gender" type="text" class="form-control @error('Gender') is-invalid @enderror" name="Gender"  >
+                                <select name="Gender" id="Gender" class="form-select">
+                                    <option value="" selected disabled>Pilih Gender</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
                                 @error('Gender')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -112,48 +116,6 @@
                                 @enderror
                             </div>
                         </div>
-
-                        {{-- <div class="form-group row">
-                            <label for="Status_Donor" class="col-md-4 col-form-label text-md-right">{{ __('Status_Donor') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="Status_Donor" type="text" class="form-control @error('Status_Donor') is-invalid @enderror" name="Status_Donor" >
-                                @error('Status_Donor')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
-
-                        
-
-                        {{-- <div class="form-group row">
-                            <label for="profile_picture" class="col-md-4 col-form-label text-md-right">{{ __('profile_picture') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="profile_picture" type="text" class="form-control @error('profile_picture') is-invalid @enderror" name="profile_picture"  >
-                                @error('profile_picture')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
-
-                        {{-- <div class="form-group row">
-                            <label for="Rhesus_id" class="col-md-4 col-form-label text-md-right">{{ __('Rhesus_id') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="Rhesus_id" type="text" class="form-control @error('Rhesus_id') is-invalid @enderror" name="Rhesus_id" >
-                                @error('Rhesus_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
-
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
