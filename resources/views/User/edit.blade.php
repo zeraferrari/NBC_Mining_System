@@ -8,7 +8,8 @@
     <title>Manajement Dashboard Edit User</title>
 </head>
 <body>
-    <form action="{{ route('users.update') }}" method="post">
+    <form action="{{ route('users.update', $user_data->id) }}" method="post">
+        @method('PATCH')
         {{ csrf_field() }}
         <div class="row justify-content-center">
             <div class="col-md-8 mt-5">
@@ -32,7 +33,7 @@
                 
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" name="NIK" id="NIK" class="form-control @error('NIK') is-invalid @enderror" placeholder="Nomor Induk Kependudukan" value="{{ $user_data->NIK }}">
+                                    <input type="text" name="NIK" id="NIK" class="form-control @error('NIK') is-invalid @enderror" placeholder="Nomor Induk Kependudukan" value="{{ $user_data->NIK }}" >
                                     <label for="NIK">Nomor Induk Kependudukan</label>
                                     @error('NIK')
                                     <div class="invalid-feedback" role="alert">
@@ -82,7 +83,7 @@
                                 </div>
                             </div>
     
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="input-group">
                                     <label for="profile_picture" class="input-group-text">Upload Profile</label>
                                     <input type="file" name="profile_picture" id="profile_picture" class="form-control" value="{{ $user_data->profile_picture }}">
@@ -113,14 +114,6 @@
                                 </div>
                             </div>
 
-    
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Confirm Password">
-                                    <label for="password_confirmation">Confirm Password</label>
-                                </div>
-                            </div>
-
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <select name="roles" id="roles" class="form-select @error('roles') is-invalid @enderror">
@@ -136,14 +129,13 @@
                                     @enderror
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary col-md-6 mx-auto">Buat Akun</button>
+                            <button type="submit" class="btn btn-primary col-md-6 mx-auto">Update Data</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-    {{-- <p>{{ dd($user_role->name) }}</p> --}}
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 </html>

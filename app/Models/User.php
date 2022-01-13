@@ -56,6 +56,6 @@ class User extends Authenticatable
     }
 
     public function Transaction_Connect(){
-        return $this->hasMany(TransactionDonor::class, 'User_id', 'id');
+        return $this->hasMany(TransactionDonor::class, 'User_Pendonor_id', 'id');
     }
 }

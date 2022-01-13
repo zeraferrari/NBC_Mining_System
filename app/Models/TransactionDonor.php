@@ -20,10 +20,11 @@ class TransactionDonor extends Model
         'Waktu_Donor',
         'Kembali_Donor',
         'Status_Transaction',
-        'User_id',
+        'User_Pendonor_id',
+        'User_PM_id'
     ];
 
     public function User_Connection(){
-        return $this->belongsTo(User::class, 'User_id','id');
+        return $this->belongsTo(User::class, 'User_Pendonor_id','id');
     }
 }

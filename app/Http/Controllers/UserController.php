@@ -9,6 +9,7 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -72,7 +73,6 @@ class UserController extends Controller
         $role_name = Role::all();
         $user_role = $user_data->roles()->first();
         $user_role = $user_role->name;
-        // dd($user_role);
         return view('User.edit', compact('user_data', 'role_name', 'user_role'));
     }
 
@@ -83,9 +83,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserUpdateValidation $request, User $user)
+    public function update(UserUpdateValidation $request, $id)
     {
-        
+        $data_has_validated = $request->validated();
+        $data_has_validated['password'] = Hash::make($data_has_validated['password']);
+        $data = User::find($id);
+        $data->update($data_has_validated);
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
+        $data->assignRole($request->input('roles'));
+        return redirect()->route('users.index')->with('success', 'User dengan NIK : '.$data->NIK.' berhasil diupdate !');        
     }
 
     /**
