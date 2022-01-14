@@ -198,40 +198,49 @@ class TransactionDonorController extends Controller
     public function getMeanHemoglobinResult_Layak(){
         $naive_bayes = new CalculationNaiveBayesController;
         
-        $total_data_training = $naive_bayes->getTotalDataTraining();
-        $total_layak = $naive_bayes->getTotal_EachClass('Layak');
-        $total_tidak_layak = $naive_bayes->getTotal_EachClass('Tidak Layak');
-        $result_prior_layak = $naive_bayes->GetResult_EachPriorProbabilityClass($total_layak, $total_data_training);
-        $result_prior_tidak_layak = $naive_bayes->GetResult_EachPriorProbabilityClass($total_tidak_layak, $total_data_training);
+        $result = $naive_bayes->Calculation_Naive_Bayes(19.0, 120, 80, 50, 25);
+        dd($result);
+        // $total_data_training = $naive_bayes->getTotalDataTraining();
+        // $total_layak = $naive_bayes->getTotal_EachClass('Layak');
+        // $total_tidak_layak = $naive_bayes->getTotal_EachClass('Tidak Layak');
+        // $result_prior_layak = $naive_bayes->GetResult_EachPriorProbabilityClass($total_layak, $total_data_training);
+        // $result_prior_tidak_layak = $naive_bayes->GetResult_EachPriorProbabilityClass($total_tidak_layak, $total_data_training);
         
         
-        $calculation_all_hemoglobin_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Hemoglobin');
-        $calculation_all_hemoglobin_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Hemoglobin');
+        // $calculation_all_hemoglobin_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Hemoglobin');
+        // $calculation_all_hemoglobin_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Hemoglobin');
 
 
         
-        $calculation_mean_hemoglobin_layak = $naive_bayes->getMeanResult_EachClass($calculation_all_hemoglobin_layak, $total_layak);
-        $calculation_mean_hemoglobin_tidak_layak = $naive_bayes->getMeanResult_EachClass($calculation_all_hemoglobin_tidak_layak, $total_tidak_layak);
+        // $calculation_mean_hemoglobin_layak = $naive_bayes->getMeanResult_EachClass($calculation_all_hemoglobin_layak, $total_layak);
+        // $calculation_mean_hemoglobin_tidak_layak = $naive_bayes->getMeanResult_EachClass($calculation_all_hemoglobin_tidak_layak, $total_tidak_layak);
 
-        $deviasi_hemo_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Hemoglobin', $calculation_mean_hemoglobin_layak, $total_layak);
-        $deviasi_hemo_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Hemoglobin', $calculation_mean_hemoglobin_tidak_layak, $total_tidak_layak);
+        // $deviasi_hemo_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Hemoglobin', $calculation_mean_hemoglobin_layak, $total_layak);
+        // $deviasi_hemo_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Hemoglobin', $calculation_mean_hemoglobin_tidak_layak, $total_tidak_layak);
 
-        $result_gaussian_hemo_layak = $naive_bayes->getResultDistribusi_Gaussian(12.5, $calculation_mean_hemoglobin_layak, $deviasi_hemo_layak);
-        $result_gaussian_hemo_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian(12.5, $calculation_mean_hemoglobin_tidak_layak, $deviasi_hemo_tidak_layak);
+        // $result_gaussian_hemo_layak = $naive_bayes->getResultDistribusi_Gaussian(13.6, $calculation_mean_hemoglobin_layak, $deviasi_hemo_layak);
+        // $result_gaussian_hemo_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian(13.6, $calculation_mean_hemoglobin_tidak_layak, $deviasi_hemo_tidak_layak);
+
+        // $a = [2, 3, 10, 4, 5];
+        // $result = 1;
+        // foreach ($a as $key => $value) {
+        //     $result = $result * $a[$key];
+        // }
         
-        echo "Total Data Training = ".$total_data_training."<br></br>";
-        echo "Total Data Class Layak = ".$total_layak."<br></br>";
-        echo "Total Data Class Tidak Layak = ".$total_tidak_layak."<br></br>";
-        echo "Prior Layak = ".$result_prior_layak."<br></br>";
-        echo "Prior Tidak Layak = ".$result_prior_tidak_layak."<br></br>";
-        echo "Total Prior = ".$result_prior_layak+$result_prior_tidak_layak."<br></br>";
-        echo "Penjumlahan Data Hemo Layak = ".$calculation_all_hemoglobin_layak."<br></br>";
-        echo "Penjumlahan Data Hemo Tidak Layak = ".$calculation_all_hemoglobin_tidak_layak."<br></br>";
-        echo "Hasil Mean Hemo Layak = ".$calculation_mean_hemoglobin_layak."<br></br>";
-        echo "Hasil Mean Hemo Tidak Layak = ".$calculation_mean_hemoglobin_tidak_layak."<br></br>";
-        echo "Hasil Deviasi Hemo Layak = ".$deviasi_hemo_layak."<br></br>";
-        echo "Hasil Deviasi Hemo Tidak Layak = ".$deviasi_hemo_tidak_layak."<br></br>";
-        echo "Hasil Gaussian Hemo Layak = ".$result_gaussian_hemo_layak."<br></br>";
-        echo "Hasil Gaussian Hemo Tidak Layak = ".$result_gaussian_hemo_tidak_layak."<br></br>";
+        // echo "Total Data Training = ".$total_data_training."<br></br>";
+        // echo "Total Data Class Layak = ".$total_layak."<br></br>";
+        // echo "Total Data Class Tidak Layak = ".$total_tidak_layak."<br></br>";
+        // echo "Prior Layak = ".$result_prior_layak."<br></br>";
+        // echo "Prior Tidak Layak = ".$result_prior_tidak_layak."<br></br>";
+        // echo "Total Prior = ".$result_prior_layak+$result_prior_tidak_layak."<br></br>";
+        // echo "Penjumlahan Data Hemo Layak = ".$calculation_all_hemoglobin_layak."<br></br>";
+        // echo "Penjumlahan Data Hemo Tidak Layak = ".$calculation_all_hemoglobin_tidak_layak."<br></br>";
+        // echo "Hasil Mean Hemo Layak = ".$calculation_mean_hemoglobin_layak."<br></br>";
+        // echo "Hasil Mean Hemo Tidak Layak = ".$calculation_mean_hemoglobin_tidak_layak."<br></br>";
+        // echo "Hasil Deviasi Hemo Layak = ".$deviasi_hemo_layak."<br></br>";
+        // echo "Hasil Deviasi Hemo Tidak Layak = ".$deviasi_hemo_tidak_layak."<br></br>";
+        // echo "Hasil Gaussian Hemo Layak = ".$result_gaussian_hemo_layak."<br></br>";
+        // echo "Hasil Gaussian Hemo Tidak Layak = ".$result_gaussian_hemo_tidak_layak."<br></br>";
+        // dd($result);
     }
 }
