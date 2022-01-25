@@ -24,6 +24,7 @@ class CreateTransactionDonorsTable extends Migration
             $table->date('Waktu_Donor')->nullable();
             $table->date('Kembali_Donor')->nullable();
             $table->enum('Status_Transaction', ['Layak', 'Tidak Layak'])->nullable();
+            $table->enum('Status_Donor', ['Medical Check', 'Berhasil Mendonor', 'Gagal Donor']);
             $table->foreignId('User_Pendonor_id')->nullable()->constrained('users');
             $table->foreignId('User_PM_id')->nullable()->constrained('users');
             $table->timestamps();

@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('phone_number', 13);
             $table->text('alamat');
             $table->string('profile_picture')->nullable();
-            $table->enum('Status_Donor', ['Belum Mendonor', 'Menunggu', 'Selesai Mendonor']);
+            $table->enum('Status_Donor', ['Belum Mendonor', 'Sudah Mendonor']);
             $table->foreignId('Rhesus_id')->nullable()->constrained('rhesus_categories');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

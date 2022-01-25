@@ -40,5 +40,4 @@ Route::PATCH('/Transaction/{id}', [TransactionDonorController::class, 'update'])
 
 Route::get('/Data-Training', [DataTrainingController::class, 'index'])->name('datatraining.index');
 
-Route::get('/test', [TransactionDonorController::class, 'getMeanHemoglobinResult_Layak'])->name('test.getMeanHemoglobinResult_Layak');
-// Route::get('/unyu', [TransactionDonorController::class, 'update'])->name('test');
+Route::get('/test', [TransactionDonorController::class, 'test'])->name('test');

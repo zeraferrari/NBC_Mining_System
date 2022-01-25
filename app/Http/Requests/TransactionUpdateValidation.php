@@ -13,7 +13,7 @@ class TransactionUpdateValidation extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class TransactionUpdateValidation extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code_Transaction'  =>  ['nullable'],
+            'Age'   =>  ['required', 'numeric', 'min:0'],
+            'Weight'    =>  ['required', 'numeric', 'min:0'],
+            'Hemoglobin'    =>  ['required', 'numeric', 'min:0'],
+            'Pressure_sistole'  =>  ['required', 'numeric', 'min:0'],
+            'Pressure_diastole' =>  ['required', 'numeric', 'min:0'],
+            'Rhesus_category'         => ['required'],
         ];
     }
 }

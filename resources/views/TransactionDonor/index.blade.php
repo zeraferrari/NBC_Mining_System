@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">Nama</th>
+                <th scope="col">Nama Pendonor</th>
                 <th scope="col">NIK</th>
                 <th scope="col">Rhesus Darah</th>
                 <th scope="col">Status Donor</th>
@@ -27,8 +27,8 @@
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>{{ $data->User_Connection->name }}</td>
                     <td>{{ $data->User_Connection->NIK }}</td>
-                    <td>{{ $data->User_Connection->Rhesus_Connection->Name ?? "-"}}</td>
-                    <td>{{ $data->User_Connection->Status_Donor }}</td>
+                    <td>{{ $data->User_Connection->Rhesus_Connection->Name ?? '-'}}</td>
+                    <td>{{ $data->Status_Donor }}</td>
                     <td>
                         <a href="" class="badge bg-primary"><i class="far fa-eye"></i></a>
                         <a href="{{ route('transaction.edit', $data->id ) }}" class="badge bg-warning"><i class="far fa-edit"></i></a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionUpdateValidation;
 use App\Models\DataTraining;
 use App\Models\RhesusCategory;
 use App\Models\TransactionDonor;
@@ -35,9 +36,42 @@ class TransactionDonorController extends Controller
         // ->where('Status_Donor', '=', 'Belum Mendonor')
         // ->get();
 
-        $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')->get();
+        $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')->where('Status_Donor', '=', 'Medical Check')->get();
+
         return view('TransactionDonor.index', compact('data_transaction_user'));
     }
+    
+
+    public function generatedNumberCode($lengthCharacter){
+        $result = '';
+
+        for($i = 0; $i < $lengthCharacter; $i++){
+            $result .= rand(0, 9);
+        }
+        return $result;
+    }
+
+    public function test(){
+        $kadal = Carbon::now()->format('d-m-Y');
+        $test = str_replace('-', '', $kadal);
+        
+        
+        $get_name_rhesus = Auth::user()->Rhesus_Connection->Name ?? '';
+        $getDate = Carbon::now()->format('Y-m-d');
+        
+
+        $Data_Null = TransactionDonor::with('User_Connection')->get();
+
+       $i = array(); 
+        foreach ($Data_Null as $key => $value) {
+                $each = $Data_Null[$key];
+                $i[] = $each;
+        }
+        dd($i[0]);
+
+    }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -67,11 +101,13 @@ class TransactionDonorController extends Controller
             'Pressure_distole' => 'nullable',
             'Kembali_Donor' => 'nullable',
             'Status_Transaction' => 'nullable',
+            'Status_Donor' => 'required',
             'User_PMI_id' => 'nullable'
         ]);
         $has_valid = $validate->validated();
         $has_valid['User_Pendonor_id'] = Auth::id();
         $has_valid['Waktu_Donor'] = Carbon::now();
+        $has_valid['Status_Donor'] = 'Medical Check';
         $data = TransactionDonor::create($has_valid);
         return redirect()->route('transaction.index');
     }
@@ -98,10 +134,6 @@ class TransactionDonorController extends Controller
         $transaction_data = TransactionDonor::with('User_Connection.Rhesus_Connection')->find($id);
         $user_data = User::all();
         $rhesus_data = RhesusCategory::all();
-
-        // dd(($transaction_data->User_Connection->Rhesus_Connection->Name ?? '') === $rhesus_data->first()->Name ? 'Selected' : '', $rhesus_data);
-        // dd('testing');
-
         return view('TransactionDonor.edit', compact('transaction_data', 'user_data', 'rhesus_data'));
     }
     
@@ -114,74 +146,31 @@ class TransactionDonorController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function test(){
-        $data= DataTraining::where('Status', 'Layak')->count();
-        return $data;
-    }
-
-    public function test_2(){
-        $data = DataTraining::where('Status', 'Layak')->sum('Hemoglobin');
-        return $data;
-    }
-
-    public function update(Request $request, $id)
+    public function update(TransactionUpdateValidation $request, $id)
     {
-        /* Hitung Jumlah Class (Layak, Tidak) Data Training */
-        $total_data_all_training = DataTraining::count(); //Get total data training
-        $total_data_layak_training = DataTraining::where('Status', 'Layak')->count(); //Get total data layak
-        $total_data_tidak_layak_training = DataTraining::where('Status', 'Tidak Layak')->count(); //Get total data tidak layak
-        $eksponensial = 2.71828183;
-        $vi = 3.14;
-        //////////////////////////////////
-
-        /*Probabilitas Hipotesis Class Layak */
-        $probabilitas_Hipo_Layak = $total_data_layak_training/$total_data_all_training; //Get Probabilitas Hipotesis Layak
-        /* */
-
-        /*Probabilitas Hipotesis Class Tidak Layak */
-        $probabilitas_Hipo_Tidak_Layak = $total_data_tidak_layak_training/$total_data_all_training; //Get Probabilitas Hipotesis Tidak Layak
-        /* */
-
-    //Attribute Hemoglobin
-       $att_hemo_Layak = DataTraining::where('Status', 'Layak')->sum('Hemoglobin');
-       $att_hemo_Tidak_Layak = DataTraining::where('Status', 'Tidak Layak')->sum('Hemoglobin');
-
-       $mean_hemo_Layak = $att_hemo_Layak/$total_data_layak_training; //Mean Hemoglobin Kondisi Layak
-       $mean_hemo_Tidak_Layak = $att_hemo_Tidak_Layak/$total_data_tidak_layak_training; //Mean Hemoglobin Kondisi Tidak Layak
-
-    /* Perhitungan Standar Deviasi Class Layak */
-       $hemo_value_Layak = DataTraining::where('Status', 'Layak')->pluck('Hemoglobin');
-       $temp = array();
-
-       foreach ($hemo_value_Layak as $datas => $value) {
-           $result_Hemo_Layak = pow(($hemo_value_Layak[$datas] - $mean_hemo_Layak),2);
-           $temp[] = $result_Hemo_Layak;
-        }       
-          $standar_dev_Hemo_Layak = sqrt(array_sum($temp)/($total_data_layak_training-1));
-    ///////////////////
-
-    /* Perhitungan Standar Deviasi Class Tidak Layak */
-    
-       $hemo_value_Tidak_Layak = DataTraining::where('Status', 'Tidak Layak')->pluck('Hemoglobin');
-       $temp_2 = array();
-       foreach ($hemo_value_Tidak_Layak as $datas => $value) {
-           $result_Hemo_Tidak_Layak = pow(($hemo_value_Tidak_Layak[$datas] - $mean_hemo_Tidak_Layak),2);
-           $temp_2[] = $result_Hemo_Tidak_Layak;
-       }
-    
-       $standar_dev_hemo_Tidak_Layak = sqrt(array_sum($temp_2)/($total_data_tidak_layak_training-1));
-    //////////////////
-    
-       $gausian_Layak_Result = 1/(sqrt(2*$vi)*$standar_dev_Hemo_Layak)*pow($eksponensial, - pow(80-$mean_hemo_Layak, 2)/(2*pow($standar_dev_Hemo_Layak, 2)));
-       $gausian_Tidak_Layak_Result = 1/(sqrt(2*$vi)*$standar_dev_hemo_Tidak_Layak)*pow($eksponensial, - pow(80-$mean_hemo_Tidak_Layak, 2)/(2*pow($standar_dev_hemo_Tidak_Layak, 2)));
-       
-       
-
-       dd($gausian_Layak_Result, 
-       $gausian_Tidak_Layak_Result);
-
-    // 
-
+        $naive_bayes = new CalculationNaiveBayesController();
+        $result = $naive_bayes->Calculation_Naive_Bayes($request->Hemoglobin,
+                                                    $request->Pressure_sistole,
+                                                    $request->Pressure_diastole,
+                                                            $request->Weight,
+                                                              $request->Age);
+        
+        $data_has_been_validate = $request->validated();
+        $data_has_been_validate['User_PM_id'] = Auth::id();
+        $data = TransactionDonor::find($id);
+        if($result === 'Layak'){
+            $data_has_been_validate['Status_Transaction'] = $result;
+            $data_has_been_validate['Status_Donor'] = 'Berhasil Mendonor';
+            $data_has_been_validate['Kembali_Donor'] = Carbon::now()->addMonth(2);
+            $data->update($data_has_been_validate);
+            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_category'], 'Status_Donor' => 'Sudah Mendonor']);   
+        }else{
+            $data_has_been_validate['Status_Transaction'] = $result;
+            $data_has_been_validate['Status_Donor'] = 'Gagal Donor';
+            $data_has_been_validate['Kembali_Donor'] = Carbon::now()->addWeek(1);
+            $data->update($data_has_been_validate);
+            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_category'], 'Status_Donor' => 'Belum Mendonor']);   
+        }
     }
 
     /**
@@ -195,52 +184,5 @@ class TransactionDonorController extends Controller
         //
     }
 
-    public function getMeanHemoglobinResult_Layak(){
-        $naive_bayes = new CalculationNaiveBayesController;
-        
-        $result = $naive_bayes->Calculation_Naive_Bayes(19.0, 120, 80, 50, 25);
-        dd($result);
-        // $total_data_training = $naive_bayes->getTotalDataTraining();
-        // $total_layak = $naive_bayes->getTotal_EachClass('Layak');
-        // $total_tidak_layak = $naive_bayes->getTotal_EachClass('Tidak Layak');
-        // $result_prior_layak = $naive_bayes->GetResult_EachPriorProbabilityClass($total_layak, $total_data_training);
-        // $result_prior_tidak_layak = $naive_bayes->GetResult_EachPriorProbabilityClass($total_tidak_layak, $total_data_training);
-        
-        
-        // $calculation_all_hemoglobin_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Hemoglobin');
-        // $calculation_all_hemoglobin_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Hemoglobin');
-
-
-        
-        // $calculation_mean_hemoglobin_layak = $naive_bayes->getMeanResult_EachClass($calculation_all_hemoglobin_layak, $total_layak);
-        // $calculation_mean_hemoglobin_tidak_layak = $naive_bayes->getMeanResult_EachClass($calculation_all_hemoglobin_tidak_layak, $total_tidak_layak);
-
-        // $deviasi_hemo_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Hemoglobin', $calculation_mean_hemoglobin_layak, $total_layak);
-        // $deviasi_hemo_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Hemoglobin', $calculation_mean_hemoglobin_tidak_layak, $total_tidak_layak);
-
-        // $result_gaussian_hemo_layak = $naive_bayes->getResultDistribusi_Gaussian(13.6, $calculation_mean_hemoglobin_layak, $deviasi_hemo_layak);
-        // $result_gaussian_hemo_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian(13.6, $calculation_mean_hemoglobin_tidak_layak, $deviasi_hemo_tidak_layak);
-
-        // $a = [2, 3, 10, 4, 5];
-        // $result = 1;
-        // foreach ($a as $key => $value) {
-        //     $result = $result * $a[$key];
-        // }
-        
-        // echo "Total Data Training = ".$total_data_training."<br></br>";
-        // echo "Total Data Class Layak = ".$total_layak."<br></br>";
-        // echo "Total Data Class Tidak Layak = ".$total_tidak_layak."<br></br>";
-        // echo "Prior Layak = ".$result_prior_layak."<br></br>";
-        // echo "Prior Tidak Layak = ".$result_prior_tidak_layak."<br></br>";
-        // echo "Total Prior = ".$result_prior_layak+$result_prior_tidak_layak."<br></br>";
-        // echo "Penjumlahan Data Hemo Layak = ".$calculation_all_hemoglobin_layak."<br></br>";
-        // echo "Penjumlahan Data Hemo Tidak Layak = ".$calculation_all_hemoglobin_tidak_layak."<br></br>";
-        // echo "Hasil Mean Hemo Layak = ".$calculation_mean_hemoglobin_layak."<br></br>";
-        // echo "Hasil Mean Hemo Tidak Layak = ".$calculation_mean_hemoglobin_tidak_layak."<br></br>";
-        // echo "Hasil Deviasi Hemo Layak = ".$deviasi_hemo_layak."<br></br>";
-        // echo "Hasil Deviasi Hemo Tidak Layak = ".$deviasi_hemo_tidak_layak."<br></br>";
-        // echo "Hasil Gaussian Hemo Layak = ".$result_gaussian_hemo_layak."<br></br>";
-        // echo "Hasil Gaussian Hemo Tidak Layak = ".$result_gaussian_hemo_tidak_layak."<br></br>";
-        // dd($result);
-    }
+    
 }

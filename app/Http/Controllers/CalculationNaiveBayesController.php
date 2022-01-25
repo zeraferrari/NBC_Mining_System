@@ -49,7 +49,7 @@ class CalculationNaiveBayesController extends Controller
 
     public function getResultDistribusi_Gaussian($incoming_input, $mean_result, $deviasi_result){
         $Calculation_Gaussian = 1/(sqrt(2*$this->vi) * $deviasi_result) * (pow($this->eksponensial, - pow(($incoming_input-$mean_result),2)/(2*pow($deviasi_result, 2))));
-        return round($Calculation_Gaussian, 3);
+        return $Calculation_Gaussian;
     }
 
     public function getProbability_EachClass($ResultGaussian_EachClass){
@@ -90,7 +90,7 @@ class CalculationNaiveBayesController extends Controller
 
         $Result_Gaussian_Hemoglobin_Class_Layak = $this->getResultDistribusi_Gaussian($Hemoglobin_Value, $Result_Mean_Hemoglobin_Class_Layak, $Result_Deviasi_Hemoglobin_Class_Layak);
         $Result_Gaussian_Hemoglobin_Class_Tidak_Layak = $this->getResultDistribusi_Gaussian($Hemoglobin_Value, $Result_Mean_Hemoglobin_Class_Tidak_Layak, $Result_Deviasi_Hemoglobin_Class_Tidak_Layak);
-
+    
         /*================================================================================================================================================================================================================================================= */
         
         /* Attribute Pressure Sistole */
@@ -121,7 +121,7 @@ class CalculationNaiveBayesController extends Controller
         
         $Result_Gaussian_Diastole_Class_Layak = $this->getResultDistribusi_Gaussian($PressureDistoel_Value, $Result_Mean_Diastole_Class_Layak, $Result_Deviasi_Diastole_Class_Layak);
         $Result_Gaussian_Diastole_Class_Tidak_Layak = $this->getResultDistribusi_Gaussian($PressureDistoel_Value, $Result_Mean_Diastole_Class_Tidak_Layak, $Result_Deviasi_Diastole_Class_Tidak_Layak);
-        
+         
         /*================================================================================================================================================================================================================================================= */
         
         /* Attribute Weight */
@@ -151,9 +151,8 @@ class CalculationNaiveBayesController extends Controller
         $Result_Deviasi_Age_Class_Layak = $this->getResultAttribute_Deviasi_EachClass('Layak', 'Age', $Result_Mean_Age_Class_Layak, $Data_Class_Layak);
         $Result_Deviasi_Age_Class_Tidak_Layak = $this->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Age', $Result_Mean_Age_Class_Tidak_Layak, $Data_Class_Tidak_Layak);
         
-        $Result_Gaussian_Age_Layak = $this->getResultDistribusi_Gaussian($Weight_Value, $Result_Mean_Age_Class_Layak, $Result_Deviasi_Age_Class_Layak);
-        $Result_Gaussian_Age_Tidak_Layak = $this->getResultDistribusi_Gaussian($Weight_Value, $Result_Mean_Age_Class_Tidak_Layak, $Result_Deviasi_Age_Class_Tidak_Layak);
-        
+        $Result_Gaussian_Age_Layak = $this->getResultDistribusi_Gaussian($Age_Value, $Result_Mean_Age_Class_Layak, $Result_Deviasi_Age_Class_Layak);
+        $Result_Gaussian_Age_Tidak_Layak = $this->getResultDistribusi_Gaussian($Age_Value, $Result_Mean_Age_Class_Tidak_Layak, $Result_Deviasi_Age_Class_Tidak_Layak);
         /*================================================================================================================================================================================================================================================= */
         
         /* Probabilitas Class */
@@ -178,15 +177,18 @@ class CalculationNaiveBayesController extends Controller
         $Probability_Final_Layak = $this->getFinalProbability_EachClass($Result_Probability_Class_Layak, $Result_Prior_Prob_Layak);
         $probability_Final_Tidak_Layak = $this->getFinalProbability_EachClass($Result_Probability_Class_Tidak_Layak, $Result_Prior_Prob_Tidak_Layak);
 
+ 
 
+        
         $Result_Normalization_Layak = $this->getNormalizationProbability_EachClass($Probability_Final_Layak, $probability_Final_Tidak_Layak);
         $Result_Normalization_Tidak_Layak = $this->getNormalizationProbability_EachClass($probability_Final_Tidak_Layak, $Probability_Final_Layak);
+
+        // dd($Result_Normalization_Layak, $Result_Normalization_Tidak_Layak);
 
         if($Result_Normalization_Layak > $Result_Normalization_Tidak_Layak){
             return 'Layak';
         }else{
             return 'Tidak Layak';
         }
-    }   
-    
+    }    
 }

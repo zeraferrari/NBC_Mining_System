@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PDO;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -57,5 +58,9 @@ class User extends Authenticatable
 
     public function Transaction_Connect(){
         return $this->hasMany(TransactionDonor::class, 'User_Pendonor_id', 'id');
+    }
+
+    public function Petugas_Transaction_Connect(){
+        return $this->hasMany(TransactionDonor::class, 'User_PM_id', 'id');
     }
 }
