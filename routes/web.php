@@ -4,9 +4,12 @@ use App\Http\Controllers\DataTrainingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TransactionDonorController;
 use App\Http\Controllers\UserController;
 use App\Models\TransactionDonor;
+use Spatie\Permission\Contracts\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +43,17 @@ Route::PATCH('/Transaction/{id}', [TransactionDonorController::class, 'update'])
 
 Route::get('/Data-Training', [DataTrainingController::class, 'index'])->name('datatraining.index');
 
-Route::get('/test', [TransactionDonorController::class, 'test'])->name('test');
+Route::get('/Role', [RoleController::class, 'index'])->name('role.index');
+Route::get('/Role/Create', [RoleController::class, 'create'])->name('role.create');
+Route::POST('/Role', [RoleController::class, 'store'])->name('role.store');
+Route::GET('/Role/{id}/Edit', [RoleController::class, 'edit'])->name('role.edit');
+Route::PATCH('/Role/{id}', [RoleController::class, 'update'])->name('role.update');
+Route::DELETE('/Role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
+
+Route::get('/Permission', [PermissionController::class, 'index'])->name('permission.index');
+Route::get('/Permission/Create', [PermissionController::class, 'create'])->name('permission.create');
+Route::POST('/Permission', [PermissionController::class, 'store'])->name('permission.store');
+Route::GET('/Permission/{id}/Edit', [PermissionController::class, 'edit'])->name('permission.edit');
+Route::PATCH('/Permission/{id}', [PermissionController::class, 'update'])->name('permission.update');
+Route::delete('/Permission/{id}', [PermissionController::class, 'destroy'])->name('permission.destroy');
+

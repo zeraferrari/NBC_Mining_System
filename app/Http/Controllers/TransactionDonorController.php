@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionUpdateValidation;
-use App\Models\DataTraining;
 use App\Models\RhesusCategory;
 use App\Models\TransactionDonor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class TransactionDonorController extends Controller
 {
@@ -23,21 +22,7 @@ class TransactionDonorController extends Controller
      */
     public function index()
     {
-        // $data_transaction_user = DB::table('transaction_donors')
-        // ->join('users', 'transaction_donors.User_Pendonor_id', '=', 'users.id')
-        // ->join('rhesus_categories', 'users.Rhesus_id', '=', 'rhesus_categories.id', 'left outer')
-        // ->where('Status_Donor', '=', 'Belum Mendonor')
-        // // ->select('users.name as Nama_user', 'users.NIK as NIK', 'rhesus_categories.Name as Rhesus_Darah', 'users.Status_Donor as Status_Donor')
-        // ->get();
-        
-        // $data_transaction_user = TransactionDonor::select('transaction_donors.id as transaction_id', 'users.name as users_name', 'NIK', 'rhesus_categories.Name as Rhesus', 'Status_Donor')
-        // ->join('users', 'transaction_donors.User_Pendonor_id', '=', 'users.id')
-        // ->join('rhesus_categories', 'users.Rhesus_id', '=', 'rhesus_categories.id', 'left outer')
-        // ->where('Status_Donor', '=', 'Belum Mendonor')
-        // ->get();
-
-        $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')->where('Status_Donor', '=', 'Medical Check')->get();
-
+        $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')->where('Status_Donor', '=', 'Medical Check')->latest()->get();
         return view('TransactionDonor.index', compact('data_transaction_user'));
     }
     
@@ -51,24 +36,28 @@ class TransactionDonorController extends Controller
         return $result;
     }
 
-    public function test(){
-        $kadal = Carbon::now()->format('d-m-Y');
-        $test = str_replace('-', '', $kadal);
-        
-        
-        $get_name_rhesus = Auth::user()->Rhesus_Connection->Name ?? '';
-        $getDate = Carbon::now()->format('Y-m-d');
-        
-
-        $Data_Null = TransactionDonor::with('User_Connection')->get();
-
-       $i = array(); 
-        foreach ($Data_Null as $key => $value) {
-                $each = $Data_Null[$key];
-                $i[] = $each;
+    public function GeneratedTransactionCode(){
+        $dateNow = Carbon::now('Asia/Makassar')->format('d-m-Y');
+        $dateNow = str_replace('-', '', $dateNow);
+        $random_code = $this->generatedNumberCode(5);
+        if(Auth::user()->Rhesus_id == NULL){
+                $code_rhesus = 9;
+                $Code_Transaction = TransactionDonor::doesntHave('User_Connection.Rhesus_Connection')
+                ->where('Waktu_Donor', '=', today('Asia/Makassar'))
+                ->count(); 
+        }else{
+                $code_rhesus = Auth::user()->Rhesus_id;
+                $Code_Transaction = TransactionDonor::whereHas('User_Connection.Rhesus_Connection',
+                function($query){
+                    $get_name_rhesus = Auth::user()->Rhesus_Connection->Name;
+                    $query->where('rhesus_categories.Name', '=', $get_name_rhesus)
+                            ->where('Waktu_Donor', '=', today('Asia/Makassar'));
+                })->count();
         }
-        dd($i[0]);
-
+        $generated_new_code = str_pad($Code_Transaction+1, 5, 0, STR_PAD_LEFT);
+        $temp = array('TB-',$dateNow, $code_rhesus, $random_code, $generated_new_code);
+        $merge_code = implode('', $temp);
+        return $merge_code;
     }
 
     
@@ -93,7 +82,7 @@ class TransactionDonorController extends Controller
     {    
         $input = $request->all();
         $validate = Validator::make($input, [
-            'Code_Transaction' => 'nullable',
+            'Code_Transaction' => 'required',
             'Age'   =>  'nullable',
             'Weight' => 'nullable',
             'Hemoglobin' => 'nullable',
@@ -105,8 +94,9 @@ class TransactionDonorController extends Controller
             'User_PMI_id' => 'nullable'
         ]);
         $has_valid = $validate->validated();
+        $has_valid['Code_Transaction'] = $this->GeneratedTransactionCode();
         $has_valid['User_Pendonor_id'] = Auth::id();
-        $has_valid['Waktu_Donor'] = Carbon::now();
+        $has_valid['Waktu_Donor'] = Carbon::now('Asia/Makassar');
         $has_valid['Status_Donor'] = 'Medical Check';
         $data = TransactionDonor::create($has_valid);
         return redirect()->route('transaction.index');
@@ -161,13 +151,13 @@ class TransactionDonorController extends Controller
         if($result === 'Layak'){
             $data_has_been_validate['Status_Transaction'] = $result;
             $data_has_been_validate['Status_Donor'] = 'Berhasil Mendonor';
-            $data_has_been_validate['Kembali_Donor'] = Carbon::now()->addMonth(2);
+            $data_has_been_validate['Kembali_Donor'] = Carbon::now('Asia/Makassar')->addMonth(2);
             $data->update($data_has_been_validate);
             $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_category'], 'Status_Donor' => 'Sudah Mendonor']);   
         }else{
             $data_has_been_validate['Status_Transaction'] = $result;
             $data_has_been_validate['Status_Donor'] = 'Gagal Donor';
-            $data_has_been_validate['Kembali_Donor'] = Carbon::now()->addWeek(1);
+            $data_has_been_validate['Kembali_Donor'] = Carbon::now('Asia/Makassar')->addWeek(1);
             $data->update($data_has_been_validate);
             $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_category'], 'Status_Donor' => 'Belum Mendonor']);   
         }

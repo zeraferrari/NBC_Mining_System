@@ -15,6 +15,7 @@
             <tr>
                 <th scope="col">No</th>
                 <th scope="col">Nama Pendonor</th>
+                <th scope="col">Kode Transaksi</th>
                 <th scope="col">NIK</th>
                 <th scope="col">Rhesus Darah</th>
                 <th scope="col">Status Donor</th>
@@ -26,6 +27,7 @@
                 <tr>
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>{{ $data->User_Connection->name }}</td>
+                    <td>{{ $data->Code_Transaction }}</td>
                     <td>{{ $data->User_Connection->NIK }}</td>
                     <td>{{ $data->User_Connection->Rhesus_Connection->Name ?? '-'}}</td>
                     <td>{{ $data->Status_Donor }}</td>
