@@ -16,7 +16,8 @@ class PermissionController extends Controller
     public function index()
     {
         $data = Permission::all();
-        return view('Permission.index', compact('data'));
+        $title = 'Manajement Dashboard Hak Akses';
+        return view('Permission.index', compact('data', 'title'));
     }
 
     /**

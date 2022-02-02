@@ -22,8 +22,12 @@ class TransactionDonorController extends Controller
      */
     public function index()
     {
-        $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')->where('Status_Donor', '=', 'Medical Check')->latest()->get();
-        return view('TransactionDonor.index', compact('data_transaction_user'));
+        $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')
+                                    ->where('Status_Donor', '=', 'Medical Check')
+                                    ->latest()->get();
+        $title = 'Manajement Antrian Donor Darah';
+        return view('TransactionDonor.index', compact('data_transaction_user', 'title'));
+        
     }
     
 

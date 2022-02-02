@@ -6,10 +6,7 @@ use App\Http\Requests\RoleValidation;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RoleController extends Controller
 {
@@ -23,7 +20,8 @@ class RoleController extends Controller
     {
         
         $data = Role::with('permissions')->get();
-        return view('Role.index', compact('data'));
+        $title = 'Manajement Dashboard Role';
+        return view('Manajement.Roles.index', compact('data', 'title'));
     }
 
     /**
@@ -34,7 +32,8 @@ class RoleController extends Controller
     public function create()
     {
         $data_permission = Permission::all();
-        return view('Role.create', compact('data_permission'));
+        $title = 'Manajement Dashboard Role';
+        return view('Manajement.Roles.create', compact('data_permission', 'title'));
     }
 
     /**
@@ -48,7 +47,8 @@ class RoleController extends Controller
         $has_been_validated = $request->validated();
         $role = Role::create($has_been_validated);
         $role->syncPermissions($has_been_validated['permission']);
-        return redirect()->route('role.index')->with('success', 'Role berhasil dibuat !');
+        Alert::success('Data Berhasil Dibuat !', 'Data role '.$has_been_validated['name']. ' berhasil ditambahkan');
+        return redirect()->route('Manajement.Roles.index');
     }
 
     /**

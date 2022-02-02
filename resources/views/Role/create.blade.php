@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <title>Manajement Dashboard Create Role User</title>
 </head>
 <body>
@@ -17,7 +17,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('role.store') }}" method="post">
+    <form action="{{ route('Manajement.Roles.store') }}" method="post">
         {{ csrf_field() }}
         <div class="row justify-content-center">
             <div class="col-md-8 mt-5">
@@ -55,6 +55,6 @@
             </div>
         </div>
     </form>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap_431.min.js') }}"></script>
 </body>
 </html>

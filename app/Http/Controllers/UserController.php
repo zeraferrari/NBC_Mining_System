@@ -18,10 +18,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function test(){
+        return view('layouts.Main_Manajement');
+    }
+
     public function index()
     {
         $data_user = User::with('roles')->get();
-        return view('User.index', compact('data_user'));
+        $title = 'Manajement Dashboard User';
+        return view('User.index', compact('data_user', 'title'));
     }
 
     /**

@@ -28,6 +28,13 @@ use Spatie\Permission\Contracts\Role;
 
 Auth::routes();
 
+Route::GET('/Role', [RoleController::class, 'index'])->name('Manajement.Roles.index');
+Route::GET('/Role/Create', [RoleController::class, 'create'])->name('Manajement.Roles.create');
+Route::POST('/Role', [RoleController::class, 'store'])->name('Manajement.Roles.store');
+Route::GET('/Role/{id}/Edit', [RoleController::class, 'edit'])->name('role.edit');
+Route::PATCH('/Role/{id}', [RoleController::class, 'update'])->name('role.update');
+Route::DELETE('/Role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/User', [UserController::class, 'index'])->name('users.index');
 Route::get('/User/Create', [UserController::class, 'create'])->name('users.create');
@@ -43,12 +50,6 @@ Route::PATCH('/Transaction/{id}', [TransactionDonorController::class, 'update'])
 
 Route::get('/Data-Training', [DataTrainingController::class, 'index'])->name('datatraining.index');
 
-Route::get('/Role', [RoleController::class, 'index'])->name('role.index');
-Route::get('/Role/Create', [RoleController::class, 'create'])->name('role.create');
-Route::POST('/Role', [RoleController::class, 'store'])->name('role.store');
-Route::GET('/Role/{id}/Edit', [RoleController::class, 'edit'])->name('role.edit');
-Route::PATCH('/Role/{id}', [RoleController::class, 'update'])->name('role.update');
-Route::DELETE('/Role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
 
 Route::get('/Permission', [PermissionController::class, 'index'])->name('permission.index');
 Route::get('/Permission/Create', [PermissionController::class, 'create'])->name('permission.create');
@@ -56,4 +57,6 @@ Route::POST('/Permission', [PermissionController::class, 'store'])->name('permis
 Route::GET('/Permission/{id}/Edit', [PermissionController::class, 'edit'])->name('permission.edit');
 Route::PATCH('/Permission/{id}', [PermissionController::class, 'update'])->name('permission.update');
 Route::delete('/Permission/{id}', [PermissionController::class, 'destroy'])->name('permission.destroy');
+
+Route::get('/test', [UserController::class, 'test'])->name('test');
 
