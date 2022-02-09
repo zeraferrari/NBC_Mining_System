@@ -7,9 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <!--General CSS Files-->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/tonystar/float-label-css/v1.0.2/dist/float-label.min.css"/>
     <!--Template CSS Files-->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
@@ -45,5 +44,28 @@
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script src="{{ asset('assets/js/demo_datatables.js') }}"></script>
+    <script>
+        $(document).on('click', '.confirm-delete', function(e){
+            e.preventDefault();
+            var id = $(this).data('id');
+            swal({
+                title : 'Yakin ?',
+                type : 'error',
+                confirmButtonClass: 'btn-danger',
+                confirmButtonText: 'yes',
+                showCancelButton: true,
+            },
+            function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('/destroy') }}",
+                    data: {id:id},
+                    success: function(data){
+                        
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

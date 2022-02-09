@@ -14,9 +14,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Tabel Role</h4>
+                            <h4 class="text-reset">Tabel Role</h4>
                             <div class="card-header-form">
-                                <a href="{{ Route('Manajement.Roles.create') }}" class="btn btn-icon icon-left btn-success"><i class="fas fa-plus-circle"></i> Buat Role</a>
+                                <a href="{{ Route('Manajement.Roles.create') }}" class="badge badge-success rounded-sm"><i class="fas fa-plus-circle"></i> Buat Role</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -36,14 +36,18 @@
                                             <td>{{ $roles->name }}</td>
                                             <td>
                                                 @foreach ($roles->permissions as $permissions)
-                                                    <label for="permissions" class="btn-sm btn-success">{{ $permissions->name }}</label>
+                                                    <label for="permissions" class="badge badge-info rounded-sm">{{ $permissions->name }}</label>
                                                 @endforeach
                                             </td>
                                             <td>
                                                 <div class="buttons">
-                                                    <a href="" class="btn btn-icon btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                    <a href="" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="" class="btn btn-icon btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                    <form action="{{ route('Manajement.Roles.delete', $roles->id) }}" method="POST">
+                                                        <a href="" class="btn btn-icon btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                        <a href="{{ route('Manajement.Roles.edit', $roles->id) }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                        @method('DELETE')
+                                                        {{ csrf_field() }}
+                                                        <button type="submit" class="btn btn-icon btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

@@ -3,12 +3,12 @@
 @section('Main_Content')
     <section class="section">
         <div class="section-header">
-            <h1>Buat Role User</h1>
+            <h1>Edit Data Role User</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item"><a href="">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="#">Master Data</a></div>
                 <div class="breadcrumb-item"><a href="{{ route('Manajement.Roles.index') }}">Roles</a></div>
-                <div class="breadcrumb-item"><span>Create</span></div>
+                <div class="breadcrumb-item"><span>Edit</span></div>
             </div>
         </div>
         <div class="row">
@@ -81,37 +81,38 @@
             <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="text-reset">Buat Data Role</h4>
+                        <h4 class="text-reset">Edit/Perbaharui Data Role</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('Manajement.Roles.store') }}" method="POST">
+                        <form action="{{ route('Manajement.Roles.update', $data_roles->id) }}" method="POST">
                             {{ csrf_field() }}
-                            <div class="has-float-label">
+                            @method('PATCH')
+                            <div class="form-group">
                                 <label for="name">Nama Role</label>
-                                <input type="text" id="name" class="form-control @error('name')is-invalid @enderror" name="name" placeholder="" value="{{ old('name') }}">
+                                <input class="form-control @error ('name') is-invalid @enderror" type="text" name="name" id="name" value="{{ $data_roles->name }}">
                                 @error('name')
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <div class="form-group mt-4 row">
                                 <div class="col-sm-3">Hak Akses</div>
                                 <div class="col-sm-9">
-                                    @foreach ($data_permission as $permissions)
+                                    @foreach ($data_permissions as $permissions)
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="permission[]" id="customControlValidation_{{ $permissions->id }}" class="custom-control-input @error('permission') is-invalid @enderror" value="{{ $permissions->id }}">
+                                            <input type="checkbox" name="permission[]" id="customControlValidation_{{ $permissions->id }}" class="custom-control-input" value="{{ $permissions->id }}"
+                                            @foreach ($permissions_each_role as $permission)
+                                                @if ($permission === $permissions->id)
+                                                    checked
+                                                @endif
+                                            @endforeach>
                                             <label for="customControlValidation_{{ $permissions->id }}" class="custom-control-label">{{ $permissions->name }}</label>
                                         </div>
                                     @endforeach
-                                    @error('permission')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <small class="text-danger">{{ $errors->first('permission') }}</small>
                                 </div>
                             </div>
                             <div class="col text-center">
-                                <button class="btn btn-primary btn-md col-md-12" type="submit">Create Data</button>
+                                <button class="btn btn-primary btn-md col-md-12" type="submit">Update Data</button>
                             </div>
                         </form>
                     </div>

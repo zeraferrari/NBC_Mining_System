@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RhesusValidation;
 use App\Models\RhesusCategory;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RhesusCategoryController extends Controller
 {
@@ -12,9 +14,13 @@ class RhesusCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $title = 'Manajement Dashboard Rhesus';
+
     public function index()
     {
-        //
+        $data = RhesusCategory::all();
+        $title = $this->title;
+        return view('Manajement.Rhesus.index', compact('data', 'title'));
     }
 
     /**
@@ -24,7 +30,8 @@ class RhesusCategoryController extends Controller
      */
     public function create()
     {
-        //
+        $title = $this->title;
+        return view('Manajement.Rhesus.create', compact('title'));
     }
 
     /**
@@ -33,9 +40,12 @@ class RhesusCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RhesusValidation $request)
     {
-        //
+        $data_has_been_valid = $request->validated();
+        RhesusCategory::create($data_has_been_valid);
+        Alert::success('Data Berhasil DiBuat !', 'Data baru dengan nama "'.$data_has_been_valid['Name'].'" telah ditambahkan');
+        return redirect()->route('Manajement.Rhesus.index');
     }
 
     /**
@@ -55,9 +65,11 @@ class RhesusCategoryController extends Controller
      * @param  \App\Models\RhesusCategory  $rhesusCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(RhesusCategory $rhesusCategory)
+    public function edit($id)
     {
-        //
+        $data = RhesusCategory::findOrFail($id);
+        $title = $this->title;
+        return view('Manajement.Rhesus.edit', compact('data', 'title'));
     }
 
     /**
@@ -67,9 +79,12 @@ class RhesusCategoryController extends Controller
      * @param  \App\Models\RhesusCategory  $rhesusCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RhesusCategory $rhesusCategory)
+    public function update(RhesusValidation $request, $id)
     {
-        //
+        $data_has_been_valid = $request->validated();
+        $data = RhesusCategory::find($id);
+        $data->update($data_has_been_valid);
+        return redirect()->route('Manajement.Rhesus.index');
     }
 
     /**
@@ -78,8 +93,9 @@ class RhesusCategoryController extends Controller
      * @param  \App\Models\RhesusCategory  $rhesusCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RhesusCategory $rhesusCategory)
+    public function destroy($id)
     {
-        //
+        $data = RhesusCategory::findOrFail($id)->delete();
+        return redirect()->route('Manajement.Rhesus.index');
     }
 }

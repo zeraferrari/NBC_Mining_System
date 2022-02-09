@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PermissionValidation extends FormRequest
+class RhesusValidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,15 @@ class PermissionValidation extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'regex:/^[\pL\s\-]+$/u'],
+            'Name' => 'required|unique:rhesus_categories',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Mohon field ini diisi !',
-            'name.regex'    =>  'Field ini hanya boleh inputan huruf !'
+            'Name.required' => 'Mohon field inputan ini diisi !',
+            'Name.unique'   => 'Nama tersebut sudah tersedia !',
         ];
     }
 }

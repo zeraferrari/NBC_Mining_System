@@ -13,7 +13,7 @@ class DataTraining extends Model
         'Name',
         'Gender',
         'Hemoglobin',
-        'Pressure_sistole',
+        'Pressure_Sistole',
         'Pressure_diastole',
         'Weight',
         'Status',

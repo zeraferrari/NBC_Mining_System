@@ -45,9 +45,9 @@ class RoleController extends Controller
     public function store(RoleValidation $request)
     {
         $has_been_validated = $request->validated();
+        Alert::success('Data Berhasil Dibuat !', 'Data role '.$has_been_validated['name']. ' berhasil ditambahkan')->showConfirmButton('confirm', '#3085d6');
         $role = Role::create($has_been_validated);
         $role->syncPermissions($has_been_validated['permission']);
-        Alert::success('Data Berhasil Dibuat !', 'Data role '.$has_been_validated['name']. ' berhasil ditambahkan');
         return redirect()->route('Manajement.Roles.index');
     }
 
@@ -72,12 +72,12 @@ class RoleController extends Controller
     {
         $data_roles = Role::with('permissions')->find($id);
         $data_permissions = Permission::all();
-
+        $title = 'Manajement Dashboard Role';
         $permissions_each_role = DB::table('role_has_permissions')
                     ->where('role_has_permissions.role_id', '=', $id)
                     ->pluck('permission_id')->all();
         
-        return view('role.edit', compact('data_roles', 'data_permissions', 'permissions_each_role'));
+        return view('Manajement.Roles.edit', compact('data_roles', 'data_permissions', 'permissions_each_role', 'title'));
     }
 
     /**
@@ -93,7 +93,7 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->update($has_been_validated);
         $role->syncPermissions($has_been_validated['permission']); 
-        return redirect()->route('role.index')->with('success', 'Role ' .$role->name. ' Has Been Update !');
+        return redirect()->route('Manajement.Roles.index')->with('success', 'Role ' .$role->name. ' Has Been Update !');
     }
 
     /**
@@ -107,6 +107,6 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role_test = $role->name;
         $role->delete();
-        return redirect()->route('role.index')->with('success', 'Role ' .$role_test. ' Has Been Delete !' );
+        return redirect()->route('Manajement.Roles.index')->with('success', 'Role ' .$role_test. ' Has Been Delete !' );
     }
 }
