@@ -1,73 +1,56 @@
-@extends('layouts.app')
+@extends('layouts.Main_Dashboard')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
+@section('Main_Content')
+<main id="main" style="min-height: 90vh; background-size: cover; background-repeat: no-repeat; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('{{ asset('assets/img/blood-donate.jpg') }}');">
+   <div class="container">
+       <div class="row justify-content-center">
+           <div class="col-md-6">
+               <div class="card rounded shadow-lg" style="top: 80px;">
+                   <div class="card text-center">
+                       <div class="card-body text-white rounded-top shadow-lg " style="background: linear-gradient(to right, #e20606ce, rgba(173, 64, 64, 0.5));">
+                           <h5 class="card-title">Yudora</h5>
+                           <img src="{{ asset('assets/img/unmul.png') }}" class=" img-fluid rounded float-left" alt="..." width="50px" height="50px">
+                           <img src="{{ asset('assets/img/Red-Cross-PMI.png') }}" class=" img-fluid rounded float-right" alt="..." width="50px" height="50px">
+                           <i class="card-text">"Yuk donor darah, karena satu kantung darah dapat menyelamatkan nyawa lainnya"</i>
+                       </div>
+                   </div>
+                   <div class="card-body opacity-2">
+                       <hr>
+                       <h3 class="card-title text-center">{{ __('Login') }}</h3>
+                       <hr>
+                       <form method="POST" action="{{ route('login') }}">
+                           {{ csrf_field() }} 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email atau NIK') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                          <label for="email" class="col-sm-3 col-form-label text-md-right">{{ __('Email atau NIK') }}</label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email">
+                            @error('email')
+                              <div class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </div>
+                            @enderror
+                          </div>
                         </div>
-
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                          <label for="password" class="col-sm-3 col-form-label text-md-right">{{ __('Password') }}</label>
+                          <div class="col-sm-7">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
+                            @error('password')
+                              <div class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </div>
+                            @enderror
+                          </div>
                         </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
+                        <div class="col text-center">
+                            <button class="btn btn-primary btn-md col-sm-12 col-md-8 col-lg-8" type="submit">Login</button>
                         </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                      </form>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</main>
 @endsection

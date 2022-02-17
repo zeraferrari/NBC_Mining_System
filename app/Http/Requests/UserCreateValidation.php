@@ -30,10 +30,10 @@ class UserCreateValidation extends FormRequest
             'roles' => ['required'],
             'NIK' => ['required', 'numeric', 'digits:16', 'unique:users'],
             'Gender' => ['required'],
+            'profile_picture' => ['image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
-            'profile_picture' => ['nullable'],
-            'Rhesus_id' => ['nullable']
+            'Rhesus_id' => ['nullable'],
         ];
     }
 
@@ -74,6 +74,10 @@ class UserCreateValidation extends FormRequest
             'alamat.required'   =>  'Mohon field ini diisi !',
             'alamat.max'        =>  'Maksimal 100 inputan karakter !',
         // ========================================================
+            'profile_picture.image'   => 'Field ini hanya boleh mengupload file photo !',
+            'profile_picture.mimes'   => 'Extensi gambar hanya diperbolehkan jpg, png, jpeg !',
+            'profile_picture.min'     => 'Minimal ukuran file sebesar 256 KB(KiloByte) !',
+            'profile_picture.max'     => 'Maksimal ukuran file sebesar 6 MB(Mega Byte) !',
         ];
     }
 }

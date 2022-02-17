@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TransactionDonorController;
 use App\Http\Controllers\UserController;
 use App\Models\TransactionDonor;
+use App\Models\User;
 use Spatie\Permission\Contracts\Role;
 
 /*
@@ -23,9 +24,9 @@ use Spatie\Permission\Contracts\Role;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('index');
+});
 
 Auth::routes();
 
@@ -57,22 +58,18 @@ Route::GET('/Data-Trainings/{id}/Edit', [DataTrainingController::class, 'edit'])
 Route::PATCH('/Data-Trainings/{id}', [DataTrainingController::class, 'update'])->name('Manajement.DataTrainings.update');
 Route::DELETE('/Data-Trainings/{id}', [DataTrainingController::class, 'destroy'])->name('Manajement.DataTrainings.delete');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/User', [UserController::class, 'index'])->name('users.index');
-Route::get('/User/Create', [UserController::class, 'create'])->name('users.create');
-Route::POST('/User', [UserController::class, 'store'])->name('users.store');
-Route::get('/User/Edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-Route::patch('/User/{id}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/User/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::GET('/User', [UserController::class, 'index'])->name('Manajement.Users.index');
+Route::GET('/User/Create', [UserController::class, 'create'])->name('Manajement.Users.create');
+Route::GET('/User/{id}/Detail-User', [UserController::class, 'show'])->name('Manajement.Users.show');
+Route::POST('/User', [UserController::class, 'store'])->name('Manajement.Users.store');
+Route::GET('/User/{id}/Edit', [UserController::class, 'edit'])->name('Manajement.Users.edit');
+Route::PATCH('/User/{id}', [UserController::class, 'update'])->name('Manajement.Users.update');
+Route::DELETE('/User/{id}', [UserController::class, 'destroy'])->name('Manajement.Users.delete');
+
 
 Route::GET('/Transaction', [TransactionDonorController::class, 'index'])->name('transaction.index');
 Route::POST('/Transaction', [TransactionDonorController::class, 'store'])->name('transaction.store');
 Route::get('/Transaction/{id}/Edit', [TransactionDonorController::class, 'edit'])->name('transaction.edit');
 Route::PATCH('/Transaction/{id}', [TransactionDonorController::class, 'update'])->name('transactions.update');
 
-
-
-
-
-Route::get('/test', [UserController::class, 'test'])->name('test');
 

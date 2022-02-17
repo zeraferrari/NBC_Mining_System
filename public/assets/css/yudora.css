@@ -1,0 +1,15 @@
+body header div nav.navbar{
+    position: relative !important;
+}
+
+.bg-img{
+    background-size: cover;
+    min-height: 90vh;
+    background-repeat: no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('/assets/img/blood-donate.jpg');
+}
+
+.card{
+    opacity: 0.8;
+    color: rgb(108, 117, 125);
+}

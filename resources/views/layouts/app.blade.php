@@ -29,10 +29,6 @@
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <a href="" class="navbar-brand">Roles</a>
-                <a href="{{ route('users.index') }}" class="navbar-brand">User</a>
-                <a href="" class="navbar-brand">Kategori Rhesus</a>
-                <a href="{{ route('datatraining.index') }}" class="navbar-brand">Data Training</a>
-                <a href="{{ route('transaction.index') }}" class="navbar-brand">List Transaksi Donor</a>
                 <a href="" class="navbar-brand">Hasil Klasifikasi</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

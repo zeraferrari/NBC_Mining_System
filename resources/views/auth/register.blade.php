@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -130,4 +130,113 @@
         </div>
     </div>
 </div>
+@endsection --}}
+@extends('layouts.Main_Dashboard')
+
+@section('Main_Content')
+    <main id="id">
+        <section id="registrasi-section" class="bg-img">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Registrasi</h3>
+                        <form action="{{ route('register') }}" method="POST">
+                            {{ csrf_field() }}
+                            <div class="form-row">
+                                <div class="form-group col-sm-12 col-md-4 col-lg-4">
+                                    <label for="name">Nama</label>
+                                    <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" value="{{ old('name') }}">
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-sm-12 col-md-4 col-lg-4">
+                                    <label for="NIK">NIK</label>
+                                    <input class="form-control @error('NIK') is-invalid @enderror" type="text" name="NIK" id="NIK" {{ old('NIK') }}>
+                                    @error('NIK')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-12 px-2">
+                                        <div class="col-form-label py-0 mb-3 text-dark">Jenis Gender</div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('Gender') is-invalid @enderror" type="radio" name="Gender" id="Laki-laki" value="Laki-laki @if(old('Gender')=='Laki-laki') checked @endif">
+                                            <label for="Laki-laki" class="form-check-label">Laki-laki</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('Gender') is-invalid @enderror" type="radio" name="Gender" id="Perempuan" value="Perempuan @if(old('Gender')=='Perempuan') checked @endif" >
+                                            <label for="Perempuan" class="form-check-label">Perempuan</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6">
+                                    <label for="phone_number">Nomor Telepon/Whatsapp</label>
+                                    <input class="form-control @error('phone_number') is-invalid @enderror" type="text" name="phone_number" id="phone_number" value="{{ old('phone_number') }}">
+                                    @error('phone_number')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6">
+                                    <label for="profile_picture">Profil Picture</label>
+                                    <input type="file" name="profile_picture" id="profile_picture" class="form-control @error('profile_picture') is-invalid @enderror">
+                                    <small id="profile_picture" class="form-text text-muted">Field ini bersifat opsional (Boleh upload foto atau tidak)</small>
+                                    @error('profile_picture')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6">
+                                    <label for="alamat">Alamat</label>
+                                    <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat">{{ old('alamat') }}</textarea>
+                                    @error('alamat')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6">
+                                    <label for="email">Email</label>
+                                    <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" value="{{ old('email') }}">
+                                    @error('email')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror">
+                                    @error('password')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6">
+                                    <label for="password-confirm">Konfirmasi Password</label>
+                                    <input type="password" name="password_confirmation" id="password-confirm" class="form-control @error('password_confirmation') is-invalid @enderror">
+                                    @error('password-confirmation')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="col text-center">
+                                    <button type="submit" class="btn btn-primary btn-md col-sm-12 col-md-8 col-lg-8">Registrasi</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 @endsection

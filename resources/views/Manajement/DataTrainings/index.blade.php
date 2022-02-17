@@ -54,7 +54,6 @@
                                             <td>
                                                 <div class="buttons">
                                                     <form action="{{ route('Manajement.DataTrainings.delete', $data_training->id) }}" method="POST">
-                                                        <a href="" class="btn btn-icon btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                                         <a href="{{ route('Manajement.DataTrainings.edit', $data_training->id) }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                                         @method('DELETE')
                                                         {{ csrf_field() }}

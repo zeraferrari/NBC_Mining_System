@@ -61,7 +61,7 @@ class RegisterController extends Controller
             'Gender' => ['required'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
-            'profile_picture' => ['nullable'],
+            'profile_picture' => ['image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
             'Rhesus_id' => ['nullable']
         ],
 
@@ -103,6 +103,10 @@ class RegisterController extends Controller
             'alamat.required'   =>  'Mohon field ini diisi !',
             'alamat.max'        =>  'Maksimal 100 inputan karakter !',
         // ========================================================
+            'profile_picture.image'   => 'Field ini hanya boleh mengupload file photo !',
+            'profile_picture.mimes'   => 'Extensi gambar hanya diperbolehkan jpg, png, jpeg !',
+            'profile_picture.min'     => 'Minimal ukuran file sebesar 256 KB(KiloByte) !',
+            'profile_picture.max'     => 'Maksimal ukuran file sebesar 6 MB(Mega Byte) !',
         ]);
     }
 

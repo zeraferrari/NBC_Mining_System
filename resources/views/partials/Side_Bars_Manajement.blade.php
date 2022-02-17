@@ -19,7 +19,7 @@
                     <li class="{{ ($title === 'Manajement Dashboard Role') ? 'active' : '' }}"><a href="{{ route('Manajement.Roles.index') }}" class="nav-link"><i class="fas fa-id-badge"></i>Role</a></li>
                     <li class="{{ ($title === 'Manajement Dashboard Hak Akses') ? 'active' : '' }}"><a href="{{ route('Manajement.Permissions.index') }}" class="nav-link"><i class="fas fa-user-check"></i>Hak Akses</a></li>
                     <li class="{{ ($title === 'Manajement Dashboard Rhesus') ? 'active' : '' }}"><a href="{{ route('Manajement.Rhesus.index') }}" class="nav-link"><i class="fas fa-tint"></i>Kategori Rhesus</a></li>
-                    <li class="{{ ($title === 'Manajement Dashboard User') ? 'active' : '' }}"><a href="" class="nav-link"><i class="fas fa-users"></i>User</a></li>
+                    <li class="{{ ($title === 'Manajement Dashboard User') ? 'active' : '' }}"><a href="{{ route('Manajement.Users.index') }}" class="nav-link"><i class="fas fa-users"></i>User</a></li>
                     <li class="{{ ($title === 'Manajement Dashboard Data Training') ? 'active' : '' }}"><a href="{{ route('Manajement.DataTrainings.index') }}" class="nav-link"><i class="fas fa-database"></i>Data Training</a></li>
                 </ul>
             </li>

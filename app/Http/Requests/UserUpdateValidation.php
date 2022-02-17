@@ -26,14 +26,12 @@ class UserUpdateValidation extends FormRequest
     {
         return [
             'name' => ['required', 'regex:/^[\pL\s\-]+$/u' , 'min:3' ,'max:100'],
-            'email' => ['required', 'string', 'email', 'max:100', Rule::unique('users', 'email')->ignore($this->id, 'id')],
-            'password' => ['nullable', 'string', 'min:6'],
             'roles' => ['required'],
             'NIK' => ['required', 'numeric', 'digits:16', Rule::unique('users')->ignore($this->id, 'id')],
             'Gender' => ['required'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
-            'profile_picture' => ['nullable'],
+            'profile_picture' => ['nullable','image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
             'Rhesus_id' => ['nullable']
         ];
     }
@@ -45,15 +43,6 @@ class UserUpdateValidation extends FormRequest
             'name.regex'        => 'Inputan hanya berupa huruf !',
             'name.min'          => 'Minimal 3 inputan huruf !',
             'name.max'          => 'Maksimal 100 inputan huruf !',
-        //========================================================
-        // Pesan kolom email
-            'email.required'    =>  'Mohon field ini diisi !',
-            'email.email'       =>  'Mohon email anda diinputkan !',
-            'email.max'         =>  'Maksimal 100 karakter inputan !',
-            'email.unique'      =>  'Email ini telah terdaftar !',
-        //========================================================
-        // Pesan kolom password
-            'password.min'      =>  'Minimal 6 Inputan',
         //========================================================
             'roles.required'    => 'Field ini belum dipilih !',
         //Pesan kolom NIK
@@ -74,6 +63,10 @@ class UserUpdateValidation extends FormRequest
             'alamat.required'   =>  'Mohon field ini diisi !',
             'alamat.max'        =>  'Maksimal 100 inputan karakter !',
         // ========================================================
+        'profile_picture.image'   => 'Field ini hanya boleh mengupload file photo !',
+            'profile_picture.mimes'   => 'Extensi gambar hanya diperbolehkan jpg, png, jpeg !',
+            'profile_picture.min'     => 'Minimal ukuran file sebesar 256 KB(KiloByte) !',
+            'profile_picture.max'     => 'Maksimal ukuran file sebesar 6 MB(Mega Byte) !',
         ];
     }
 }

@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateValidation;
 use App\Http\Requests\UserUpdateValidation;
+use App\Models\RhesusCategory;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -18,16 +19,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function test(){
-        return view('layouts.Main_Manajement');
-    }
+    protected $title = 'Manajement Dashboard User';
 
     public function index()
     {
-        $data_user = User::with('roles')->get();
-        $title = 'Manajement Dashboard User';
-        return view('User.index', compact('data_user', 'title'));
+        $data = User::with('Rhesus_Connection')->get();
+        $title = $this->title;
+        return view('Manajement.Users.index', compact('data', 'title'));
     }
 
     /**
@@ -37,8 +35,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $role_name = Role::all();
-        return view('User.create', compact('role_name'));
+        $data_role = Role::all();
+        $rhesus = RhesusCategory::all();
+        $title = $this->title;
+        return view('Manajement.Users.create', compact('data_role', 'rhesus', 'title'));
     }
 
     /**
@@ -49,11 +49,24 @@ class UserController extends Controller
      */
     public function store(UserCreateValidation $request)
     {
-        $data_has_validated = $request->validated();
-        $data_has_validated['password'] = Hash::make($data_has_validated['password']);
-        $user_data = User::create($data_has_validated);
-        $user_data->assignRole($request->input('roles'));
-        return redirect()->route('users.index')->with('success', 'User' .$user_data->name. 'Berhasil Dibuat');
+        $data_has_been_validated = $request->validated();
+        $data_has_been_validated['Status_Donor'] = 'Belum Mendonor';
+        if($request->hasFile('profile_picture')){
+            $date = Carbon::now('Asia/Makassar')->format('dmYHi');
+            $HashNameImage = $request->file('profile_picture')->hashName();
+            $ImageName = $date."-".$HashNameImage;
+            $path_name = $request->file('profile_picture')->storeAs('image-profiles', $ImageName);
+            $data_has_been_validated['profile_picture'] = $path_name;
+            $data_has_been_validated['password'] = Hash::make($request->input('password'));
+            $user_data = User::create($data_has_been_validated);
+            $user_data->assignRole($data_has_been_validated['roles']);
+            return redirect()->route('Manajement.Users.index');
+        }else{
+            $data_has_been_validated['password'] = Hash::make($request->input('password'));
+            $user_data = User::create($data_has_been_validated);
+            $user_data->assignRole($data_has_been_validated['roles']);
+            return redirect()->route('Manajement.Users.index');
+        }
     }
 
     /**
@@ -76,10 +89,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $user_data = User::find($id);
-        $role_name = Role::all();
-        $user_role = $user_data->roles()->first();
-        $user_role = $user_role->name;
-        return view('User.edit', compact('user_data', 'role_name', 'user_role'));
+        $rhesus_data = RhesusCategory::all();
+        $roles_data = Role::all();
+        $title = $this->title;
+        return view('Manajement.Users.edit', compact('user_data', 'rhesus_data', 'roles_data', 'title'));
     }
 
     /**
@@ -91,13 +104,22 @@ class UserController extends Controller
      */
     public function update(UserUpdateValidation $request, $id)
     {
-        $data_has_validated = $request->validated();
-        $data_has_validated['password'] = Hash::make($data_has_validated['password']);
-        $data = User::find($id);
-        $data->update($data_has_validated);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
-        $data->assignRole($request->input('roles'));
-        return redirect()->route('users.index')->with('success', 'User dengan NIK : '.$data->NIK.' berhasil diupdate !');        
+        $data_has_been_validated = $request->validated();
+
+        if($request->hasFile('profile_picture')){
+            if($request->oldImage){
+                Storage::delete($request->oldImage);
+            }
+            $date = Carbon::now('Asia/Makassar')->format('dmYHi');
+            $HashNameImage = $request->file('profile_picture')->hashName();
+            $ImageName = $date."-".$HashNameImage;
+            $path_name = $request->file('profile_picture')->storeAs('image-profiles', $ImageName);
+            $data_has_been_validated['profile_picture'] = $path_name;
+        }
+
+        $user = User::find($id);
+        $user->update($data_has_been_validated);
+        return redirect()->route('Manajement.Users.index');       
     }
 
     /**
@@ -109,7 +131,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user_data = User::findOrFail($id);
+        if($user_data->profile_picture){
+            Storage::delete($user_data->profile_picture);
+        }
         $user_data->delete();
-        return redirect()->route('users.index')->with('message', 'Data' .$user_data->name. 'telah berhasil dihapus !');
+        return redirect()->route('Manajement.Users.index')->with('message', 'Data' .$user_data->name. 'telah berhasil dihapus !');
     }
 }
