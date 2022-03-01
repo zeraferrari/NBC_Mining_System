@@ -165,11 +165,11 @@
                                     <div class="form-group col-sm-12 px-2">
                                         <div class="col-form-label py-0 mb-3 text-dark">Jenis Gender</div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input @error('Gender') is-invalid @enderror" type="radio" name="Gender" id="Laki-laki" value="Laki-laki @if(old('Gender')=='Laki-laki') checked @endif">
+                                            <input class="form-check-input @error('Gender') is-invalid @enderror" type="radio" name="Gender" id="Laki-laki" value="Laki-laki" @if(old('Gender') === 'Laki-laki') checked @endif>
                                             <label for="Laki-laki" class="form-check-label">Laki-laki</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input @error('Gender') is-invalid @enderror" type="radio" name="Gender" id="Perempuan" value="Perempuan @if(old('Gender')=='Perempuan') checked @endif" >
+                                            <input class="form-check-input @error('Gender') is-invalid @enderror" type="radio" name="Gender" id="Perempuan" value="Perempuan" @if(old('Gender') === 'Perempuan') checked @endif>
                                             <label for="Perempuan" class="form-check-label">Perempuan</label>
                                         </div>
                                     </div>

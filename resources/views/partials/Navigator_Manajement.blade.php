@@ -161,7 +161,7 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-title">{{ Auth::user()->getRoleNames()[0] }}</div>
 
-                                <a href="" class="dropdown-item has-icon">
+                                <a href="{{ route('Manajement.Dashboard.index') }}" class="dropdown-item has-icon">
                                     <i class="fas fa-cog"></i>Manajement Dashboard
                                 </a>
                                 <a href="" class="dropdown-item has-icon">

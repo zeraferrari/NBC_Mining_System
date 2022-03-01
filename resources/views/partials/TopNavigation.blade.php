@@ -165,7 +165,7 @@
                             <div class="d-inline-block">{{ Auth::user()->name }}</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="" class="dropdown-item has-icon">
+                            <a href="{{ route('Manajement.Dashboard.index') }}" class="dropdown-item has-icon">
                                 <i class="fas fa-cog"></i>Manajement Dashboard
                             </a>
                             <a href="" class="dropdown-item has-icon">

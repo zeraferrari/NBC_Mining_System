@@ -20,13 +20,13 @@ class TransactionDonorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    protected $title = 'Manajement Antrian Donor Darah';
+    public function index(){
         $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')
                                     ->where('Status_Donor', '=', 'Medical Check')
-                                    ->latest()->get();
-        $title = 'Manajement Antrian Donor Darah';
-        return view('TransactionDonor.index', compact('data_transaction_user', 'title'));
+                                    ->oldest()->get();
+        $title = $this->title;
+        return view('Manajement.Antrian.index', compact('data_transaction_user', 'title'));
         
     }
     
@@ -71,10 +71,7 @@ class TransactionDonorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -102,19 +99,8 @@ class TransactionDonorController extends Controller
         $has_valid['User_Pendonor_id'] = Auth::id();
         $has_valid['Waktu_Donor'] = Carbon::now('Asia/Makassar');
         $has_valid['Status_Donor'] = 'Medical Check';
-        $data = TransactionDonor::create($has_valid);
-        return redirect()->route('transaction.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TransactionDonor  $transactionDonor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TransactionDonor $transactionDonor)
-    {
-        //
+        TransactionDonor::create($has_valid);
+        return redirect()->route('Antrian.Mendonor');
     }
 
     /**
@@ -123,12 +109,47 @@ class TransactionDonorController extends Controller
      * @param  \App\Models\TransactionDonor  $transactionDonor
      * @return \Illuminate\Http\Response
      */
+
+    public function getSuccess_transaction_user($id_user_pendonor){
+        $data_success_transaction_user = TransactionDonor::all()
+                                            ->where('Status_Donor', '=', 'Berhasil Mendonor')
+                                            ->where('User_Pendonor_id', '=', $id_user_pendonor)
+                                            ->count();
+        return $data_success_transaction_user;
+    }
+
+    public function getFails_transaction_user($id_user_pendonor){
+        $data_fails_transaction_user = TransactionDonor::all()
+                                            ->where('Status_Donor', '=', 'Gagal Donor')
+                                            ->where('User_Pendonor_id', '=', $id_user_pendonor)
+                                            ->count();
+        return $data_fails_transaction_user;
+    }
+
+
     public function edit($id)
     {
+        $title = $this->title;
         $transaction_data = TransactionDonor::with('User_Connection.Rhesus_Connection')->find($id);
-        $user_data = User::all();
+        $data_success_transaction_user = $this->getSuccess_transaction_user($transaction_data->User_Pendonor_id);
+        
+        $data_fails_transaction_user = $this->getFails_transaction_user($transaction_data->User_Pendonor_id);
+        
+        $total_data_transaction_user = $data_success_transaction_user + $data_fails_transaction_user;
+        $history_transaction_user = TransactionDonor::with('Petugas_Connection')->get()
+                                                        ->whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor'])
+                                                        ->where('User_Pendonor_id', '=', $transaction_data->User_Pendonor_id)
+                                                        ->sortBy('Waktu_Donor', SORT_REGULAR, true);
+
+                
         $rhesus_data = RhesusCategory::all();
-        return view('TransactionDonor.edit', compact('transaction_data', 'user_data', 'rhesus_data'));
+        return view('Manajement.Antrian.edit', compact('transaction_data', 
+                                                                            'rhesus_data',
+                                                                            'title',
+                                                                            'data_success_transaction_user',
+                                                                            'data_fails_transaction_user', 
+                                                                            'total_data_transaction_user', 
+                                                                            'history_transaction_user'));
     }
     
 
@@ -157,14 +178,15 @@ class TransactionDonorController extends Controller
             $data_has_been_validate['Status_Donor'] = 'Berhasil Mendonor';
             $data_has_been_validate['Kembali_Donor'] = Carbon::now('Asia/Makassar')->addMonth(2);
             $data->update($data_has_been_validate);
-            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_category'], 'Status_Donor' => 'Sudah Mendonor']);   
+            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_Categories'], 'Status_Donor' => 'Sudah Mendonor']);   
         }else{
             $data_has_been_validate['Status_Transaction'] = $result;
             $data_has_been_validate['Status_Donor'] = 'Gagal Donor';
             $data_has_been_validate['Kembali_Donor'] = Carbon::now('Asia/Makassar')->addWeek(1);
             $data->update($data_has_been_validate);
-            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_category'], 'Status_Donor' => 'Belum Mendonor']);   
+            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_Categories'], 'Status_Donor' => 'Belum Mendonor']);   
         }
+        return redirect()->route('Manajement.Transaction.index');
     }
 
     /**
@@ -173,10 +195,25 @@ class TransactionDonorController extends Controller
      * @param  \App\Models\TransactionDonor  $transactionDonor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TransactionDonor $transactionDonor)
-    {
-        //
-    }
 
+    public function GetResult_Transaction_Donor(){
+        $title = 'Manajement Hasil Transaksi Donor';
+        $result_transaction = TransactionDonor::with(['User_Connection', 'Petugas_Connection'])->latest()->get()
+                                                ->whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor']);
+        return view('Manajement.HasilTransaksiDonor.index', compact('title',
+                                                                                    'result_transaction'));
+    }
     
+    public function GetDetail_Transaction_Donor(TransactionDonor $TransactionDonor){
+        $title = 'Manajement Hasil Transaksi Donor';
+        $detail_transaction = $TransactionDonor;
+        $data_success_transactions_user = $this->getSuccess_transaction_user($TransactionDonor->User_Pendonor_id);
+        $data_fails_transactions_user = $this->getFails_transaction_user($TransactionDonor->User_Pendonor_id);
+        $total_transactions_user = $data_success_transactions_user + $data_fails_transactions_user;
+        return view('Manajement.HasilTransaksiDonor.show', compact('title',
+                                                                                'detail_transaction',
+                                                                                'data_success_transactions_user',
+                                                                                'data_fails_transactions_user',
+                                                                                'total_transactions_user'));
+    }
 }

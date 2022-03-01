@@ -61,7 +61,7 @@ class RegisterController extends Controller
             'Gender' => ['required'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
-            'profile_picture' => ['image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
+            'profile_picture' => ['image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144', 'nullable'],
             'Rhesus_id' => ['nullable']
         ],
 
