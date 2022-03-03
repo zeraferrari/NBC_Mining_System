@@ -23,7 +23,7 @@
                                 <div class="list-group">
                                     <div class="list-group-item flex-column aligns-items-start">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Roles Section</h5>
+                                            <h5 class="mb-1">Role Administrator</h5>
                                         </div>
                                         <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data role baru</p>
                                         <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data role</p>
@@ -32,7 +32,7 @@
                                     </div>
                                     <div class="list-group-item flex-column aligns-items-start">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Permission Section</h5>
+                                            <h5 class="mb-1">Role Petugas Medis</h5>
                                         </div>
                                         <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data hak akses baru</p>
                                         <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data hak akses</p>
@@ -40,37 +40,11 @@
                                     </div>
                                     <div class="list-group-item flex-column aligns-items-start">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Rhesus Section</h5>
+                                            <h5 class="mb-1">Role Pendonor</h5>
                                         </div>
                                         <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data kategori rhesus baru</p>
                                         <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate rhesus</p>
                                         <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data kategori rhesus</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">User Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data user atau pengguna baru</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data user atau pengguna baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data user atau pengguna sistem</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data user atau pengguna sistem</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Data Training Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data training baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data training</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data training</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Antrian Donor Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data pengajuan donor darah</p>
                                     </div>
                                 </div>
                             </div>
@@ -94,9 +68,23 @@
                                     <img src="{{ asset('assets/img/avatar/avatar-1.png') }}" alt="image" class="align-self-center mr-5 mb-5 rounded-circle img-preview" width="100" height="100">
                                 @endif
                                 <div class="media-body">
-                                    <h5 class="mt-0">Nama User : <strong>{{ $user_data->name }}</strong></h5>
-                                    <h5 class="mt-0">NIK : <strong>{{ $user_data->NIK }}</strong></h5>
-                                    <h5 class="mt-0">Email User : <strong>{{ $user_data->email }}</strong></h5>
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <td>Nama </td>
+                                            <td>:</td>
+                                            <td>{{ $user_data->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>NIK</td>
+                                            <td>:</td>
+                                            <td>{{ $user_data->NIK }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>:</td>
+                                            <td>{{ $user_data->email }}</td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                             <div class="form-group">

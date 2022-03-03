@@ -210,10 +210,108 @@ class TransactionDonorController extends Controller
         $data_success_transactions_user = $this->getSuccess_transaction_user($TransactionDonor->User_Pendonor_id);
         $data_fails_transactions_user = $this->getFails_transaction_user($TransactionDonor->User_Pendonor_id);
         $total_transactions_user = $data_success_transactions_user + $data_fails_transactions_user;
+
+        $naive_bayes = new CalculationNaiveBayesController();
+        $total_data_training = $naive_bayes->getTotalDataTraining();
+        $total_data_class_layak = $naive_bayes->getTotal_EachClass('Layak');
+        $total_data_class_tidak_layak = $naive_bayes->getTotal_EachClass('Tidak Layak');
+
+        $result_prior_probability_class_layak = $total_data_class_layak/$total_data_training;
+        $result_prior_probability_class_tidak_layak = $total_data_class_tidak_layak/$total_data_training;
+
+        $total_nilai_atr_umur_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Age');
+        $total_nilai_atr_umur_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Age');
+        $mean_atr_umur_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_umur_layak, $total_data_class_layak);
+        $mean_atr_umur_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_umur_tidak_layak, $total_data_class_tidak_layak);
+        $standar_deviasi_atr_umur_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Age', $mean_atr_umur_layak, $total_data_class_layak);
+        $standar_deviasi_atr_umur_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Age', $mean_atr_umur_tidak_layak, $total_data_class_tidak_layak);
+        $gaussian_atr_umur_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Age, $mean_atr_umur_layak, $standar_deviasi_atr_umur_layak);
+        $gaussian_atr_umur_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Age, $mean_atr_umur_tidak_layak, $standar_deviasi_atr_umur_tidak_layak);
+
+        $total_nilai_atr_bb_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Weight');
+        $total_nilai_atr_bb_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Weight');
+        $mean_atr_bb_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_bb_layak, $total_data_class_layak);
+        $mean_atr_bb_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_bb_tidak_layak, $total_data_class_tidak_layak);
+        $standar_deviasi_atr_bb_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Weight', $mean_atr_bb_layak, $total_data_class_layak);
+        $standar_deviasi_atr_bb_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Weight', $mean_atr_bb_tidak_layak, $total_data_class_tidak_layak);
+        $gaussian_atr_bb_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Weight, $mean_atr_bb_layak, $standar_deviasi_atr_bb_layak);
+        $gaussian_atr_bb_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Weight, $mean_atr_bb_tidak_layak, $standar_deviasi_atr_bb_tidak_layak);
+
+        $total_nilai_atr_hemoglobin_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Hemoglobin');
+        $total_nilai_atr_hemoglobin_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Hemoglobin');
+        $mean_atr_hemoglobin_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_hemoglobin_layak, $total_data_class_layak);
+        $mean_atr_hemoglobin_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_hemoglobin_tidak_layak, $total_data_class_tidak_layak);
+        $standar_deviasi_atr_hemoglobin_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Hemoglobin', $mean_atr_hemoglobin_layak, $total_data_class_layak);
+        $standar_deviasi_atr_hemoglobin_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Hemoglobin', $mean_atr_hemoglobin_tidak_layak, $total_data_class_tidak_layak);
+        $gaussian_atr_hemoglobin_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Hemoglobin, $mean_atr_hemoglobin_layak, $standar_deviasi_atr_hemoglobin_layak);
+        $gaussian_atr_hemoglobin_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Hemoglobin, $mean_atr_hemoglobin_tidak_layak, $standar_deviasi_atr_hemoglobin_tidak_layak);
+
+
+        $total_nilai_atr_p_sistole_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Pressure_Sistole');
+        $total_nilai_atr_p_sistole_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Pressure_Sistole');
+        $mean_atr_pressure_sistole_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_sistole_layak, $total_data_class_layak);
+        $mean_atr_pressure_sistole_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_sistole_tidak_layak, $total_data_class_layak);
+        $standar_deviasi_atr_pressure_sistole_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Pressure_Sistole', $mean_atr_pressure_sistole_layak, $total_data_class_layak);
+        $standar_deviasi_atr_pressure_sistole_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Pressure_Sistole', $mean_atr_pressure_sistole_tidak_layak, $total_data_class_tidak_layak);
+        $gaussian_atr_pressure_sistole_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Pressure_sistole, $mean_atr_pressure_sistole_layak, $standar_deviasi_atr_pressure_sistole_layak);
+        $gaussian_atr_pressure_sistole_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Pressure_sistole, $mean_atr_pressure_sistole_tidak_layak, $standar_deviasi_atr_pressure_sistole_tidak_layak);
+
+
+        $total_nilai_atr_p_diastole_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Pressure_diastole');
+        $total_nilai_atr_p_diastole_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Pressure_diastole');
+        $mean_atr_pressure_diastole_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_diastole_layak, $total_data_class_layak);
+        $mean_atr_pressure_diastole_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_diastole_tidak_layak, $total_data_class_tidak_layak);
+        $standar_deviasi_atr_pressure_diastole_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Pressure_diastole', $mean_atr_pressure_diastole_layak, $total_data_class_layak);
+        $standar_deviasi_atr_pressure_diastole_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Pressure_diastole', $mean_atr_pressure_diastole_tidak_layak, $total_data_class_tidak_layak);
+        $gaussian_atr_pressure_diastole_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Pressure_diastole, $mean_atr_pressure_diastole_layak, $standar_deviasi_atr_pressure_diastole_layak);
+        $gaussian_atr_pressure_diastole_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Pressure_diastole, $mean_atr_pressure_diastole_tidak_layak, $standar_deviasi_atr_pressure_diastole_tidak_layak);
+        
+        $temp_probability_each_attribute_class_layak = [$gaussian_atr_umur_layak, $gaussian_atr_bb_layak, $gaussian_atr_hemoglobin_layak, $gaussian_atr_pressure_sistole_layak, $gaussian_atr_pressure_diastole_layak];
+        $temp_probability_each_attribute_class_tidak_layak = [$gaussian_atr_umur_tidak_layak, $gaussian_atr_bb_tidak_layak, $gaussian_atr_hemoglobin_tidak_layak, $gaussian_atr_pressure_sistole_tidak_layak, $gaussian_atr_pressure_diastole_tidak_layak];
+
+        $result_probability_each_attribute_class_layak = $naive_bayes->getProbability_EachClass($temp_probability_each_attribute_class_layak);
+        $result_probability_each_attribute_class_tidak_layak = $naive_bayes->getProbability_EachClass($temp_probability_each_attribute_class_tidak_layak);
+
+        $result_probability_class_layak = $result_probability_each_attribute_class_layak * $result_prior_probability_class_layak;
+        $result_probability_class_tidak_layak = $result_probability_each_attribute_class_tidak_layak * $result_prior_probability_class_tidak_layak;
+
+        $result_normalization_class_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_layak, $result_probability_class_tidak_layak);
+        $result_normalization_class_tidak_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_tidak_layak, $result_probability_class_layak);
+
         return view('Manajement.HasilTransaksiDonor.show', compact('title',
                                                                                 'detail_transaction',
                                                                                 'data_success_transactions_user',
                                                                                 'data_fails_transactions_user',
-                                                                                'total_transactions_user'));
+                                                                                'total_transactions_user',
+                                                                                'total_data_training',
+                                                                                'total_data_class_layak',
+                                                                                'total_data_class_tidak_layak',
+                                                                                'result_prior_probability_class_layak',
+                                                                                'result_prior_probability_class_tidak_layak',
+        'mean_atr_umur_layak', 'mean_atr_umur_tidak_layak',
+        'standar_deviasi_atr_umur_layak', 'standar_deviasi_atr_umur_tidak_layak',
+        'gaussian_atr_umur_layak', 'gaussian_atr_umur_tidak_layak',
+        
+        'mean_atr_bb_layak', 'mean_atr_bb_tidak_layak',
+        'standar_deviasi_atr_bb_layak', 'standar_deviasi_atr_bb_tidak_layak',
+        'gaussian_atr_bb_layak', 'gaussian_atr_bb_tidak_layak',
+
+        'mean_atr_hemoglobin_layak', 'mean_atr_hemoglobin_tidak_layak',
+        'standar_deviasi_atr_hemoglobin_layak', 'standar_deviasi_atr_hemoglobin_tidak_layak',
+        'gaussian_atr_hemoglobin_layak', 'gaussian_atr_hemoglobin_tidak_layak',
+
+        'mean_atr_pressure_sistole_layak', 'mean_atr_pressure_sistole_tidak_layak',
+        'standar_deviasi_atr_pressure_sistole_layak', 'standar_deviasi_atr_pressure_sistole_tidak_layak',
+        'gaussian_atr_pressure_sistole_layak', 'gaussian_atr_pressure_sistole_tidak_layak',
+    
+        'mean_atr_pressure_diastole_layak', 'mean_atr_pressure_diastole_tidak_layak',
+        'standar_deviasi_atr_pressure_diastole_layak', 'standar_deviasi_atr_pressure_diastole_tidak_layak',
+        'gaussian_atr_pressure_diastole_layak', 'gaussian_atr_pressure_diastole_tidak_layak',
+    
+        'result_probability_each_attribute_class_layak', 'result_probability_each_attribute_class_tidak_layak',
+    
+        'result_probability_class_layak', 'result_probability_class_tidak_layak',
+    
+        'result_normalization_class_layak', 'result_normalization_class_tidak_layak'));
     }
 }

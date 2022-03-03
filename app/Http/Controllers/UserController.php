@@ -86,9 +86,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user_data = User::find($id);
+        $user_data = $user;
         $rhesus_data = RhesusCategory::all();
         $roles_data = Role::all();
         $title = $this->title;

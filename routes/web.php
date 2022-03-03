@@ -65,7 +65,7 @@ Route::GET('Manajement/User', [UserController::class, 'index'])->name('Manajemen
 Route::GET('Manajement/User/Create', [UserController::class, 'create'])->name('Manajement.Users.create');
 Route::GET('Manajement/User/{id}/Detail-User', [UserController::class, 'show'])->name('Manajement.Users.show');
 Route::POST('Manajement/User', [UserController::class, 'store'])->name('Manajement.Users.store');
-Route::GET('Manajement/User/{id}/Edit', [UserController::class, 'edit'])->name('Manajement.Users.edit');
+Route::GET('Manajement/User/{user:NIK}/Edit', [UserController::class, 'edit'])->name('Manajement.Users.edit');
 Route::PATCH('Manajement/User/{id}', [UserController::class, 'update'])->name('Manajement.Users.update');
 Route::DELETE('Manajement/User/{id}', [UserController::class, 'destroy'])->name('Manajement.Users.delete');
 
