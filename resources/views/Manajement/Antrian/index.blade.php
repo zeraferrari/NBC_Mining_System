@@ -38,7 +38,7 @@
                                             <td>{{ $data_transaction->Status_Donor }}</td>
                                             <td>
                                                 <div class="buttons text-center">
-                                                    <a href="{{ route('Manajement.Transaction.edit', $data_transaction->id) }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('Manajement.Transaction.edit', $data_transaction->Code_Transaction ?? '') }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                                 </div>
                                             </td>
                                         </tr>

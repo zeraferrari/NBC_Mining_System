@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateValidation;
 use App\Http\Requests\UserUpdateValidation;
 use App\Models\RhesusCategory;
+use App\Models\TransactionDonor;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -75,9 +77,32 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+
+    public function get_Transaction_User_Success($NIK){
+        $data_transaction = TransactionDonor::with('User_Connection')->get()
+                            ->where('Status_Donor', '=', 'Berhasil Mendonor')
+                            ->where('User_Connection.NIK', '=', $NIK)
+                            ->count();
+        return $data_transaction;
+    }
+    public function get_Transaction_User_Fails($NIK){
+        $data_transaction = TransactionDonor::with('User_Connection')->get()
+                            ->where('Status_Donor', '=', 'Gagal Donor')
+                            ->where('User_Connection.NIK', '=', $NIK)
+                            ->count();
+        return $data_transaction;
+    }
+
+    public function show(User $User)
     {
-        //
+        $title = $this->title;
+        $success_donor = $this->get_Transaction_User_Success($User->NIK);
+        $fails_donor = $this->get_Transaction_User_Fails($User->NIK);
+        $total_donor = $success_donor + $fails_donor;
+        $data_transaction_user = TransactionDonor::with('User_Connection')->latest()->get()
+                    ->where('User_Connection.NIK', '=', $User->NIK)
+                    ->whereNotIn('Status_Donor', 'Medical Check');
+        return view('Manajement.Users.show', compact('User', 'title', 'success_donor', 'fails_donor', 'total_donor', 'data_transaction_user'));
     }
 
     /**
@@ -102,7 +127,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserUpdateValidation $request, $id)
+    public function update(UserUpdateValidation $request, User $user)
     {
         $data_has_been_validated = $request->validated();
 
@@ -117,8 +142,10 @@ class UserController extends Controller
             $data_has_been_validated['profile_picture'] = $path_name;
         }
 
-        $user = User::find($id);
+        $user = User::find($user->id);
         $user->update($data_has_been_validated);
+        DB::table('model_has_roles')->where('model_id', '=', $user->id)->delete();
+        $user->assignRole($request->input('roles'));
         return redirect()->route('Manajement.Users.index');       
     }
 

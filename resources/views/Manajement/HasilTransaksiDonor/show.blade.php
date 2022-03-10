@@ -36,9 +36,9 @@
                                 <div class="col-md-6 text-md-right">
                                     <address>
                                         <strong>Yang Menangani Pendonor</strong>
-                                        <br>Nama : {{ $detail_transaction->Petugas_Connection->name }}
-                                        <br>{{ $detail_transaction->Petugas_Connection->roles[0]->name }}
-                                        <br>Gender : {{ $detail_transaction->Petugas_Connection->Gender }}
+                                        <br>Nama : {{ $detail_transaction->Petugas_Connection->name ?? 'Tidak Diketahui' }}
+                                        <br>{{ $detail_transaction->Petugas_Connection->roles[0]->name ?? 'Tidak Diketahui' }}
+                                        <br>Gender : {{ $detail_transaction->Petugas_Connection->Gender ?? 'Tidak Diketahui' }}
                                     </address>
                                 </div>
                             </div>

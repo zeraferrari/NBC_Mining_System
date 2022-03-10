@@ -137,7 +137,7 @@
     <main id="id">
         <section id="registrasi-section" class="bg-img">
             <div class="container">
-                <div class="card">
+                <div class="card" style="top: 65px;">
                     <div class="card-body">
                         <h3 class="card-title text-center">Registrasi</h3>
                         <form action="{{ route('register') }}" method="POST">

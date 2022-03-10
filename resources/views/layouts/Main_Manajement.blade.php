@@ -39,34 +39,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('assets/js/stisla.js') }}"></script>
-
+    
     <!--Template JS Files-->
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
+    <script type="text/javascript">
+        var test = {{ $kadal }};
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('assets/js/demo_datatables.js') }}"></script>
     <script src="{{ asset('assets/js/ImagePreview.js') }}"></script>
-    <script>
-        $(document).on('click', '.confirm-delete', function(e){
-            e.preventDefault();
-            var id = $(this).data('id');
-            swal({
-                title : 'Yakin ?',
-                type : 'error',
-                confirmButtonClass: 'btn-danger',
-                confirmButtonText: 'yes',
-                showCancelButton: true,
-            },
-            function(){
-                $.ajax({
-                    type: "POST",
-                    url: "{{ url('/destroy') }}",
-                    data: {id:id},
-                    success: function(data){
-                        
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>

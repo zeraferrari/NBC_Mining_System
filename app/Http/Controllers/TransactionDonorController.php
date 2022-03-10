@@ -127,23 +127,22 @@ class TransactionDonorController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(TransactionDonor $TransactionDonor)
     {
         $title = $this->title;
-        $transaction_data = TransactionDonor::with('User_Connection.Rhesus_Connection')->find($id);
-        $data_success_transaction_user = $this->getSuccess_transaction_user($transaction_data->User_Pendonor_id);
+        $data_success_transaction_user = $this->getSuccess_transaction_user($TransactionDonor->User_Pendonor_id);
         
-        $data_fails_transaction_user = $this->getFails_transaction_user($transaction_data->User_Pendonor_id);
+        $data_fails_transaction_user = $this->getFails_transaction_user($TransactionDonor->User_Pendonor_id);
         
         $total_data_transaction_user = $data_success_transaction_user + $data_fails_transaction_user;
         $history_transaction_user = TransactionDonor::with('Petugas_Connection')->get()
                                                         ->whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor'])
-                                                        ->where('User_Pendonor_id', '=', $transaction_data->User_Pendonor_id)
+                                                        ->where('User_Pendonor_id', '=', $TransactionDonor->User_Pendonor_id)
                                                         ->sortBy('Waktu_Donor', SORT_REGULAR, true);
 
                 
         $rhesus_data = RhesusCategory::all();
-        return view('Manajement.Antrian.edit', compact('transaction_data', 
+        return view('Manajement.Antrian.edit', compact('TransactionDonor', 
                                                                             'rhesus_data',
                                                                             'title',
                                                                             'data_success_transaction_user',
@@ -221,6 +220,8 @@ class TransactionDonorController extends Controller
 
         $total_nilai_atr_umur_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Age');
         $total_nilai_atr_umur_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Age');
+        // $total_data_distinct_atr_umur_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Age', 'Layak');
+        // $total_data_distinct_atr_umur_tidak_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Age', 'Tidak Layak');
         $mean_atr_umur_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_umur_layak, $total_data_class_layak);
         $mean_atr_umur_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_umur_tidak_layak, $total_data_class_tidak_layak);
         $standar_deviasi_atr_umur_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Age', $mean_atr_umur_layak, $total_data_class_layak);
@@ -230,6 +231,8 @@ class TransactionDonorController extends Controller
 
         $total_nilai_atr_bb_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Weight');
         $total_nilai_atr_bb_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Weight');
+        // $total_data_distinct_atr_bb_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Weight', 'Layak');
+        // $total_data_distinct_atr_bb_tidak_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Weight', 'Tidak Layak');
         $mean_atr_bb_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_bb_layak, $total_data_class_layak);
         $mean_atr_bb_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_bb_tidak_layak, $total_data_class_tidak_layak);
         $standar_deviasi_atr_bb_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Weight', $mean_atr_bb_layak, $total_data_class_layak);
@@ -239,6 +242,8 @@ class TransactionDonorController extends Controller
 
         $total_nilai_atr_hemoglobin_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Hemoglobin');
         $total_nilai_atr_hemoglobin_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Hemoglobin');
+        // $total_data_distinct_atr_hemoglobin_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Hemoglobin', 'Layak');
+        // $total_data_distinct_atr_hemoglobin_tidak_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Hemoglobin', 'Tidak Layak');
         $mean_atr_hemoglobin_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_hemoglobin_layak, $total_data_class_layak);
         $mean_atr_hemoglobin_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_hemoglobin_tidak_layak, $total_data_class_tidak_layak);
         $standar_deviasi_atr_hemoglobin_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Hemoglobin', $mean_atr_hemoglobin_layak, $total_data_class_layak);
@@ -249,8 +254,10 @@ class TransactionDonorController extends Controller
 
         $total_nilai_atr_p_sistole_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Pressure_Sistole');
         $total_nilai_atr_p_sistole_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Pressure_Sistole');
+        // $total_data_distinct_atr_p_sistole_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Pressure_Sistole', 'Layak');
+        // $total_data_distinct_atr_p_sistole_tidak_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Pressure_Sistole', 'Tidak Layak');
         $mean_atr_pressure_sistole_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_sistole_layak, $total_data_class_layak);
-        $mean_atr_pressure_sistole_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_sistole_tidak_layak, $total_data_class_layak);
+        $mean_atr_pressure_sistole_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_sistole_tidak_layak, $total_data_class_tidak_layak);
         $standar_deviasi_atr_pressure_sistole_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Pressure_Sistole', $mean_atr_pressure_sistole_layak, $total_data_class_layak);
         $standar_deviasi_atr_pressure_sistole_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Pressure_Sistole', $mean_atr_pressure_sistole_tidak_layak, $total_data_class_tidak_layak);
         $gaussian_atr_pressure_sistole_layak = $naive_bayes->getResultDistribusi_Gaussian($detail_transaction->Pressure_sistole, $mean_atr_pressure_sistole_layak, $standar_deviasi_atr_pressure_sistole_layak);
@@ -259,6 +266,8 @@ class TransactionDonorController extends Controller
 
         $total_nilai_atr_p_diastole_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Pressure_diastole');
         $total_nilai_atr_p_diastole_tidak_layak = $naive_bayes->getJumlahValue_EachAttribute('Tidak Layak', 'Pressure_diastole');
+        // $total_data_distinct_atr_p_diastole_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Pressure_diastole', 'Layak');
+        // $total_data_distinct_atr_p_diastole_tidak_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Pressure_diastole', 'Tidak Layak');
         $mean_atr_pressure_diastole_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_diastole_layak, $total_data_class_layak);
         $mean_atr_pressure_diastole_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_diastole_tidak_layak, $total_data_class_tidak_layak);
         $standar_deviasi_atr_pressure_diastole_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Pressure_diastole', $mean_atr_pressure_diastole_layak, $total_data_class_layak);
@@ -277,6 +286,9 @@ class TransactionDonorController extends Controller
 
         $result_normalization_class_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_layak, $result_probability_class_tidak_layak);
         $result_normalization_class_tidak_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_tidak_layak, $result_probability_class_layak);
+        
+        $total_atr_hemo_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Hemoglobin', 'Layak');
+
 
         return view('Manajement.HasilTransaksiDonor.show', compact('title',
                                                                                 'detail_transaction',

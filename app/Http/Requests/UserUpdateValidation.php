@@ -27,7 +27,7 @@ class UserUpdateValidation extends FormRequest
         return [
             'name' => ['required', 'regex:/^[\pL\s\-]+$/u' , 'min:3' ,'max:100'],
             'roles' => ['required'],
-            'NIK' => ['required', 'numeric', 'digits:16', Rule::unique('users')->ignore($this->id, 'id')],
+            'NIK' => ['required', 'numeric', 'digits:16', Rule::unique('users')->ignore($this->user->id, 'id')],
             'Gender' => ['required'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],

@@ -63,21 +63,23 @@ Route::DELETE('Manajement/Data-Trainings/{id}', [DataTrainingController::class, 
 
 Route::GET('Manajement/User', [UserController::class, 'index'])->name('Manajement.Users.index');
 Route::GET('Manajement/User/Create', [UserController::class, 'create'])->name('Manajement.Users.create');
-Route::GET('Manajement/User/{id}/Detail-User', [UserController::class, 'show'])->name('Manajement.Users.show');
+Route::GET('Manajement/User/{User:NIK}/Detail-User', [UserController::class, 'show'])->name('Manajement.Users.show');
 Route::POST('Manajement/User', [UserController::class, 'store'])->name('Manajement.Users.store');
 Route::GET('Manajement/User/{user:NIK}/Edit', [UserController::class, 'edit'])->name('Manajement.Users.edit');
-Route::PATCH('Manajement/User/{id}', [UserController::class, 'update'])->name('Manajement.Users.update');
+Route::PATCH('Manajement/User/{user:NIK}', [UserController::class, 'update'])->name('Manajement.Users.update');
 Route::DELETE('Manajement/User/{id}', [UserController::class, 'destroy'])->name('Manajement.Users.delete');
 
 Route::GET('Manajement/Transaction', [TransactionDonorController::class, 'index'])->name('Manajement.Transaction.index');
-Route::GET('Manajement/Transaction/{id}/Edit', [TransactionDonorController::class, 'edit'])->name('Manajement.Transaction.edit');
+Route::GET('Manajement/Transaction/{TransactionDonor:Code_Transaction}/Edit', [TransactionDonorController::class, 'edit'])->name('Manajement.Transaction.edit');
 Route::PATCH('Manajement/Transaction/{id}', [TransactionDonorController::class, 'update'])->name('Manajement.Transaction.update');
 
 Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Mendonor');
 
 
 Route::GET('Manajement/Hasil-Transaksi', [TransactionDonorController::class, 'GetResult_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.index');
-Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/show', [TransactionDonorController::class, 'GetDetail_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.show');
+Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Detail-Transaksi', [TransactionDonorController::class, 'GetDetail_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.show');
 
+
+Route::GET('/test', [Dashboard::class, 'test'])->name('test');
 
 

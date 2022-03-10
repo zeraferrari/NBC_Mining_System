@@ -53,7 +53,7 @@
                                             <td>
                                                 <div class="buttons text-center">
                                                     <form action="{{ route('Manajement.Users.delete', $data_users->id) }}" method="POST">
-                                                        <a href="" class="btn btn-icon btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                        <a href="{{ route('Manajement.Users.show', $data_users->NIK) }}" class="btn btn-icon btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                                         <a href="{{ route('Manajement.Users.edit', $data_users->NIK) }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                                         {{ csrf_field() }}
                                                         @method('DELETE')

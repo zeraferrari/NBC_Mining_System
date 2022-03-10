@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use PDO;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
@@ -62,5 +63,17 @@ class User extends Authenticatable
 
     public function Petugas_Transaction_Connect(){
         return $this->hasMany(TransactionDonor::class, 'User_PM_id', 'id');
+    }
+
+    public function scopeCountingUsers($query){
+        return $query->count();
+    }
+
+    public function scopeAlreadyDonated($query){
+        return $query->where('Status_Donor', 'Sudah Mendonor')->count();
+    }
+
+    public function scopeHaventDonated($query){
+        return $query->where('Status_Donor', 'Belum Mendonor')->count();
     }
 }

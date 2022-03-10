@@ -20,6 +20,7 @@ class CalculationNaiveBayesController extends Controller
         return $the_calculation_result;
     }
 
+
     public function GetResult_EachPriorProbabilityClass($CalculationEachClass, $TotalDataTraining){
         $the_calculation_result = $CalculationEachClass/$TotalDataTraining;
         return $the_calculation_result;
@@ -27,6 +28,11 @@ class CalculationNaiveBayesController extends Controller
 
     public function getJumlahValue_EachAttribute($Class,$attribute){
         $query = DataTraining::where('Status', $Class)->sum($attribute);
+        return $query;
+    }
+
+    public function getTotal_Attribute_Distinct_EachClass($Attribute, $Class){
+        $query = DataTraining::where('Status', $Class)->count($Attribute);
         return $query;
     }
 

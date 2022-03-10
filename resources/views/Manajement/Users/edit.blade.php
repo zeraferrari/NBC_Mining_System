@@ -58,7 +58,7 @@
                         <h4 class="text-reset">Edit/Update Akun User</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('Manajement.Users.update', $user_data->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('Manajement.Users.update', $user_data->NIK) }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             @method('PATCH')
                             <div class="media">

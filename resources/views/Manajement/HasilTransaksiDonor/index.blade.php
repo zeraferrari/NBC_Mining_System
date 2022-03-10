@@ -48,7 +48,7 @@
                                                 <td>{{ $result_transactions->Status_Donor }}</td>
                                                 <td>
                                                     <div class="buttons text-center">
-                                                        <a href="/Manajement/Hasil-Transaksi/{{ $result_transactions->Code_Transaction }}/show" class="btn btn-icon btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                                                        <a href="{{ route('Manajement.Hasil_Transaksi_Donor.show', $result_transactions->Code_Transaction ?? 'Unknown') }}" class="btn btn-icon btn-sm btn-primary"><i class="fas fa-eye"></i></a>
                                                         <a href="" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-print"></i></a>
                                                     </div>
                                                 </td>
