@@ -32,7 +32,7 @@ class UserUpdateValidation extends FormRequest
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
             'profile_picture' => ['nullable','image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
-            'Rhesus_id' => ['nullable']
+            'Rhesus_id' => ['nullable'],
         ];
     }
 

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 
 class RegisterController extends Controller
@@ -62,7 +63,7 @@ class RegisterController extends Controller
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
             'profile_picture' => ['image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144', 'nullable'],
-            'Rhesus_id' => ['nullable']
+            'Rhesus_id' => ['nullable'],
         ],
 
         /* Pesan custom diparsing ke-view jika 
@@ -126,7 +127,8 @@ class RegisterController extends Controller
             'Gender'    => $data['Gender'],
             'phone_number' => $data['phone_number'],
             'alamat'    => $data['alamat'],
-            'Status_Donor' => 'Belum Mendonor'
+            'Status_Donor' => 'Belum Mendonor',
+            'create_at'    => Carbon::now('Asia/Makassar'),
         ]);
 
         $data_user->assignRole('Pendonor');

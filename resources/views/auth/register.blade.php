@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="form-group col-sm-12 col-md-4 col-lg-4">
                                     <label for="NIK">NIK</label>
-                                    <input class="form-control @error('NIK') is-invalid @enderror" type="text" name="NIK" id="NIK" {{ old('NIK') }}>
+                                    <input class="form-control @error('NIK') is-invalid @enderror" type="text" name="NIK" id="NIK" value="{{ old('NIK') }}">
                                     @error('NIK')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>

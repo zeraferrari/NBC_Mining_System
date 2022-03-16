@@ -118,11 +118,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-8 col-lg-8">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div>
                     <canvas id="myChart"></canvas>
                 </div>
             </div>
         </div>
     </section>
+@endsection
+@section('Bar_Chart')
+    <script>
+        var Data_Rhesus = @json($Name_Rhesus);
+        var Data_Each_Rhesus = @json($Count_Data_Each_Rhesus);
+    </script>
 @endsection

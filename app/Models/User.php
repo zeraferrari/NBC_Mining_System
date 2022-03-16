@@ -31,6 +31,8 @@ class User extends Authenticatable
         'profile_picture',
         'Status_Donor',
         'Rhesus_id',
+        'create_at',
+        'update_at'
     ];
 
     /**

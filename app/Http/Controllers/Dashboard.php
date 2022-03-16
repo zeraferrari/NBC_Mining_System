@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RhesusCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class Dashboard extends Controller
 {
@@ -26,9 +29,8 @@ class Dashboard extends Controller
         $Rhesus_B_Negative = $this->CountingRhesus_Data('B-');
         $Rhesus_O_Negative = $this->CountingRhesus_Data('O-');
         $Rhesus_AB_Negative = $this->CountingRhesus_Data('AB-');
-        $kadal = 70;
-        $kadal = json_encode($kadal);
-        
+        $Count_Data_Each_Rhesus = RhesusCategory::with('User_Connection')->withCount('User_Connection as Jumlah_User')->pluck('Jumlah_User')->toArray(); 
+        $Name_Rhesus = RhesusCategory::with('Rhesus_Connection')->pluck('Name')->toArray();
         return view('Manajement.Dashboard.index', compact('title',
                                                                         'total_users',
                                                                         'already_donated_users',
@@ -41,11 +43,20 @@ class Dashboard extends Controller
                                                                         'Rhesus_B_Negative',
                                                                         'Rhesus_O_Negative',
                                                                         'Rhesus_AB_Negative',
-                                                                        'kadal',
+                                                                        'Count_Data_Each_Rhesus',
+                                                                        'Name_Rhesus',
+                                                                    
                                                                     ));
     }
     
-    public function test(Request $request){
-        dd($request->all());
-    }
+    // public function test(Request $request){    
+    //     $FromDate = $request->FromDate;
+    //     $ToDate = $request->ToDate;
+    //     $result = RhesusCategory::with('User_Connection')
+    //                              ->withCount(['User_Connection' => function($query)use($FromDate, $ToDate){
+    //                                                 $query->where('users.create_at', '>=', $FromDate)
+    //                                                 ->where('users.create_at', '<=', $ToDate);
+    //                             }])->get();
+    //     return redirect()->route('Manajement.Dashboard.index', compact('result'));
+    // }   
 }

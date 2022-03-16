@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('profile_picture')->nullable();
             $table->enum('Status_Donor', ['Belum Mendonor', 'Sudah Mendonor']);
             $table->foreignId('Rhesus_id')->nullable()->constrained('rhesus_categories');
+            $table->date('create_at')->nullable();
+            $table->date('update_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
