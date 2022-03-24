@@ -45,6 +45,8 @@
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     @yield('Bar_Chart')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>i --}}
     <script src="{{ asset('assets/js/demo_datatables.js') }}"></script>
     <script src="{{ asset('assets/js/ImagePreview.js') }}"></script>
 </body>

@@ -15,7 +15,7 @@ class CreateTransactionDonorsTable extends Migration
     {
         Schema::create('transaction_donors', function (Blueprint $table) {
             $table->id();
-            $table->string('Code_Transaction', 20)->nullable();
+            $table->string('Code_Transaction', 25)->nullable();
             $table->unsignedSmallInteger('Age')->nullable();
             $table->unsignedSmallInteger('Weight')->nullable();
             $table->unsignedFloat('Hemoglobin', 8, 1)->nullable();

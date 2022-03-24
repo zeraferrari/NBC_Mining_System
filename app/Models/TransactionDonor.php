@@ -32,4 +32,16 @@ class TransactionDonor extends Model
     public function Petugas_Connection(){
         return $this->belongsTo(User::class, 'User_PM_id', 'id');
     }
+
+    public function scopeCountTransaction($query){
+        return $query->whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor'])->count();
+    }
+
+    public function scopeCountTransactionSuccess($query){
+        return $query->where('Status_Donor', 'Berhasil Mendonor')->count();
+    }
+
+    public function scopeCountTransactionFails($query){
+        return $query->where('Status_Donor', 'Gagal Donor')->count();
+    }
 }
