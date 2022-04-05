@@ -283,13 +283,17 @@
                                     </div>
                                 </div>
                             </div>
-                            {{ $Result }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div>
-                                <canvas id="LineTransaction"></canvas>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Grafik Kantong Darah</h5>
+                                    <div>
+                                        <canvas id="LineTransaction"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -300,6 +304,8 @@
 @endsection
 @section('Bar_Chart')
     <script>
+        var data_transaction = @json($Json_Line_Chart);
+        var Month_Name = @json($Month_Name);
         var Data_Rhesus = @json($Name_Rhesus);
         var Data_Each_Rhesus = @json($Count_Data_Each_Rhesus);  
     </script>

@@ -3,11 +3,11 @@
 @section('Main_Content')
     <section class="section">
         <div class="section section-header">
-            <h1>Edit/Update Data Training</h1>
+            <h1>Edit/Update Data Testing</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item"><a href="">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="#">Master Data</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('Manajement.DataTrainings.index') }}">Data Training</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('Manajement.DataTestings.create') }}">Data Testing</a></div>
                 <div class="breadcrumb-item"><span>Edit</span></div>
             </div>
         </div>
@@ -15,10 +15,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="text-reset">Form Edit/Update Data Training</h4>
+                        <h4 class="text-reset">Form Edit/Update Data Testing</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('Manajement.DataTrainings.update', $data->id) }}" method="POST">
+                        <form action="{{ route('Manajement.DataTestings.update', $data->id) }}" method="POST">
                             {{ csrf_field() }}
                             @method('PATCH')
                             <div class="form-row">
@@ -39,7 +39,7 @@
                                                 <option value="{{ $rhesus->id }}" @if($data->Rhesus_Connection->Name == NULL) '' @elseif($data->Rhesus_Connection->Name === $rhesus->Name) selected @endif>{{ $rhesus->Name }}</option>
                                             @endforeach
                                     </select>
-                                    @error('Name')
+                                    @error('Rhesus_id')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
                                         </div>

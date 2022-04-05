@@ -13,14 +13,14 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-    
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    @include('sweetalert::alert')
+
     <title>{{ $title }}</title>
 </head>
 <body>
     <div id="app">
         <div class="main-wrapper">
-            @include('sweetalert::alert')
             @include('partials.Navigator_Manajement')
 
             @include('partials.Side_Bars_Manajement')
@@ -49,5 +49,6 @@
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>i --}}
     <script src="{{ asset('assets/js/demo_datatables.js') }}"></script>
     <script src="{{ asset('assets/js/ImagePreview.js') }}"></script>
+    @include('sweetalert::alert')
 </body>
 </html>

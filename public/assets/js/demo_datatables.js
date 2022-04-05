@@ -8,14 +8,14 @@ const labels = Data_Rhesus;
 const BgColorEachBar = [];
 
 for(let i = 0; i < labels.length; i++) {
-  if(labels[i] === 'A+'){ BgColorEachBar.push('#6777ef') }
-  if(labels[i] === 'A-'){ BgColorEachBar.push('#6777ef') }
-  if(labels[i] === 'B+'){ BgColorEachBar.push('#6777ef') }
-  if(labels[i] === 'B-'){ BgColorEachBar.push('#6777ef') }
-  if(labels[i] === 'O+'){ BgColorEachBar.push('#6777ef') }
-  if(labels[i] === 'O-'){ BgColorEachBar.push('#6777ef') }
-  if(labels[i] === 'AB+'){ BgColorEachBar.push('#6777ef') }
-  if(labels[i] === 'O-'){ BgColorEachBar.push('#6777ef') }
+  if(labels[i] === 'A+'){ BgColorEachBar.push('rgba(255, 33, 33, 0.5)') }
+  if(labels[i] === 'A-'){ BgColorEachBar.push('rgba(255, 204, 0, 0.5)') }
+  if(labels[i] === 'B+'){ BgColorEachBar.push('rgba(40, 255, 0, 0.5)') }
+  if(labels[i] === 'B-'){ BgColorEachBar.push('rgba(0, 255, 177, 0.5)') }
+  if(labels[i] === 'O+'){ BgColorEachBar.push('rgba(0, 51, 255, 0.5)') }
+  if(labels[i] === 'O-'){ BgColorEachBar.push('rgba(140, 0, 255, 0.5)') }
+  if(labels[i] === 'AB+'){ BgColorEachBar.push('rgba(255, 0, 157, 0.66)') }
+  if(labels[i] === 'AB-'){ BgColorEachBar.push('rgba(0, 78, 255, 0.76)') }
 }
 
 
@@ -145,47 +145,46 @@ const DashboardPie = new Chart(document.getElementById('DashboardPie'), config_p
 
 /*====================================================================================================*/
 
-const labels_3 = ['January', 'February', 'Maret', 'April', 'Mei'];
-const data_3 = {
-  labels: labels_3,
-  datasets: [
-    {
-        label: 'A+',
-        data: [65, 59, 48, 81, 56, 55, 40],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1 
-    },
-    {
-        label: 'B+',
-        data: [100, 0, 3, 47, 56, 55, 40],
-        fill: false,
-        borderColor: 'pink',
-        tension: 0.1 
-    },
-    {
-        label: 'O+',
-        data: [14, 300, 10, 72, 56, 55, 40],
-        fill: false,
-        borderColor: 'Blue',
-        tension: 0.1 
+const Data_Transaction = JSON.parse(data_transaction);
+
+const newDataTransaction = Data_Transaction.map(EachData => {
+      return {
+          label: EachData.label,
+          data: EachData.data,
+          borderColor: EachData.BorderColor,
+          backgroundColor: EachData.BackgroundColor,
+      }
+});
+
+
+const Line_Data = {
+    labels: Month_Name,
+    datasets: newDataTransaction,
+};
+
+const Line_Config = {
+    type: 'line',
+    data: Line_Data,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels:{
+                    boxWidth: 20,
+                },
+            }
+        },
+        scales: {
+            y: {
+                ticks: {
+                    precision: 0,
+                },
+                suggestedMin: 0,
+                suggestedMax: 20,
+            }, 
+        },
     }
-  ]
 };
 
-const config_line = {
-  type: 'line',
-  data: data_3,
-  options:{
-      plugins:{
-          legend:{
-              labels:{
-                  boxWidth: 20
-              },
-          }
-      },
-  },
-};
-
-
-const LineTransaction = new Chart(document.getElementById('LineTransaction'), config_line);
+const DashboardLine = new Chart(document.getElementById('LineTransaction'), Line_Config);

@@ -12,7 +12,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card text-center">
                         <div class="card-header">
                             <h4 class="text-reset">Tabel Role</h4>
                             <div class="card-header-form">

@@ -287,7 +287,7 @@ class TransactionDonorController extends Controller
         $result_normalization_class_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_layak, $result_probability_class_tidak_layak);
         $result_normalization_class_tidak_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_tidak_layak, $result_probability_class_layak);
         
-        $total_atr_hemo_layak = $naive_bayes->getTotal_Attribute_Distinct_EachClass('Hemoglobin', 'Layak');
+        
 
 
         return view('Manajement.HasilTransaksiDonor.show', compact('title',

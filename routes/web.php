@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\DataTestingController;
 use App\Http\Controllers\DataTrainingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,7 @@ use App\Http\Controllers\RhesusCategoryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TransactionDonorController;
 use App\Http\Controllers\UserController;
+use App\Models\DataTesting;
 use App\Models\TransactionDonor;
 use App\Models\User;
 use Spatie\Permission\Contracts\Role;
@@ -60,6 +62,14 @@ Route::POST('Manajement/Data-Trainings', [DataTrainingController::class, 'store'
 Route::GET('Manajement/Data-Trainings/{id}/Edit', [DataTrainingController::class, 'edit'])->name('Manajement.DataTrainings.edit');
 Route::PATCH('Manajement/Data-Trainings/{id}', [DataTrainingController::class, 'update'])->name('Manajement.DataTrainings.update');
 Route::DELETE('Manajement/Data-Trainings/{id}', [DataTrainingController::class, 'destroy'])->name('Manajement.DataTrainings.delete');
+
+Route::GET('Manajement/Data-Testings', [DataTestingController::class, 'index'])->name('Manajement.DataTestings.index');
+Route::GET('Manajement/Data-Testing/{id}/Detail', [DataTestingController::class, 'show'])->name('Manajement.DataTestings.show');
+Route::GET('Manajement/Data-Testings/Create', [DataTestingController::class, 'create'])->name('Manajement.DataTestings.create');
+Route::POST('Manajement/Data-Testings', [DataTestingController::class, 'store'])->name('Manajement.DataTestings.store');
+Route::GET('Manajement/Data-Testings/{id}/Edit', [DataTestingController::class, 'edit'])->name('Manajement.DataTestings.edit');
+Route::PATCH('Manajement/Data-Testing/{id}', [DataTestingController::class, 'update'])->name('Manajement.DataTestings.update');
+Route::DELETE('Manajement/Data-Testing/{id}', [DataTestingController::class, 'destroy'])->name('Manajement.DataTestings.delete');
 
 Route::GET('Manajement/User', [UserController::class, 'index'])->name('Manajement.Users.index');
 Route::GET('Manajement/User/Create', [UserController::class, 'create'])->name('Manajement.Users.create');

@@ -38,7 +38,7 @@
                                             <option value="{{ $rhesus->id }}">{{ $rhesus->Name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('Name')
+                                    @error('Rhesus_id')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
                                         </div>
@@ -108,12 +108,12 @@
                                         <div class="input-group-append">
                                             <div class="input-group-text">mmHg</div>
                                         </div>
+                                        @error('Pressure_Sistole')
+                                            <div class="invalid-feedback">
+                                                <strong>{{ $message }}</strong>
+                                            </div>
+                                        @enderror
                                     </div>
-                                    @error('Pressure_Sistole')
-                                        <div class="invalid-feedback">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
-                                    @enderror
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="Pressure_Diastole">Tekanan Diastole</label>
@@ -122,12 +122,12 @@
                                         <div class="input-group-append">
                                             <div class="input-group-text">mmHg</div>
                                         </div>
+                                        @error('Pressure_diastole')
+                                            <div class="invalid-feedback">
+                                                <strong>{{ $message }}</strong>
+                                            </div>
+                                        @enderror
                                     </div>
-                                    @error('Pressure_diastole')
-                                        <div class="invalid-feedback">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
-                                    @enderror
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="Status">Status Donor</label>
@@ -136,7 +136,7 @@
                                         <option value="Layak">Layak</option>
                                         <option value="Tidak Layak">Tidak Layak</option>
                                     </select>
-                                    @error('Name')
+                                    @error('Status')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
                                         </div>

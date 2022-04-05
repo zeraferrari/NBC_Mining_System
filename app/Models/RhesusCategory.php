@@ -21,4 +21,8 @@ class RhesusCategory extends Model
     public function Training_Connection(){
         return $this->hasMany(DataTraining::class, 'Rhesus_id', 'id');
     }
+    
+    public function Testing_Connection(){
+        return $this->hasMany(DataTesting::class, 'Rhesus_id', 'id');
+    }
 }
