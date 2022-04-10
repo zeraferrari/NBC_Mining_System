@@ -9,7 +9,7 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Main Dashboard</li>
             <li class="{{ ($title === 'Manajement Main Dashboard') ? 'active' : '' }}"><a href="{{ route('Manajement.Dashboard.index') }}" class="nav-link"><i class="fas fa-chart-bar"></i><span>Dashboard</span></a></li>
-            <li><a href="" class="nav-link"><i class="fab fa-react"></i><span>Naive Bayes Dashboard</span></a></li>
+            <li class="{{ ($title === 'Main Naive Bayes Dashboard') ? 'active' : '' }}"><a href="{{ route('Manajement.NBC_Dashboard.index') }}" class="nav-link"><i class="fab fa-react"></i><span>Naive Bayes Dashboard</span></a></li>
 
         
             <li class="menu-header">Manajement</li>

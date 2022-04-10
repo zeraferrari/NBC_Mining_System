@@ -48,6 +48,7 @@
     <script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>i --}}
     <script src="{{ asset('assets/js/demo_datatables.js') }}"></script>
+    <script src="{{ asset('assets/js/Chart_NBC.js') }}"></script>
     <script src="{{ asset('assets/js/ImagePreview.js') }}"></script>
     @include('sweetalert::alert')
 </body>

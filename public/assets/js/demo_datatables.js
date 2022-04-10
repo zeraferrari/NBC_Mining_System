@@ -58,9 +58,7 @@ const config_bar = {
           boxWidth: 20,
         }
       },
-      labels: {
-        render: 'value',
-      },
+      labels: false,
       title: {
         display: false,
         text: 'Bar Chart Keseluruhan Rhesus'

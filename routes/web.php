@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\Dashboard_NBC;
 use App\Http\Controllers\DataTestingController;
 use App\Http\Controllers\DataTrainingController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::GET('Manajement/Dashboard', [Dashboard::class, 'index'])->name('Manajement.Dashboard.index');
+Route::GET('Manajement/Naive-Bayes-Dashboard', [Dashboard_NBC::class, 'index'])->name('Manajement.NBC_Dashboard.index');
 
 Route::GET('Manajement/Role', [RoleController::class, 'index'])->name('Manajement.Roles.index');
 Route::GET('Manajement/Role/Create', [RoleController::class, 'create'])->name('Manajement.Roles.create');
