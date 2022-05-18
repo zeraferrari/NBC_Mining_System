@@ -15,6 +15,11 @@ class Dashboard extends Controller
 {
     protected $title = 'Manajement Main Dashboard';
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function CountingRhesus_Data($RhesusCategory){
         return User::with('Rhesus_Connection')->get()
         ->where('Rhesus_Connection.Name', '=', $RhesusCategory)->count();

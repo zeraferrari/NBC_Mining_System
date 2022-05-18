@@ -87,13 +87,13 @@ class CalculationNaiveBayesController extends Controller
         /* Attribute Hemoglobin */
         $Value_Hemoglobin_Class_Layak = $this->getJumlahValue_EachAttribute('Layak', 'Hemoglobin');
         $Value_Hemoglobin_Class_Tidak_Layak = $this->getJumlahValue_EachAttribute('Tidak Layak', 'Hemoglobin');
-    
+
         $Result_Mean_Hemoglobin_Class_Layak = $this->getMeanResult_EachClass($Value_Hemoglobin_Class_Layak, $Data_Class_Layak);
         $Result_Mean_Hemoglobin_Class_Tidak_Layak = $this->getMeanResult_EachClass($Value_Hemoglobin_Class_Tidak_Layak, $Data_Class_Tidak_Layak);
-
+        
         $Result_Deviasi_Hemoglobin_Class_Layak = $this->getResultAttribute_Deviasi_EachClass('Layak', 'Hemoglobin', $Result_Mean_Hemoglobin_Class_Layak, $Data_Class_Layak);
-        $Result_Deviasi_Hemoglobin_Class_Tidak_Layak = $this->getResultAttribute_Deviasi_EachClass('Layak', 'Hemoglobin', $Result_Mean_Hemoglobin_Class_Tidak_Layak, $Data_Class_Tidak_Layak);
-
+        $Result_Deviasi_Hemoglobin_Class_Tidak_Layak = $this->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Hemoglobin', $Result_Mean_Hemoglobin_Class_Tidak_Layak, $Data_Class_Tidak_Layak);
+       
         $Result_Gaussian_Hemoglobin_Class_Layak = $this->getResultDistribusi_Gaussian($Hemoglobin_Value, $Result_Mean_Hemoglobin_Class_Layak, $Result_Deviasi_Hemoglobin_Class_Layak);
         $Result_Gaussian_Hemoglobin_Class_Tidak_Layak = $this->getResultDistribusi_Gaussian($Hemoglobin_Value, $Result_Mean_Hemoglobin_Class_Tidak_Layak, $Result_Deviasi_Hemoglobin_Class_Tidak_Layak);
     
@@ -183,13 +183,11 @@ class CalculationNaiveBayesController extends Controller
         $Probability_Final_Layak = $this->getFinalProbability_EachClass($Result_Probability_Class_Layak, $Result_Prior_Prob_Layak);
         $probability_Final_Tidak_Layak = $this->getFinalProbability_EachClass($Result_Probability_Class_Tidak_Layak, $Result_Prior_Prob_Tidak_Layak);
 
- 
 
         
         $Result_Normalization_Layak = $this->getNormalizationProbability_EachClass($Probability_Final_Layak, $probability_Final_Tidak_Layak);
         $Result_Normalization_Tidak_Layak = $this->getNormalizationProbability_EachClass($probability_Final_Tidak_Layak, $Probability_Final_Layak);
 
-        // dd($Result_Normalization_Layak, $Result_Normalization_Tidak_Layak);
 
         if($Result_Normalization_Layak > $Result_Normalization_Tidak_Layak){
             return 'Layak';

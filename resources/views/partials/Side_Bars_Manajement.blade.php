@@ -1,7 +1,7 @@
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="">Yudora</a>
+            <a href="{{ route('Home') }}">Yudora</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="">Yo</a>
@@ -11,7 +11,7 @@
             <li class="{{ ($title === 'Manajement Main Dashboard') ? 'active' : '' }}"><a href="{{ route('Manajement.Dashboard.index') }}" class="nav-link"><i class="fas fa-chart-bar"></i><span>Dashboard</span></a></li>
             <li class="{{ ($title === 'Main Naive Bayes Dashboard') ? 'active' : '' }}"><a href="{{ route('Manajement.NBC_Dashboard.index') }}" class="nav-link"><i class="fab fa-react"></i><span>Naive Bayes Dashboard</span></a></li>
 
-        
+        @role('Administrator')
             <li class="menu-header">Manajement</li>
             <li class="nav-item dropdown @if($title === 'Manajement Dashboard Role' OR $title === 'Manajement Dashboard Hak Akses' OR $title === 'Manajement Dashboard Rhesus' OR $title === 'Manajement Dashboard User' OR $title === 'Manajement Dashboard Data Training' OR $title === 'Manajement Dashboard Data Testing') active @endif">
                 <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-database"></i> <span>Master Data</span></a>
@@ -24,10 +24,12 @@
                     <li class="{{ ($title === 'Manajement Dashboard Data Testing') ? 'active' : '' }}"><a href="{{ route('Manajement.DataTestings.index') }}" class="nav-link"><i class="fas fa-database"></i>Data Testing</a></li>
                 </ul>
             </li>
-
+        @endrole
             <li class="menu-header">Pelayanan</li>
-            <li class="{{ ($title === 'Manajement Antrian Donor Darah') ? 'active' : '' }}"><a href="{{ route('Manajement.Transaction.index') }}" class="nav-link"><i class="fas fa-user-friends"></i><span>Antrian Transaksi Donor</span></a></li>
+        @role('Petugas Medis|Administrator')
+            <li class="{{ ($title === 'Manajement Antrian Donor Darah') ? 'active' : '' }}"><a href="{{ route('Manajement.Transaction.index') }}" class="nav-link"><i class="fas fa-user-friends"></i><span>Antrian Transaksi Donor</span></a></li>    
             <li class="{{ ($title === 'Manajement Hasil Transaksi Donor') ? 'active' : '' }}"><a href="{{ route('Manajement.Hasil_Transaksi_Donor.index') }}" class="nav-link"><i class="fas fa-file-alt"></i><span>Hasil Klasifikasi Donor</span></a></li>
+        @endrole
         </ul>
     </aside>
 </div>

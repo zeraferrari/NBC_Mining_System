@@ -16,6 +16,11 @@ class RhesusCategoryController extends Controller
      */
     protected $title = 'Manajement Dashboard Rhesus';
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $data = RhesusCategory::all();

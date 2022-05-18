@@ -37,9 +37,11 @@
                                             <td>{{ $data_transaction->User_Connection->NIK }}</td>
                                             <td>{{ $data_transaction->Status_Donor }}</td>
                                             <td>
+                                            @can('Mengupdate Transaksi Donor')
                                                 <div class="buttons text-center">
                                                     <a href="{{ route('Manajement.Transaction.edit', $data_transaction->Code_Transaction ?? '') }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                                 </div>
+                                            @endcan
                                             </td>
                                         </tr>
                                     @endforeach

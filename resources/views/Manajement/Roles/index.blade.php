@@ -42,7 +42,6 @@
                                             <td>
                                                 <div class="buttons">
                                                     <form action="{{ route('Manajement.Roles.delete', $roles->id) }}" method="POST">
-                                                        <a href="" class="btn btn-icon btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                                         <a href="{{ route('Manajement.Roles.edit', $roles->id) }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                                         @method('DELETE')
                                                         {{ csrf_field() }}

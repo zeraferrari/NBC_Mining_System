@@ -18,6 +18,11 @@ class DataTrainingController extends Controller
      */
     protected $title = 'Manajement Dashboard Data Training';
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $title = $this->title;

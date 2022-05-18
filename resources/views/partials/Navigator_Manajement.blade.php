@@ -160,16 +160,19 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-title">{{ Auth::user()->getRoleNames()[0] }}</div>
-
+                            @role('Administrator|Petugas Medis')
                                 <a href="{{ route('Manajement.Dashboard.index') }}" class="dropdown-item has-icon">
                                     <i class="fas fa-cog"></i>Manajement Dashboard
                                 </a>
+                            @endrole
+                            @role('Petugas Medis|Pendonor')
                                 <a href="" class="dropdown-item has-icon">
                                     <i class="fas fa-cog"></i>Setting Akun
                                 </a>
                                 <a href="" class="dropdown-item has-icon">
                                     <i class="fas fa-tasks"></i>Riwayat Donorku
                                 </a>
+                            @endrole
                                 <div class="dropdown-divider"></div>
                                 <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger"
                                 onclick="event.preventDefault();

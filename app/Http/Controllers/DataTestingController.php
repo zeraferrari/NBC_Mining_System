@@ -11,7 +11,13 @@ class DataTestingController extends Controller
 {
     protected $title = 'Manajement Dashboard Data Testing';
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(){
+        $nbc = new CalculationNaiveBayesController;
         $data = DataTesting::with('Rhesus_Connection')->get();
         $title = $this->title;
         return view('Manajement.DataTestings.index', compact('data', 'title'));
@@ -59,12 +65,12 @@ class DataTestingController extends Controller
     }
 
     public function destroy($id){
-        $data = DataTesting::findorFail($id)->delete();
+        // $data = DataTesting::findorFail($id)->delete();
         return redirect()->route('Manajement.DataTestings.index');
     }
 
     public function show($id){
-        $data = DataTesting::with('Rhesus_Connection')->find($id);
+        $data = DataTesting::with('Rhesus_Connection')->findorFail($id);
         $title = $this->title;
         
         $naive_bayes = new CalculationNaiveBayesController();
@@ -117,8 +123,8 @@ class DataTestingController extends Controller
         $mean_atr_pressure_sistole_tidak_layak = $naive_bayes->getMeanResult_EachClass($total_nilai_atr_p_sistole_tidak_layak, $total_data_class_tidak_layak);
         $standar_deviasi_atr_pressure_sistole_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Layak', 'Pressure_Sistole', $mean_atr_pressure_sistole_layak, $total_data_class_layak);
         $standar_deviasi_atr_pressure_sistole_tidak_layak = $naive_bayes->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Pressure_Sistole', $mean_atr_pressure_sistole_tidak_layak, $total_data_class_tidak_layak);
-        $gaussian_atr_pressure_sistole_layak = $naive_bayes->getResultDistribusi_Gaussian($data->Pressure_sistole, $mean_atr_pressure_sistole_layak, $standar_deviasi_atr_pressure_sistole_layak);
-        $gaussian_atr_pressure_sistole_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian($data->Pressure_sistole, $mean_atr_pressure_sistole_tidak_layak, $standar_deviasi_atr_pressure_sistole_tidak_layak);
+        $gaussian_atr_pressure_sistole_layak = $naive_bayes->getResultDistribusi_Gaussian($data->Pressure_Sistole, $mean_atr_pressure_sistole_layak, $standar_deviasi_atr_pressure_sistole_layak);
+        $gaussian_atr_pressure_sistole_tidak_layak = $naive_bayes->getResultDistribusi_Gaussian($data->Pressure_Sistole, $mean_atr_pressure_sistole_tidak_layak, $standar_deviasi_atr_pressure_sistole_tidak_layak);
 
 
         $total_nilai_atr_p_diastole_layak = $naive_bayes->getJumlahValue_EachAttribute('Layak', 'Pressure_diastole');
@@ -137,6 +143,7 @@ class DataTestingController extends Controller
 
         $result_probability_each_attribute_class_layak = $naive_bayes->getProbability_EachClass($temp_probability_each_attribute_class_layak);
         $result_probability_each_attribute_class_tidak_layak = $naive_bayes->getProbability_EachClass($temp_probability_each_attribute_class_tidak_layak);
+
 
         $result_probability_class_layak = $result_probability_each_attribute_class_layak * $result_prior_probability_class_layak;
         $result_probability_class_tidak_layak = $result_probability_each_attribute_class_tidak_layak * $result_prior_probability_class_tidak_layak;

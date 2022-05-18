@@ -4,7 +4,9 @@ body header div nav.navbar{
 
 .bg-img{
     background-size: cover;
-    min-height: 90vh;
+    height: 669px;
+    width: 100%;
+    margin: 0;
     background-repeat: no-repeat;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('/assets/img/blood-donate.jpg');
 }

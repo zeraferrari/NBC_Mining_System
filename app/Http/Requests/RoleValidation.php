@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RoleValidation extends FormRequest
 {
@@ -24,7 +25,7 @@ class RoleValidation extends FormRequest
     public function rules()
     {
         return [
-            'name'  => ['required', 'regex:/^[\pL\s\-]+$/u'],
+            'name'  => ['required', 'regex:/^[\pL\s\-]+$/u', Rule::unique('roles')->ignore($this->id, 'id')],
             'permission' => ['required'],
         ];
     }
@@ -34,6 +35,7 @@ class RoleValidation extends FormRequest
         return[
             'name.required' => 'Mohon Field Ini Diisi !',
             'name.regex'    => 'Field ini hanya boleh inputan huruf !',
+            'name.unique'   => 'Role ini telah tersedia ! Silahkan buat yang berbeda',
             'permission.required' => 'Silahkan Hak Akses Diisi !',
         ];
     }

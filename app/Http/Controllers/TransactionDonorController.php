@@ -20,8 +20,11 @@ class TransactionDonorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    
     protected $title = 'Manajement Antrian Donor Darah';
     public function index(){
+        $this->middleware('auth');
         $data_transaction_user = TransactionDonor::with('User_Connection.Rhesus_Connection')
                                     ->where('Status_Donor', '=', 'Medical Check')
                                     ->oldest()->get();

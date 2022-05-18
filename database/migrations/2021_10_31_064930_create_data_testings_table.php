@@ -23,7 +23,7 @@ class CreateDataTestingsTable extends Migration
             $table->unsignedSmallInteger('Weight');
             $table->unsignedSmallInteger('Age');
             $table->enum('Status', ['Layak','Tidak Layak']);
-            $table->string('Result_Classification', 20);
+            $table->enum('Result_Classification', ['Layak', 'Tidak Layak']);
             $table->foreignId('Rhesus_id')->constrained('rhesus_categories');
             $table->timestamps();
         });

@@ -23,6 +23,11 @@ class UserController extends Controller
      */
     protected $title = 'Manajement Dashboard User';
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $data = User::with('Rhesus_Connection')->get();
