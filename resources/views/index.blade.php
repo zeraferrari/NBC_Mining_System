@@ -1,28 +1,27 @@
 @extends('layouts.Main_Dashboard')
-
 @section('Main_Content')
-<main id="main">
-    {{-- Bagian Opening Index --}}
-    <section id="section-opening" class="bg-img row justify-content-center align-items-center">
-      <div style="width: 100%;">
-        <div class="card text-center">
-            <div class="card-header">
+    <main id="main">
+        <section id="section-opening" class="bg-img row justify-content-center align-items-center">
+            <div style="width: 100%">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div style="width: 50%; margin: 0 auto;">
+                            <h1 class="card-title">Yudora</h1>
+                            <img src="{{ asset('assets/img/unmul.png') }}" class=" img-fluid rounded" alt="..." width="125px" height="125px">
+                              <img src="{{ asset('assets/img/Red-Cross-PMI.png') }}" class=" img-fluid rounded" alt="..." width="125px" height="125px" style="margin-left: 25px;">
+                            <p class="card-text">"Yudora (Yuk Donor Darah) Merupakan sebuah sistem yang dibuat untuk membantu petugas medis
+                              dalam mengklasifikasikan pendonor darah dalam mendonorkan darahnya apakah layak atau tidak untuk melakukan pendonoran darah"
+                            </p>
+                            @if (Auth::guest() OR Auth::user()->roles[0]->name === 'Petugas Medis' OR Auth::user()->roles[0]->name === "Pendonor")
+                                <form action="{{ route('Antrian.Mendonor') }}" method="POST">
+                                    {{ csrf_field() }}
+                                    <button class="btn btn-primary" type="submit">Donorkan Darah Anda</button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title">Special title treatment</h5>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            @role('Petugas Medis|Pendonor|Guest')
-              <form action="{{ route('Antrian.Mendonor') }}" method="post">
-                {{ csrf_field() }}
-                <button type="submit" class="btn btn-primary">Go Somewhere</button>
-              </form>
-            @endrole
-            </div>
-            <div class="card-footer text-muted">
-              2 days ago
-            </div>
-          </div>
-      </div>
-    </section>
-  </main>
+        </section>
+    </main>
 @endsection

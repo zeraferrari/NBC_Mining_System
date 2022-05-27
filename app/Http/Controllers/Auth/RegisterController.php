@@ -62,7 +62,7 @@ class RegisterController extends Controller
             'Gender' => ['required'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
-            'profile_picture' => ['image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144', 'nullable'],
+            'profile_picture' => ['image','mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
             'Rhesus_id' => ['nullable'],
         ],
 
@@ -119,18 +119,40 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $data_user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'NIK'       => $data['NIK'],
-            'Gender'    => $data['Gender'],
-            'phone_number' => $data['phone_number'],
-            'alamat'    => $data['alamat'],
-            'Status_Donor' => 'Belum Mendonor',
-            'create_at'    => Carbon::now('Asia/Makassar'),
-        ]);
+        if(request()->hasFile('profile_picture')){
+            $date = Carbon::now('Asia/Makassar')->format('dmYHi');
+            $HashNameImage = request()->file('profile_picture')->hashName();
+            $ImageName = $date."-".$HashNameImage;
+            $path_name = request()->file('profile_picture')->storeAs('image-profiles', $ImageName);
+            $data['profile_picture'] = $path_name;
 
+            $data_user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'NIK'       => $data['NIK'],
+                'Gender'    => $data['Gender'],
+                'phone_number' => $data['phone_number'],
+                'profile_picture'   =>  $data['profile_picture'],
+                'alamat'    => $data['alamat'],
+                'Status_Donor' => 'Belum Mendonor',
+                'create_at'    => Carbon::now('Asia/Makassar'),
+            ]);
+        } else{
+            $data_user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'NIK'       => $data['NIK'],
+                'Gender'    => $data['Gender'],
+                'phone_number' => $data['phone_number'],
+                'alamat'    => $data['alamat'],
+                'Status_Donor' => 'Belum Mendonor',
+                'create_at'    => Carbon::now('Asia/Makassar'),
+            ]);
+        }
+
+        
         $data_user->assignRole('Pendonor');
         return $data_user;
     }

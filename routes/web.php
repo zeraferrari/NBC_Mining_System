@@ -28,11 +28,16 @@ use Spatie\Permission\Contracts\Role;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->name('Home');
+// Route::get('/', function () {
+//     return view('index');
+// })->name('Home');
+
+Route::GET('/', [HomeController::class, 'index'])->name('home');
+Route::GET('/History-Donor', [HomeController::class, 'CekHistoryDonor'])->name('checking_history');
+Route::GET('/History-Donor/{TransactionDonor:Code_Transaction}', [HomeController::class, 'CekTransactionHistory'])->name('checking_transaction');
 
 Auth::routes();
+
 
 Route::GET('Manajement/Dashboard', [Dashboard::class, 'index'])->name('Manajement.Dashboard.index')->middleware('role:Administrator|Petugas Medis');
 Route::GET('Manajement/Naive-Bayes-Dashboard', [Dashboard_NBC::class, 'index'])->name('Manajement.NBC_Dashboard.index')->middleware('auth');
@@ -86,7 +91,7 @@ Route::GET('Manajement/Transaction', [TransactionDonorController::class, 'index'
 Route::GET('Manajement/Transaction/{TransactionDonor:Code_Transaction}/Edit', [TransactionDonorController::class, 'edit'])->name('Manajement.Transaction.edit')->middleware('role_or_permission:Petugas Medis|Mengupdate Transaksi Donor');
 Route::PATCH('Manajement/Transaction/{id}', [TransactionDonorController::class, 'update'])->name('Manajement.Transaction.update')->middleware('role_or_permission:Petugas Medis|Mengupdate Transaksi Donor');
 
-Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Mendonor')->middleware('role_or_permission:Petugas Medis|Pendonor|Melakukan Transaksi Donor');
+Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Mendonor')->middleware('auth', 'role_or_permission:Petugas Medis|Pendonor|Melakukan Transaksi Donor' );
 
 
 Route::GET('Manajement/Hasil-Transaksi', [TransactionDonorController::class, 'GetResult_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.index')->middleware('role:Administrator|Petugas Medis');

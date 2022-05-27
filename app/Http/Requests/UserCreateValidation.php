@@ -30,7 +30,7 @@ class UserCreateValidation extends FormRequest
             'roles' => ['required'],
             'NIK' => ['required', 'numeric', 'digits:16', 'unique:users'],
             'Gender' => ['required'],
-            'profile_picture' => ['image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
+            'profile_picture' => ['image','mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'alamat' => ['required', 'string', 'max:100'],
             'Rhesus_id' => ['nullable'],

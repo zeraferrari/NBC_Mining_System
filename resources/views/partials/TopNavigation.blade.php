@@ -1,6 +1,6 @@
 <div class="container-fluid px-0 shadow-lg">
     <nav class="navbar navbar-expand-lg main-navbar shadow-lg" style="left:0; right:0; background-color: #8A0707">
-        <a href="" class="navbar-brand sidebar-gone-hide">Yudora</a>
+        <a href="{{ route('home') }}" class="navbar-brand sidebar-gone-hide">Yudora</a>
         <div class="nav-collapse">
             <a href="#" class="sidebar-gone-show nav-collapse-toggle nav-link">
                 <i class="fas fa-bars"></i>
@@ -14,6 +14,7 @@
         <div class="form-inline ml-auto">
             <ul class="navbar-nav navbar-right">
                 <li class="dropdown dropdown-list-toggle">
+                    @if(Auth::check())
                     <a href="" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
                     <div class="dropdown-menu dropdown-list dropdown-menu-right">
                         <div class="dropdown-header">
@@ -78,7 +79,9 @@
                         </div>
                     </div>
                 </li>
+                @endif
                 <li class="dropdown dropdown-list-toggle">
+                @if(Auth::check())
                     <a href="" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
                     <div class="dropdown-menu dropdown-list dropdown-menu-right">
                         <div class="dropdown-header">
@@ -143,6 +146,7 @@
                         </div>
                     </div>
                 </li>
+                @endif
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
@@ -174,7 +178,7 @@
                             <a href="" class="dropdown-item has-icon">
                                 <i class="fas fa-cog"></i>Setting Akun
                             </a>
-                            <a href="" class="dropdown-item has-icon">
+                            <a href="{{ route('checking_history') }}" class="dropdown-item has-icon">
                                 <i class="fas fa-tasks"></i>Riwayat Donorku
                             </a>
                         @endrole

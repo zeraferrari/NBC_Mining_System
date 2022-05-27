@@ -140,7 +140,7 @@
                 <div class="card" style="top: 65px;">
                     <div class="card-body">
                         <h3 class="card-title text-center">Registrasi</h3>
-                        <form action="{{ route('register') }}" method="POST">
+                        <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-row">
                                 <div class="form-group col-sm-12 col-md-4 col-lg-4">
