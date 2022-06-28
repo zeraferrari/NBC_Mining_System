@@ -67,7 +67,7 @@ Route::DELETE('Manajement/Rhesus-Categories/{id}', [RhesusCategoryController::cl
 Route::GET('Manajement/Data-Trainings', [DataTrainingController::class, 'index'])->name('Manajement.DataTrainings.index')->middleware('role:Administrator');
 Route::GET('Manajement/Data-Trainings/Create', [DataTrainingController::class, 'create'])->name('Manajement.DataTrainings.create')->middleware('role_or_permission:Administrator|Membuat Data Training');
 Route::POST('Manajement/Data-Trainings', [DataTrainingController::class, 'store'])->name('Manajement.DataTrainings.store')->middleware('role:Administrator');
-Route::GET('Manajement/Data-Trainings/{id}/Edit', [DataTrainingController::class, 'edit'])->name('Manajement.DataTrainings.edit')->middleware('role_or_permission:Administrator:Mengupdate Data Training');
+Route::GET('Manajement/Data-Trainings/{id}/Edit', [DataTrainingController::class, 'edit'])->name('Manajement.DataTrainings.edit')->middleware('role_or_permission:Administrator|Mengupdate Data Training');
 Route::PATCH('Manajement/Data-Trainings/{id}', [DataTrainingController::class, 'update'])->name('Manajement.DataTrainings.update')->middleware('role:Administrator');
 Route::DELETE('Manajement/Data-Trainings/{id}', [DataTrainingController::class, 'destroy'])->name('Manajement.DataTrainings.delete')->middleware('role_or_permission:Administrator|Menghapus Data Training');
 

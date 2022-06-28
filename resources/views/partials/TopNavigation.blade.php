@@ -14,7 +14,7 @@
         <div class="form-inline ml-auto">
             <ul class="navbar-nav navbar-right">
                 <li class="dropdown dropdown-list-toggle">
-                    @if(Auth::check())
+                @if(Auth::check())
                     <a href="" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
                     <div class="dropdown-menu dropdown-list dropdown-menu-right">
                         <div class="dropdown-header">
@@ -23,129 +23,102 @@
                                 <a href="#">Seluruh Pesan Dibaca</a>
                             </div>
                         </div>
-    
+                        
                         <div class="dropdown-list-content dropdown-list-message">
-                            <a href="" class="dropdown-item dropdown-item-unread">
-                                <div class="dropdown-item-avatar">
-                                    <img src="" alt="image" class="rounded-circle">
-                                </div>
-    
-                                <div class="dropdown-item-desc">
-                                    <b>Nama User</b>
-                                    <p>Isi Pesan</p>
-                                    <div class="time">Waktu terbuatnya pesan</div>
-                                </div>
-                            </a>
-    
-                            <a href="" class="dropdown-item dropdown-item-unread">
-                                <div class="dropdown-item-avatar">
-                                    <img src="" alt="image" class="rounded-circle">
-                                </div>
-    
-                                <div class="dropdown-item-desc">
-                                    <b>Nama User</b>
-                                    <p>Isi Pesan</p>
-                                    <div class="time">Waktu terbuatnya pesan</div>
-                                </div>
-                            </a>
-    
-                            <a href="" class="dropdown-item dropdown-item-unread">
-                                <div class="dropdown-item-avatar">
-                                    <img src="" alt="image" class="rounded-circle">
-                                </div>
-    
-                                <div class="dropdown-item-desc">
-                                    <b>Nama User</b>
-                                    <p>Isi Pesan</p>
-                                    <div class="time">Waktu terbuatnya pesan</div>
-                                </div>
-                            </a>
-    
-                            <a href="" class="dropdown-item dropdown-item-unread">
-                                <div class="dropdown-item-avatar">
-                                    <img src="" alt="image" class="rounded-circle">
-                                </div>
-    
-                                <div class="dropdown-item-desc">
-                                    <b>Nama User</b>
-                                    <p>Isi Pesan</p>
-                                    <div class="time">Waktu terbuatnya pesan</div>
-                                </div>
-                            </a>
+                            @forelse ( $latest_inbox as $latest_inboxs )
+                                <a href="{{ route('checking_transaction', $latest_inboxs->Code_Transaction) }}" class="dropdown-item dropdown-item-unread">
+                                    <div class="dropdown-item-avatar">
+                                        <img src="{{ asset('assets/img/avatar/avatar-5.png') }}" alt="image" class="rounded-circle">
+                                    </div>
+        
+                                    <div class="dropdown-item-desc">
+                                        <b class="text-dark">SYSTEM</b>
+                                        <p>Transaksi donor darah anda dengan nomor transaksi <b class="text-dark">{{ $latest_inboxs->Code_Transaction }}</b>
+                                        dinyatakan <b class="text-dark">{{ $latest_inboxs->Status_Transaction }} Donor</b> 
+                                        </p>
+                                        <div class="time">{{ $latest_inboxs->updated_at }}</div>
+                                    </div>
+                                </a>
+                            @empty
+                                <p class="text-center">Data kamu belum ada</p>
+                            @endforelse
                         </div>
-    
-                        <div class="dropdown-footer text-center">
-                            <a href="">Lihat Semua <i class="fas fa-chevron-right"></i></a>
-                        </div>
+                    <div class="dropdown-footer text-center">
+                        <a href="{{ route('checking_history') }}">Lihat Semua <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </li>
                 @endif
                 <li class="dropdown dropdown-list-toggle">
                 @if(Auth::check())
-                    <a href="" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
-                    <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                        <div class="dropdown-header">
-                            Notifikasi
-                            <div class="float-right">
-                                <a href="">Seluruh Notifikasi Dibaca</a>
+                    @if(Auth::User()->roles[0]->name === 'Pendonor')
+                        <a href="" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Notifikasi
+                                <div class="float-right">
+                                    <a href="">Seluruh Notifikasi Dibaca</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-list-content dropdown-list-icons">
+                                @forelse ( $latest_notification as $latest_notifications )
+                                    <a href="" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-info text-white">
+                                            <i class="far fa-user"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <b>Informasi Donor</b>
+                                            <p>Proses donor darah kamu dalam tahap <b class="text-dark">{{ $latest_notifications->Status_Donor }}</b>
+                                            dan ditangani oleh petugas <b class="text-dark">{{ $latest_notifications->Petugas_Connection->name ?? '-' }}</b>
+                                            </p>
+
+                                            <div class="time">{{ $latest_notifications->updated_at }}</div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <p class="text-center">Data kamu belum ada</p>
+                                @endforelse
+                            </div>
+                            <div class="dropdown-footer text-center">
+                                <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
-                        <div class="dropdown-list-content dropdown-list-icons">
-                            <a href="" class="dropdown-item">
-                                <div class="dropdown-item-icon bg-info text-white">
-                                    <i class="far fa-user"></i>
+                    </li>
+                    @elseif(Auth::User()->roles[0]->name === 'Petugas Medis')
+                        <a href="" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Notifikasi
+                                <div class="float-right">
+                                    <a href="">Seluruh Notifikasi Dibaca</a>
                                 </div>
-                                <div class="dropdown-item-desc">
-                                    <b>Info Transaksi</b> deskripsi
-                                    <div class="time">Waktu Notifikasi Didapat</div>
-                                </div>
-                            </a>
-    
-                            <a href="" class="dropdown-item">
-                                <div class="dropdown-item-icon bg-info text-white">
-                                    <i class="far fa-user"></i>
-                                </div>
-                                <div class="dropdown-item-desc">
-                                    <b>Info Transaksi</b> deskripsi
-                                    <div class="time">Waktu Notifikasi Didapat</div>
-                                </div>
-                            </a>
-    
-                            <a href="" class="dropdown-item">
-                                <div class="dropdown-item-icon bg-info text-white">
-                                    <i class="far fa-user"></i>
-                                </div>
-                                <div class="dropdown-item-desc">
-                                    <b>Info Transaksi</b> deskripsi
-                                    <div class="time">Waktu Notifikasi Didapat</div>
-                                </div>
-                            </a>
-    
-                            <a href="" class="dropdown-item">
-                                <div class="dropdown-item-icon bg-info text-white">
-                                    <i class="far fa-user"></i>
-                                </div>
-                                <div class="dropdown-item-desc">
-                                    <b>Info Transaksi</b> deskripsi
-                                    <div class="time">Waktu Notifikasi Didapat</div>
-                                </div>
-                            </a>
-    
-                            <a href="" class="dropdown-item">
-                                <div class="dropdown-item-icon bg-info text-white">
-                                    <i class="far fa-user"></i>
-                                </div>
-                                <div class="dropdown-item-desc">
-                                    <b>Info Transaksi</b> deskripsi
-                                    <div class="time">Waktu Notifikasi Didapat</div>
-                                </div>
-                            </a>
+                            </div>
+                            <div class="dropdown-list-content dropdown-list-icons">
+                                @forelse ( $latest_notification as $latest_notifications )
+                                    <a href="" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-info text-white">
+                                            <i class="far fa-user"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <b>Informasi Donor</b>
+                                            <p>Anda menangani pendonor darah atas nama <b class="text-dark">{{ $latest_notifications->User_Connection->name }}</b> dengan status transaksi
+                                            <b class="text-dark">{{ $latest_notifications->Status_Donor }}</b>
+                                            dengan nomor transaksi <b class="text-dark">{{ $latest_notifications->Code_Transaction }}</b>
+                                            </p>
+
+                                            <div class="time">{{ $latest_notifications->updated_at }}</div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <p class="text-center">Data kamu belum ada</p>
+                                @endforelse
+                            </div>
+                            <div class="dropdown-footer text-center">
+                                <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
+                            </div>
                         </div>
-                        <div class="dropdown-footer text-center">
-                            <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
-                        </div>
-                    </div>
-                </li>
+                    @else
+                        <p>admin</p>
+                    @endif
                 @endif
                 @guest
                     @if (Route::has('login'))
