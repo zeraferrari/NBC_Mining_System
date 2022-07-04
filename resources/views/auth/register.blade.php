@@ -240,3 +240,12 @@
         </section>
     </main>
 @endsection
+@section('SweetAlert')
+    <script>
+        @if (Session::get('success'))
+            let test = 'berhasil';
+            console.log(test);
+        @endif
+    </script>
+@endsection
+

@@ -84,7 +84,7 @@
                         <h4 class="text-reset">Edit/Perbaharui Data Role</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('Manajement.Roles.update', $data_roles->id) }}" method="POST">
+                        <form action="{{ route('Manajement.Roles.update', $data_roles->id) }}" id="{{ $data_roles->id }}" method="POST" class="test">
                             {{ csrf_field() }}
                             @method('PATCH')
                             <div class="form-group">
@@ -111,13 +111,34 @@
                                     <small class="text-danger">{{ $errors->first('permission') }}</small>
                                 </div>
                             </div>
-                            <div class="col text-center">
-                                <button class="btn btn-primary btn-md col-md-12" type="submit">Update Data</button>
-                            </div>
                         </form>
+                        <div class="col text-center">
+                            <button class="btn btn-primary btn-md col-md-12 confirmation-update" data-Name="{{ $data_roles->name }}" data-id="{{ $data_roles->id }}">Update Data</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+@endsection
+@section('SweetAlert')
+    <script>
+        $(".confirmation-update").click(function(e) {
+        let DataNameTarget = $(this).attr('data-Name');
+        id = e.target.dataset.id;
+        Swal.fire({
+            title: 'Data akan diubah ?',
+            html: 'Data role <b>'+DataNameTarget+'</b> akan diupdate !',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#04cf1f',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update Data'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(`#${id}`).submit();
+            }
+        })
+    });
+    </script>
 @endsection

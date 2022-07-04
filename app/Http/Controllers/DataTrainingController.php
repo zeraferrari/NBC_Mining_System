@@ -52,8 +52,7 @@ class DataTrainingController extends Controller
     {
         $data_has_been_validated = $request->validated();
         DataTraining::create($data_has_been_validated);
-        Alert::success('Data berhasil dibuat !', 'Data dengan nama "'.$data_has_been_validated['Name'].'" Berhasil ditambahkan !');
-        return redirect()->route('Manajement.DataTrainings.index');
+        return redirect()->route('Manajement.DataTrainings.index')->with('success_created', 'Data atas nama <b>'.$data_has_been_validated['Name']. '</b> berhasil dibuat !');
     }
 
     /**
@@ -93,7 +92,7 @@ class DataTrainingController extends Controller
         $data_has_been_validated = $request->validated();
         $data = DataTraining::with('Rhesus_Connection')->find($id);
         $data->update($data_has_been_validated);
-        return redirect()->route('Manajement.DataTrainings.index');
+        return redirect()->route('Manajement.DataTrainings.index')->with('success_updated', 'Data atas nama <b>'.$data['Name'].'</b> telah diupdate !');
     }
 
     /**
@@ -104,7 +103,8 @@ class DataTrainingController extends Controller
      */
     public function destroy($id)
     {
-        $data = DataTraining::find($id)->delete();
-        return redirect()->route('Manajement.DataTrainings.index');
+        $data = DataTraining::find($id);
+        $data_has_deleted = $data->delete();
+        return redirect()->back()->with('success_deleted', 'Data atas nama <b>'.$data['Name'].'</b> telah dihapus !');
     }
 }

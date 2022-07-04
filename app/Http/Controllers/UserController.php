@@ -68,12 +68,12 @@ class UserController extends Controller
             $data_has_been_validated['password'] = Hash::make($request->input('password'));
             $user_data = User::create($data_has_been_validated);
             $user_data->assignRole($data_has_been_validated['roles']);
-            return redirect()->route('Manajement.Users.index');
+            return redirect()->route('Manajement.Users.index')->with('success_created', 'Data user atas nama <b>'.$data_has_been_validated['name'].'</b> telah berhasil dibuat !');
         }else{
             $data_has_been_validated['password'] = Hash::make($request->input('password'));
             $user_data = User::create($data_has_been_validated);
             $user_data->assignRole($data_has_been_validated['roles']);
-            return redirect()->route('Manajement.Users.index');
+            return redirect()->route('Manajement.Users.index')->with('success_created', 'Data user atas nama <b>'.$data_has_been_validated['name'].'</b> telah berhasil dibuat !');
         }
     }
 
@@ -153,7 +153,7 @@ class UserController extends Controller
         $user->update($data_has_been_validated);
         DB::table('model_has_roles')->where('model_id', '=', $user->id)->delete();
         $user->assignRole($request->input('roles'));
-        return redirect()->route('Manajement.Users.index');       
+        return redirect()->route('Manajement.Users.index')->with('success_updated','Data user atas nama <b>'.$user->name.'</b> telah berhasil diupdate !');       
     }
 
     /**
@@ -162,13 +162,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user_data = User::findOrFail($id);
-        if($user_data->profile_picture){
-            Storage::delete($user_data->profile_picture);
+        if($user->profile_picture){
+            Storage::delete($user->profile_picture);
         }
-        $user_data->delete();
-        return redirect()->route('Manajement.Users.index')->with('message', 'Data' .$user_data->name. 'telah berhasil dihapus !');
+        $user->delete();
+        return redirect()->route('Manajement.Users.index')->with('success_deleted', 'Data user atas nama <b>'.$user->name.'</b> telah berhasil dihapus !');
     }
 }

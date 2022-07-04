@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Dashboard_NBC;
 use App\Http\Controllers\DataTestingController;
@@ -33,8 +34,8 @@ use Spatie\Permission\Contracts\Role;
 // })->name('Home');
 
 Route::GET('/', [HomeController::class, 'index'])->name('home');
-Route::GET('/History-Donor', [HomeController::class, 'CekHistoryDonor'])->name('checking_history');
-Route::GET('/History-Donor/{TransactionDonor:Code_Transaction}', [HomeController::class, 'CekTransactionHistory'])->name('checking_transaction');
+Route::GET('/History-Donor', [HomeController::class, 'CekHistoryDonor'])->name('checking_history')->middleware('role:Pendonor|Petugas Medis');
+Route::GET('/History-Donor/{TransactionDonor:Code_Transaction}', [HomeController::class, 'CekTransactionHistory'])->name('checking_transaction')->middleware('role:Pendonor|Petugas Medis');
 
 Auth::routes();
 
@@ -85,13 +86,13 @@ Route::GET('Manajement/User/{User:NIK}/Detail-User', [UserController::class, 'sh
 Route::POST('Manajement/User', [UserController::class, 'store'])->name('Manajement.Users.store')->middleware('role:Administrator');
 Route::GET('Manajement/User/{user:NIK}/Edit', [UserController::class, 'edit'])->name('Manajement.Users.edit')->middleware('role_or_permission:Administrator|Mengupdate Akun User');
 Route::PATCH('Manajement/User/{user:NIK}', [UserController::class, 'update'])->name('Manajement.Users.update')->middleware('role:Administrator');
-Route::DELETE('Manajement/User/{id}', [UserController::class, 'destroy'])->name('Manajement.Users.delete')->middleware('role_or_permission:Administrator|Menghapus Akun User');
+Route::DELETE('Manajement/User/{user:NIK}', [UserController::class, 'destroy'])->name('Manajement.Users.delete')->middleware('role_or_permission:Administrator|Menghapus Akun User');
 
 Route::GET('Manajement/Transaction', [TransactionDonorController::class, 'index'])->name('Manajement.Transaction.index')->middleware('role:Administrator|Petugas Medis');
 Route::GET('Manajement/Transaction/{TransactionDonor:Code_Transaction}/Edit', [TransactionDonorController::class, 'edit'])->name('Manajement.Transaction.edit')->middleware('role_or_permission:Petugas Medis|Mengupdate Transaksi Donor');
-Route::PATCH('Manajement/Transaction/{id}', [TransactionDonorController::class, 'update'])->name('Manajement.Transaction.update')->middleware('role_or_permission:Petugas Medis|Mengupdate Transaksi Donor');
+Route::PATCH('Manajement/Transaction/{TransactionDonor:Code_Transaction}', [TransactionDonorController::class, 'update'])->name('Manajement.Transaction.update')->middleware('role_or_permission:Petugas Medis|Mengupdate Transaksi Donor');
 
-Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Mendonor')->middleware('auth', 'role_or_permission:Petugas Medis|Pendonor|Melakukan Transaksi Donor' );
+Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Mendonor');
 
 
 Route::GET('Manajement/Hasil-Transaksi', [TransactionDonorController::class, 'GetResult_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.index')->middleware('role:Administrator|Petugas Medis');

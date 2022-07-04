@@ -53,6 +53,7 @@
     <script src="{{ asset('assets/js/demo_datatables.js') }}"></script>
     <script src="{{ asset('assets/js/Chart_NBC.js') }}"></script>
     <script src="{{ asset('assets/js/ImagePreview.js') }}"></script>
-    @include('sweetalert::alert')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @yield('SweetAlert');
 </body>
 </html>

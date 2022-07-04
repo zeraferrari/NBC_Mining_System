@@ -153,3 +153,11 @@
         </div>
     </section>
 @endsection
+
+@section('SweetAlert')
+    @if(Session::has('data_trainings'))
+        <script>
+            Swal.fire('Any fool can use a computer');
+        </script>
+    @endif
+@endsection

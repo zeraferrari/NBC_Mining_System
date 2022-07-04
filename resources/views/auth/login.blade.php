@@ -54,3 +54,16 @@
    </div>
 </main>
 @endsection
+@section('SweetAlert')
+    @if(Session::has('response_login'))
+        <script>
+            let message_response = '{!! Session::get('response_login') !!}';
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops....',
+                html: message_response,
+                timer: 3000
+            });
+        </script>
+    @endif
+@endsection

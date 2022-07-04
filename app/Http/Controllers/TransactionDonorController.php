@@ -83,27 +83,46 @@ class TransactionDonorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {    
-        $input = $request->all();
-        $validate = Validator::make($input, [
-            'Code_Transaction' => 'required',
-            'Age'   =>  'nullable',
-            'Weight' => 'nullable',
-            'Hemoglobin' => 'nullable',
-            'Pressure_sistole' => 'nullable',
-            'Pressure_distole' => 'nullable',
-            'Kembali_Donor' => 'nullable',
-            'Status_Transaction' => 'nullable',
-            'Status_Donor' => 'required',
-            'User_PMI_id' => 'nullable'
-        ]);
-        $has_valid = $validate->validated();
-        $has_valid['Code_Transaction'] = $this->GeneratedTransactionCode();
-        $has_valid['User_Pendonor_id'] = Auth::id();
-        $has_valid['Waktu_Donor'] = Carbon::now('Asia/Makassar');
-        $has_valid['Status_Donor'] = 'Medical Check';
-        TransactionDonor::create($has_valid);
-        return redirect()->route('Antrian.Mendonor');
+    {   
+        if(Auth::check()){
+            if(Auth::user()->roles[0]->name == 'Petugas Medis' || Auth::user()->roles[0]->name == 'Pendonor'){
+                if(Auth::user()->Status_Donor == 'Belum Mendonor'){
+                    if(TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->pluck('Status_Donor')->first() == 'Medical Check'){
+                        return redirect()->route('home')->with('response_check_queue_transaction', 'Kamu masih dalam melakukan transaksi donor darah, Silahkan pergi ke PMI terdekat untuk melakukan medical check donor darah ');
+                    }elseif(TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->pluck('Status_Donor')->first() == 'Gagal Donor'){
+                        $Date_Donor_User = TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->first();
+                        $date = Carbon::parse($Date_Donor_User->Kembali_Donor)->locale('id')->isoFormat('dddd, D-MMMM-Y');
+                        return redirect()->route('home')->with('response_failed_donor_transaction', 'Mohon maaf transaksi terakhir donor kamu gagal, Silahkan kembali donor darah pada tanggal <b>'.$date.'</b>');
+                    }
+                    $input = $request->all();
+                    $validate = Validator::make($input, [
+                        'Code_Transaction' => 'required',
+                        'Age'   =>  'nullable',
+                        'Weight' => 'nullable',
+                        'Hemoglobin' => 'nullable',
+                        'Pressure_sistole' => 'nullable',
+                        'Pressure_distole' => 'nullable',
+                        'Kembali_Donor' => 'nullable',
+                        'Status_Transaction' => 'nullable',
+                        'Status_Donor' => 'required',
+                        'User_PMI_id' => 'nullable'
+                    ]);
+                    $has_valid = $validate->validated();
+                    $has_valid['Code_Transaction'] = $this->GeneratedTransactionCode();
+                    $has_valid['User_Pendonor_id'] = Auth::id();
+                    $has_valid['Waktu_Donor'] = Carbon::now('Asia/Makassar');
+                    $has_valid['Status_Donor'] = 'Medical Check';
+                    TransactionDonor::create($has_valid);
+                    return redirect()->back()->with('response_success_request_transaction','Selamat, kamu sudah masuk dalam list transaksi donor darah. Silahkan ke PMI terdekat untuk melakukan medical check donor darah');
+                }else{
+                    $Date_Donor_User = TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->first();
+                    $date = Carbon::parse($Date_Donor_User->Kembali_Donor)->locale('id')->isoFormat('dddd, D-MMMM-Y');
+                    return redirect()->route('home')->with('response_check_status_donor', 'Mohon maaf, waktu donor kamu belum saatnya. Silahkan mendonor pada tanggal <b>'.$date.'</b>');
+                }
+            }
+        }else{
+            return redirect()->route('home')->with('response_login', 'Mohon maaf, kamu harus login dahulu sebelum melakukan transaksi yah 😁 ');
+        }                         
     }
 
     /**
@@ -163,7 +182,7 @@ class TransactionDonorController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(TransactionUpdateValidation $request, $id)
+    public function update(TransactionUpdateValidation $request, TransactionDonor $TransactionDonor)
     {
         $naive_bayes = new CalculationNaiveBayesController();
         $result = $naive_bayes->Calculation_Naive_Bayes($request->Hemoglobin,
@@ -173,22 +192,22 @@ class TransactionDonorController extends Controller
                                                               $request->Age);
         
         $data_has_been_validate = $request->validated();
+
         $data_has_been_validate['User_PM_id'] = Auth::id();
-        $data = TransactionDonor::find($id);
         if($result === 'Layak'){
             $data_has_been_validate['Status_Transaction'] = $result;
             $data_has_been_validate['Status_Donor'] = 'Berhasil Mendonor';
             $data_has_been_validate['Kembali_Donor'] = Carbon::now('Asia/Makassar')->addMonth(2);
-            $data->update($data_has_been_validate);
-            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_Categories'], 'Status_Donor' => 'Sudah Mendonor']);   
+            $TransactionDonor->update($data_has_been_validate);
+            $TransactionDonor->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_Categories'], 'Status_Donor' => 'Sudah Mendonor']);   
         }else{
             $data_has_been_validate['Status_Transaction'] = $result;
             $data_has_been_validate['Status_Donor'] = 'Gagal Donor';
             $data_has_been_validate['Kembali_Donor'] = Carbon::now('Asia/Makassar')->addWeek(1);
-            $data->update($data_has_been_validate);
-            $data->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_Categories'], 'Status_Donor' => 'Belum Mendonor']);   
+            $TransactionDonor->update($data_has_been_validate);
+            $TransactionDonor->User_Connection->update(['Rhesus_id' => $data_has_been_validate['Rhesus_Categories'], 'Status_Donor' => 'Belum Mendonor']);   
         }
-        return redirect()->route('Manajement.Transaction.index');
+        return redirect()->route('Manajement.Transaction.index')->with('success_transaction', 'Transaksi dengan nomor kode : <b>'.$TransactionDonor->Code_Transaction.'</b> telah selesai !');
     }
 
     /**

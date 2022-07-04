@@ -49,8 +49,7 @@ class RhesusCategoryController extends Controller
     {
         $data_has_been_valid = $request->validated();
         RhesusCategory::create($data_has_been_valid);
-        Alert::success('Data Berhasil DiBuat !', 'Data baru dengan nama "'.$data_has_been_valid['Name'].'" telah ditambahkan');
-        return redirect()->route('Manajement.Rhesus.index');
+        return redirect()->route('Manajement.Rhesus.index')->with('success_created', 'Data rhesus <b>'.$data_has_been_valid['Name'].'</b> telah berhasil dibuat !');
     }
 
     /**
@@ -89,7 +88,7 @@ class RhesusCategoryController extends Controller
         $data_has_been_valid = $request->validated();
         $data = RhesusCategory::find($id);
         $data->update($data_has_been_valid);
-        return redirect()->route('Manajement.Rhesus.index');
+        return redirect()->route('Manajement.Rhesus.index')->with('success_updated','Data rhesus <b>'.$data->Name.'</b> telah berhasil diupdate !');
     }
 
     /**
@@ -100,7 +99,8 @@ class RhesusCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $data = RhesusCategory::findOrFail($id)->delete();
-        return redirect()->route('Manajement.Rhesus.index');
+        $data = RhesusCategory::findOrFail($id);
+        $data->delete();
+        return redirect()->route('Manajement.Rhesus.index')->with('success_deleted','Data rhesus <b>'.$data->Name.'</b> telah berhasil dihapus !');
     }
 }

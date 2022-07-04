@@ -54,3 +54,18 @@
         </div>
 </section>  
 @endsection
+@section('SweetAlert')
+    <script>
+        @if(Session::has('success_transaction'))
+        let success_message_transaction = '{!! Session::get('success_transaction') !!}';
+            Swal.fire({
+                icon: 'success',
+                title: 'Successfully Transaction !',
+                html: success_message_transaction,
+                showCloseButton: true,
+                showConfirmButton: false,
+                timer: 4000
+            })
+        @endif
+    </script>
+@endsection

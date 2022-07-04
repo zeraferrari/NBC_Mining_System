@@ -72,7 +72,8 @@ class HomeController extends Controller
         $history_transaction_donor = TransactionDonor::all()
                                         ->where('User_Pendonor_id', '=', Auth()->user()->id);
         $latest_inbox = $this->GetLatestInbox();
-        return view('HomeDashboard.HistoryBlood', compact('history_transaction_donor', 'latest_inbox'));
+        $latest_notification = $this->GetLatestNotification();
+        return view('HomeDashboard.HistoryBlood', compact('history_transaction_donor', 'latest_inbox', 'latest_notification'));
     }
 
     public function CekTransactionHistory(TransactionDonor $TransactionDonor){
@@ -80,7 +81,8 @@ class HomeController extends Controller
         ->where('Code_Transaction', '=', $TransactionDonor->Code_Transaction)->first();
         $date_today = Carbon::now('Asia/Makassar')->toDateString();
         $latest_inbox = $this->GetLatestInbox();
-        return view('HomeDashboard.DetailHistoryBlood', compact('Transactions', 'date_today', 'latest_inbox'));
+        $latest_notification = $this->GetLatestNotification();
+        return view('HomeDashboard.DetailHistoryBlood', compact('Transactions', 'date_today', 'latest_inbox', 'latest_notification'));
     }
 
 }

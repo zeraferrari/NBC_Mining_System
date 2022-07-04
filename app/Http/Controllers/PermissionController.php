@@ -51,8 +51,7 @@ class PermissionController extends Controller
     {
         $has_been_validate = $request->validated();
         Permission::create($has_been_validate);
-        Alert::success('Data Berhasil Dibuat !', 'Data dengan nama '.$has_been_validate['name'].' telah berhasil dibuat !');
-        return redirect()->route('Manajement.Permissions.index')->with('success', 'Hak Akses Berhasil Dibuat !');
+        return redirect()->route('Manajement.Permissions.index')->with('success_created', 'Hak akses <b>'.$has_been_validate['name'].'</b> telah berhasil dibuat !');
     }
 
     /**
@@ -91,7 +90,7 @@ class PermissionController extends Controller
         $has_been_validate = $request->validated();
         $permission = Permission::find($id);
         $permission->update($has_been_validate);
-        return redirect()->route('Manajement.Permissions.index')->with('success', 'Hak Akses Berhasil DiPerbaharui !');
+        return redirect()->route('Manajement.Permissions.index')->with('success_updated', 'Hak akses <b>'.$permission->name.'</b> telah berhasil diupdate !');
     }
 
     /**
@@ -102,7 +101,8 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $data = Permission::findOrFail($id)->delete();
-        return redirect()->route('Manajement.Permissions.index')->with('success', 'Data Telah Berhasil Dihapus !');
+        $data = Permission::findOrFail($id);
+        $data->delete();
+        return redirect()->route('Manajement.Permissions.index')->with('success_deleted', 'Hak akses <b>'.$data->name.'</b> telah berhasil dihapus !');
     }
 }

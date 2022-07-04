@@ -39,8 +39,7 @@ class DataTestingController extends Controller
         $data_has_valid = $request->validated();
         $data_has_valid['Result_Classification'] = $result_classification;
         DataTesting::create($data_has_valid);
-        Alert::success('Data Training Atas Nama <b>'.$data_has_valid['Name'].'</b> Berhasil Ditambahkan !');
-        return redirect()->route('Manajement.DataTestings.index');
+        return redirect()->route('Manajement.DataTestings.index')->with('success_created', 'Data testing atas nama <b>'.$data_has_valid['Name'].'</b> telah berhasil dibuat !');
     }
 
     public function edit($id){
@@ -61,12 +60,13 @@ class DataTestingController extends Controller
         $data_has_valid['Result_Classification'] = $result_classification;
         $data_testing = DataTesting::findorFail($id);
         $data_testing->update($data_has_valid);
-        return redirect()->route('Manajement.DataTestings.index');
+        return redirect()->route('Manajement.DataTestings.index')->with('success_updated', 'Data testing atas nama <b>'.$data_testing->Name.'</b> telah berhasil diupdate !');
     }
 
     public function destroy($id){
-        // $data = DataTesting::findorFail($id)->delete();
-        return redirect()->route('Manajement.DataTestings.index');
+        $data = DataTesting::findorFail($id);
+        $data->delete();
+        return redirect()->route('Manajement.DataTestings.index')->with('success_deleted', 'Data testing atas nama <b>'.$data->Name.'</b> telah berhasil dihapus !');
     }
 
     public function show($id){

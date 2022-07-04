@@ -129,7 +129,7 @@
                             <h4 class="text-reset">Form Update Data Transaksi Donor Darah</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('Manajement.Transaction.update',$TransactionDonor->id) }}" method="POST">
+                            <form action="{{ route('Manajement.Transaction.update',$TransactionDonor->Code_Transaction) }}" id="{{ $TransactionDonor->Code_Transaction }}" method="POST">
                                 {{ csrf_field() }}
                                 @method('PATCH')
                                 <div class="form-group">
@@ -211,10 +211,10 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col text-center">
-                                    <button type="submit" class="btn btn-primary">Update Data</button>
-                                </div>
                             </form>
+                            <div class="col text-center">
+                                <button class="btn btn-primary confirmation-update" data-code="{{ $TransactionDonor->Code_Transaction }}" data-Name="{{ $TransactionDonor->User_Connection->name }}">Update Data</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -222,3 +222,25 @@
         </div>
     </section>
 @endsection 
+@section('SweetAlert')
+    <script>
+        $(".confirmation-update").click(function(e) {
+        let DataNameTarget = $(this).attr('data-Name');
+        console.log(e);
+        code_transaction = e.target.dataset.code;
+        Swal.fire({
+            title: 'Data akan diproses ?',
+            html: 'Transaksi Donor atas nama <b>'+DataNameTarget+'</b> akan diproses !',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#04cf1f',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Proses Data'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(`#${code_transaction}`).submit();
+            }
+        })
+    });
+    </script>
+@endsection

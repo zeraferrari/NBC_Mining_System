@@ -58,7 +58,7 @@
                         <h4 class="text-reset">Edit/Update Akun User</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('Manajement.Users.update', $user_data->NIK) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('Manajement.Users.update', $user_data->NIK) }}" id="{{ $user_data->NIK }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             @method('PATCH')
                             <div class="media">
@@ -174,13 +174,34 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="col text-center">
-                                <button class="btn btn-info btn-md col-sm-12 col-md-6 col-lg-6" type="submit">Update</button>
-                            </div>
                         </form>
+                        <div class="col text-center">
+                            <button class="btn btn-info btn-md col-sm-12 col-md-6 col-lg-6 confirmation-update" data-NIK="{{ $user_data->NIK }}" data-Name="{{ $user_data->name }}" type="submit">Update</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+@endsection
+@section('SweetAlert')
+    <script>
+        $(".confirmation-update").click(function(e) {
+        let DataNameTarget = $(this).attr('data-Name');
+        nik = e.target.dataset.nik;
+        Swal.fire({
+            title: 'Data akan diubah ?',
+            html: 'Data user atas nama <b>'+DataNameTarget+'</b> akan diupdate !',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#04cf1f',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update Data'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(`#${nik}`).submit();
+            }
+        })
+    });
+    </script>
 @endsection

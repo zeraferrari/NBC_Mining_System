@@ -54,7 +54,7 @@ class RoleController extends Controller
         Alert::success('Data Berhasil Dibuat !', 'Data role '.$has_been_validated['name']. ' berhasil ditambahkan')->showConfirmButton('confirm', '#3085d6');
         $role = Role::create($has_been_validated);
         $role->syncPermissions($has_been_validated['permission']);
-        return redirect()->route('Manajement.Roles.index');
+        return redirect()->route('Manajement.Roles.index')->with('success_created', 'Role baru dengan nama <b>'.$role['name'].'</b> berhasil dibuat !');
     }
 
     /**
@@ -99,7 +99,7 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->update($has_been_validated);
         $role->syncPermissions($has_been_validated['permission']); 
-        return redirect()->route('Manajement.Roles.index')->with('success', 'Role ' .$role->name. ' Has Been Update !');
+        return redirect()->route('Manajement.Roles.index')->with('success_updated', 'Role <b>' .$role->name. '</b> telah diupdate !');
     }
 
     /**
@@ -111,8 +111,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::find($id);
-        $role_test = $role->name;
         $role->delete();
-        return redirect()->route('Manajement.Roles.index')->with('success', 'Role ' .$role_test. ' Has Been Delete !' );
+        return redirect()->back()->with('success_deleted', 'Role <b>' .$role->name.'</b> telah dihapus !' );
     }
 }

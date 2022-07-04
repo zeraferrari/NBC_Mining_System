@@ -154,7 +154,6 @@ class Dashboard extends Controller
         //             ->where('transaction_donors.created_at', '<=', '2022-04-09 23:59:59')
         //             ->where('transaction_donors.Status_Donor', '=', 'Berhasil Mendonor');
         // }])->get();
-        
         $Month_Name = $this->getNameMonth();
         $Json_Line_Chart = $this->getStructLineChartJSON();
         return view('Manajement.Dashboard.index', compact('title',

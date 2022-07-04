@@ -18,7 +18,7 @@
                         <h4 class="text-reset">Form Update Kategori Rhesus</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('Manajement.Rhesus.update', $data->id) }}" method="POST">
+                        <form action="{{ route('Manajement.Rhesus.update', $data->id) }}" id="{{ $data->id }}" method="POST">
                         {{ csrf_field() }}
                         @method('PATCH')
                             <div class="form-group row mb-6">
@@ -32,13 +32,34 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col text-center">
-                                <button type="submit" class="btn btn-primary btn-md col-sm-12 col-md-6 col-lg-6">Update</button>
-                            </div>
                         </form>
+                        <div class="col text-center">
+                            <button type="submit" class="btn btn-primary btn-md col-sm-12 col-md-6 col-lg-6 confirmation-update" data-id="{{ $data->id }}" data-Name="{{ $data->Name }}">Update</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+@endsection
+@section('SweetAlert')
+    <script>
+        $(".confirmation-update").click(function(e) {
+        let DataNameTarget = $(this).attr('data-Name');
+        id = e.target.dataset.id;
+        Swal.fire({
+            title: 'Data akan diubah ?',
+            html: 'Data rhesus <b>'+DataNameTarget+'</b> akan diupdate !',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#04cf1f',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update Data'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(`#${id}`).submit();
+            }
+        })
+    });
+    </script>
 @endsection

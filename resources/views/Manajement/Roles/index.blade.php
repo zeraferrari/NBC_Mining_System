@@ -12,7 +12,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="card text-center">
+                    <div class="card">
                         <div class="card-header">
                             <h4 class="text-reset">Tabel Role</h4>
                             <div class="card-header-form">
@@ -41,11 +41,11 @@
                                             </td>
                                             <td>
                                                 <div class="buttons">
-                                                    <form action="{{ route('Manajement.Roles.delete', $roles->id) }}" method="POST">
-                                                        <a href="{{ route('Manajement.Roles.edit', $roles->id) }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <button type="submit" class="btn btn-icon btn-sm btn-danger confirmation-delete" data-Name="{{ $roles->name }}" data-id="{{ $roles->id }}"><i class="fas fa-trash-alt"></i></button>
+                                                    <a href="{{ route('Manajement.Roles.edit', $roles->id) }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <form action="{{ route('Manajement.Roles.delete', $roles->id) }}" id="{{ $roles->id }}" method="POST">
                                                         @method('DELETE')
                                                         {{ csrf_field() }}
-                                                        <button type="submit" class="btn btn-icon btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -58,4 +58,65 @@
                 </div>
             </div>
         </section>
+    @endsection
+    @section('SweetAlert')
+        @if(Session::has('success_created'))
+            <script>
+                let success_message_created = '{!! Session::get('success_created') !!}';
+                Swal.fire({
+                    icon: 'success',
+                    titleText: 'Data Has Been Created',
+                    html: success_message_created,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+            </script>
+        @endif
+        @if(Session::has('success_updated'))
+            <script>
+                let success_message_update = '{!! Session::get('success_updated') !!}';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data Successfully Update !',
+                    html: success_message_update,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+            </script>
+        @endif
+        <script>
+            $(".confirmation-delete").click(function(e) {
+                id = e.target.dataset.id;
+                let GetDataName = $(this).attr('data-Name');
+                Swal.fire({
+                    title: 'Yakin Data Akan Di Hapus ?',
+                    html: "Role dengan nama <b>"+GetDataName+"</b> akan dihapus",
+                    icon: 'warning',
+                    iconColor: 'red',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Iya, Hapus Data',
+                    cancelButtonColor: '#3085d6',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(`#${id}`).submit();
+                    }
+                })
+            });
+        </script>
+        @if(Session::has('success_deleted'))
+            <script>
+                let success_message_deleted = '{!! Session::get('success_deleted') !!}';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data Successfully Deleted',
+                    html: success_message_deleted,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+            </script>
+        @endif
     @endsection
