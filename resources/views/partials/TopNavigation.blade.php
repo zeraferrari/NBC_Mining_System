@@ -116,8 +116,41 @@
                                 <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
+                    </li>
                     @else
-                        <p>admin</p>
+                        <a href="" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Notifikasi
+                                <div class="float-right">
+                                    <a href="">Seluruh Notifikasi Dibaca</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-list-content dropdown-list-icons">
+                                @forelse ( $latest_notification as $latest_notifications )
+                                    <a href="" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-info text-white">
+                                            <i class="far fa-user"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <b>Informasi Donor</b>
+                                            <p>Anda menangani pendonor darah atas nama <b class="text-dark">{{ $latest_notifications->User_Connection->name }}</b> dengan status transaksi
+                                            <b class="text-dark">{{ $latest_notifications->Status_Donor }}</b>
+                                            dengan nomor transaksi <b class="text-dark">{{ $latest_notifications->Code_Transaction }}</b>
+                                            </p>
+
+                                            <div class="time">{{ $latest_notifications->updated_at }}</div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <p class="text-center">Data kamu belum ada</p>
+                                @endforelse
+                            </div>
+                            <div class="dropdown-footer text-center">
+                                <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </li>
                     @endif
                 @endif
                 @guest

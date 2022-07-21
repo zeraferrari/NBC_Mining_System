@@ -24,11 +24,16 @@
                         <div class="form-group row">
                           <label for="email" class="col-sm-3 col-form-label text-md-right">{{ __('Email atau NIK') }}</label>
                           <div class="col-sm-7">
-                            <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email">
+                            <input type="text" class="form-control @error('email') is-invalid @enderror @error('message_fails') is-invalid @enderror" id="email" name="email">
                             @error('email')
                               <div class="invalid-feedback" role="alert">
                                   <strong>{{ $message }}</strong>
                               </div>
+                            @enderror
+                            @error('message_fails')
+                                <div class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first() }}</strong>
+                                </div>
                             @enderror
                           </div>
                         </div>
@@ -59,10 +64,21 @@
         <script>
             let message_response = '{!! Session::get('response_login') !!}';
             Swal.fire({
-                icon: 'error',
-                title: 'Oops....',
+                icon: 'success',
+                title: 'Success Register',
                 html: message_response,
-                timer: 3000
+                timer: 5000
+            });
+        </script>
+    @endif
+    @if(Session::has('response_failed'))
+        <script>
+            let message_response = '{!! Session::get('response_failed') !!}';
+            Swal.fire({
+                icon: 'success',
+                title: 'Success Register',
+                html: message_response,
+                timer: 5000
             });
         </script>
     @endif

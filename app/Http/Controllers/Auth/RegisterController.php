@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 
@@ -43,6 +44,12 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    public function register(Request $request){
+        $this->validator($request->all())->validate();
+        $this->create($request->all());
+        return redirect()->route('login')->with('response_login', 'Data berhasil diregistrasi'); 
     }
 
     /**

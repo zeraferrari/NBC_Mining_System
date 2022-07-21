@@ -52,6 +52,8 @@ class HomeController extends Controller
             $latest_notification = TransactionDonor::where('User_PM_id', '=', Auth::User()->id)
             ->latest()->take(5)->get();
             return $latest_notification;
+        }elseif(Auth::User()->roles[0]->name === 'Administrator'){
+            
         }
     }
 
@@ -59,13 +61,14 @@ class HomeController extends Controller
     {
         $latest_inbox = $this->GetLatestInbox();
         $latest_notification = $this->GetLatestNotification();
-        if(Auth::guest()){
-            return view('index', compact('latest_inbox', 'latest_notification'));
-        }elseif(Auth::user()->hasRole(['Petugas Medis', 'Pendonor'])){
-            return view('index', compact('latest_inbox', 'latest_notification'));
-        }elseif(Auth::user()->hasRole(['Administrator'])){
-            return redirect()->route('Manajement.Dashboard.index');    
-        }
+        // if(Auth::guest()){
+        //     return view('index', compact('latest_inbox', 'latest_notification'));
+        // }elseif(Auth::user()->hasRole(['Petugas Medis', 'Pendonor'])){
+        //     return view('index', compact('latest_inbox', 'latest_notification'));
+        // }elseif(Auth::user()->hasRole(['Administrator'])){
+        //     return redirect()->route('Manajement.Dashboard.index');    
+        // }
+        return view('index', compact('latest_inbox', 'latest_notification'));
     }
 
     public function CekHistoryDonor(){
