@@ -15,38 +15,78 @@
             <ul class="navbar-nav navbar-right">
                 <li class="dropdown dropdown-list-toggle">
                 @if(Auth::check())
-                    <a href="" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
-                    <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                        <div class="dropdown-header">
-                            Inbox
-                            <div class="float-right">
-                                <a href="#">Seluruh Pesan Dibaca</a>
+                    @if(Auth::user()->roles[0]->name === 'Administrator')
+                        <a href="" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Inbox
+                                <div class="float-right">
+                                    <a href="#">Seluruh Pesan Dibaca</a>
+                                </div>
                             </div>
+                            
+                            <div class="dropdown-list-content dropdown-list-message">
+                                @forelse ( $latest_inbox as $latest_inboxs )
+                                    <a href="#" class="dropdown-item dropdown-item-unread">
+                                        <div class="dropdown-item-avatar">
+                                            <img src="{{ asset('assets/img/avatar/avatar-5.png') }}" alt="image" class="rounded-circle">
+                                        </div>
+            
+                                        <div class="dropdown-item-desc">
+                                            <b class="text-dark">SYSTEM</b>
+                                            <p>Transaksi donor darah dengan nomor transaksi <b class="text-dark">{{ $latest_inboxs->Code_Transaction }}</b>
+                                            @if(empty($latest_inboxs->Petugas_Connection->name))
+                                                dalam proses pelayanan dengan status <b class="text-dark">{{ $latest_inboxs->Status_Donor }}</b> 
+                                            @else
+                                                dalam proses pelayanan oleh petugas medis atas nama <b class="text-dark">{{ $latest_inboxs->Petugas_Connection->name }}</b>
+                                                dan dalam status <b class="text-dark">{{ $latest_inboxs->Status_Donor }}</b>
+                                            @endif
+                                            </p>
+                                            <div class="time">{{ $latest_inboxs->updated_at }}</div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <p class="text-center">Data kamu belum ada</p>
+                                @endforelse
+                            </div>
+                        <div class="dropdown-footer text-center">
+                            <a href="{{ route('Manajement.Transaction.index') }}">Lihat Semua <i class="fas fa-chevron-right"></i></a>
                         </div>
-                        
-                        <div class="dropdown-list-content dropdown-list-message">
-                            @forelse ( $latest_inbox as $latest_inboxs )
-                                <a href="{{ route('checking_transaction', $latest_inboxs->Code_Transaction) }}" class="dropdown-item dropdown-item-unread">
-                                    <div class="dropdown-item-avatar">
-                                        <img src="{{ asset('assets/img/avatar/avatar-5.png') }}" alt="image" class="rounded-circle">
-                                    </div>
-        
-                                    <div class="dropdown-item-desc">
-                                        <b class="text-dark">SYSTEM</b>
-                                        <p>Transaksi donor darah anda dengan nomor transaksi <b class="text-dark">{{ $latest_inboxs->Code_Transaction }}</b>
-                                        dinyatakan <b class="text-dark">{{ $latest_inboxs->Status_Transaction }} Donor</b> 
-                                        </p>
-                                        <div class="time">{{ $latest_inboxs->updated_at }}</div>
-                                    </div>
-                                </a>
-                            @empty
-                                <p class="text-center">Data kamu belum ada</p>
-                            @endforelse
+                    </li>
+                    @else
+                        <a href="" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Inbox
+                                <div class="float-right">
+                                    <a href="#">Seluruh Pesan Dibaca</a>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-list-content dropdown-list-message">
+                                @forelse ( $latest_inbox as $latest_inboxs )
+                                    <a href="{{ route('checking_transaction', $latest_inboxs->Code_Transaction) }}" class="dropdown-item dropdown-item-unread">
+                                        <div class="dropdown-item-avatar">
+                                            <img src="{{ asset('assets/img/avatar/avatar-5.png') }}" alt="image" class="rounded-circle">
+                                        </div>
+            
+                                        <div class="dropdown-item-desc">
+                                            <b class="text-dark">SYSTEM</b>
+                                            <p>Transaksi donor darah anda dengan nomor transaksi <b class="text-dark">{{ $latest_inboxs->Code_Transaction }}</b>
+                                            dinyatakan <b class="text-dark">{{ $latest_inboxs->Status_Transaction }} Donor</b> 
+                                            </p>
+                                            <div class="time">{{ $latest_inboxs->updated_at }}</div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <p class="text-center">Data kamu belum ada</p>
+                                @endforelse
+                            </div>
+                        <div class="dropdown-footer text-center">
+                            <a href="{{ route('checking_history') }}">Lihat Semua <i class="fas fa-chevron-right"></i></a>
                         </div>
-                    <div class="dropdown-footer text-center">
-                        <a href="{{ route('checking_history') }}">Lihat Semua <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </li>
+                    </li>
+                    @endif
                 @endif
                 <li class="dropdown dropdown-list-toggle">
                 @if(Auth::check())
@@ -56,12 +96,12 @@
                             <div class="dropdown-header">
                                 Notifikasi
                                 <div class="float-right">
-                                    <a href="">Seluruh Notifikasi Dibaca</a>
+                                    <a href="#">Seluruh Notifikasi Dibaca</a>
                                 </div>
                             </div>
                             <div class="dropdown-list-content dropdown-list-icons">
                                 @forelse ( $latest_notification as $latest_notifications )
-                                    <a href="" class="dropdown-item">
+                                    <a href="#" class="dropdown-item">
                                         <div class="dropdown-item-icon bg-info text-white">
                                             <i class="far fa-user"></i>
                                         </div>
@@ -79,7 +119,7 @@
                                 @endforelse
                             </div>
                             <div class="dropdown-footer text-center">
-                                <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
+                                <a href="#">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
                     </li>
@@ -89,12 +129,12 @@
                             <div class="dropdown-header">
                                 Notifikasi
                                 <div class="float-right">
-                                    <a href="">Seluruh Notifikasi Dibaca</a>
+                                    <a href="#">Seluruh Notifikasi Dibaca</a>
                                 </div>
                             </div>
                             <div class="dropdown-list-content dropdown-list-icons">
                                 @forelse ( $latest_notification as $latest_notifications )
-                                    <a href="" class="dropdown-item">
+                                    <a href="{{ route('Manajement.Hasil_Transaksi_Donor.show',$latest_notifications->Code_Transaction) }}" class="dropdown-item">
                                         <div class="dropdown-item-icon bg-info text-white">
                                             <i class="far fa-user"></i>
                                         </div>
@@ -113,11 +153,11 @@
                                 @endforelse
                             </div>
                             <div class="dropdown-footer text-center">
-                                <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
+                                <a href="{{ route('Manajement.Hasil_Transaksi_Donor.index') }}">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
                     </li>
-                    @else
+                    @elseif(Auth::user()->roles[0]->name === 'Administrator')
                         <a href="" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
                         <div class="dropdown-menu dropdown-list dropdown-menu-right">
                             <div class="dropdown-header">
@@ -128,17 +168,18 @@
                             </div>
                             <div class="dropdown-list-content dropdown-list-icons">
                                 @forelse ( $latest_notification as $latest_notifications )
-                                    <a href="" class="dropdown-item">
+                                    <a href="{{ route('Manajement.Hasil_Transaksi_Donor.show', $latest_notifications->Code_Transaction) }}" class="dropdown-item">
                                         <div class="dropdown-item-icon bg-info text-white">
                                             <i class="far fa-user"></i>
                                         </div>
                                         <div class="dropdown-item-desc">
-                                            <b>Informasi Donor</b>
-                                            <p>Anda menangani pendonor darah atas nama <b class="text-dark">{{ $latest_notifications->User_Connection->name }}</b> dengan status transaksi
-                                            <b class="text-dark">{{ $latest_notifications->Status_Donor }}</b>
-                                            dengan nomor transaksi <b class="text-dark">{{ $latest_notifications->Code_Transaction }}</b>
+                                            <b>Informasi Donor Darah</b>
+                                            <p>
+                                                Petugas Medis atas nama <b class="text-dark">{{ $latest_notifications->Petugas_Connection->name }}</b>
+                                                telah menangani pendonor darah atas nama <b class="text-dark">{{ $latest_notifications->User_Connection->name }}</b>
+                                                dengan status transaksi donor <b class="text-dark">{{ $latest_notifications->Status_Donor }}</b>
+                                                pada nomor transaksi <b class="text-dark">{{ $latest_notifications->Code_Transaction }}</b>
                                             </p>
-
                                             <div class="time">{{ $latest_notifications->updated_at }}</div>
                                         </div>
                                     </a>
@@ -147,7 +188,7 @@
                                 @endforelse
                             </div>
                             <div class="dropdown-footer text-center">
-                                <a href="">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
+                                <a href="{{ route('Manajement.Hasil_Transaksi_Donor.index') }}">Lihat Seluruh Notifikasi <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
                     </li>

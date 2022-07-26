@@ -31,6 +31,9 @@ class HomeController extends Controller
         if(Auth::guest()){
             $latest_inbox = [];
             return $latest_inbox;
+        }elseif(Auth::user()->roles[0]->name === 'Administrator'){
+            $latest_inbox = TransactionDonor::latest()->take(5)->get();
+            return $latest_inbox;
         }else{
             $latest_inbox = TransactionDonor::where('User_Pendonor_id', '=', Auth()->User()->id)
             ->whereNotIn('Status_Donor', ['Medical Check'])
@@ -53,7 +56,9 @@ class HomeController extends Controller
             ->latest()->take(5)->get();
             return $latest_notification;
         }elseif(Auth::User()->roles[0]->name === 'Administrator'){
-            
+            $latest_notification = TransactionDonor::whereNotIn('Status_Donor', ['Medical Check'])
+            ->latest()->take(5)->get();
+            return $latest_notification;
         }
     }
 
@@ -61,13 +66,6 @@ class HomeController extends Controller
     {
         $latest_inbox = $this->GetLatestInbox();
         $latest_notification = $this->GetLatestNotification();
-        // if(Auth::guest()){
-        //     return view('index', compact('latest_inbox', 'latest_notification'));
-        // }elseif(Auth::user()->hasRole(['Petugas Medis', 'Pendonor'])){
-        //     return view('index', compact('latest_inbox', 'latest_notification'));
-        // }elseif(Auth::user()->hasRole(['Administrator'])){
-        //     return redirect()->route('Manajement.Dashboard.index');    
-        // }
         return view('index', compact('latest_inbox', 'latest_notification'));
     }
 

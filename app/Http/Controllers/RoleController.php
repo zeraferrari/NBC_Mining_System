@@ -24,10 +24,12 @@ class RoleController extends Controller
 
     public function index()
     {
-        
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();        
         $data = Role::with('permissions')->get();
         $title = 'Manajement Dashboard Role';
-        return view('Manajement.Roles.index', compact('data', 'title'));
+        return view('Manajement.Roles.index', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -37,9 +39,12 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
         $data_permission = Permission::all();
         $title = 'Manajement Dashboard Role';
-        return view('Manajement.Roles.create', compact('data_permission', 'title'));
+        return view('Manajement.Roles.create', compact('data_permission', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -63,10 +68,6 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-    
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -76,6 +77,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
         $data_roles = Role::with('permissions')->find($id);
         $data_permissions = Permission::all();
         $title = 'Manajement Dashboard Role';
@@ -83,7 +87,8 @@ class RoleController extends Controller
                     ->where('role_has_permissions.role_id', '=', $id)
                     ->pluck('permission_id')->all();
         
-        return view('Manajement.Roles.edit', compact('data_roles', 'data_permissions', 'permissions_each_role', 'title'));
+        return view('Manajement.Roles.edit', compact('data_roles', 'data_permissions', 'permissions_each_role', 'title',
+                                                                  'latest_inbox', 'latest_notification'));
     }
 
     /**

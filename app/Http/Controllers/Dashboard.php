@@ -45,6 +45,7 @@ class Dashboard extends Controller
          return $MonthName;
     }
 
+
     function getStructLineChartJSON(){
         $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
         ->where('Status_Donor', '=', 'Berhasil Mendonor')
@@ -63,8 +64,6 @@ class Dashboard extends Controller
                 'BackgroundColor' => '',
             ]);
         }
-
-        // dd($datasets);
 
         foreach($Transaction_Each_Month as $Each_Month_Transaction){
             foreach($Data_Rhesus as $Each_Data_Rhesus){
@@ -119,6 +118,9 @@ class Dashboard extends Controller
     }
 
     public function index(){
+        $Navigator = new HomeController();
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
         $title = $this->title;
         $total_users = User::CountingUsers();
         $already_donated_users = User::AlreadyDonated();
@@ -169,7 +171,8 @@ class Dashboard extends Controller
                                                                         'Transaction_Fails',
                                                                         'TB_Count_A_Plus', 'TB_Count_B_Plus', 'TB_Count_O_Plus', 'TB_Count_AB_Plus',
                                                                         'TB_Count_A_Negative', 'TB_Count_B_Negative', 'TB_Count_O_Negative', 'TB_Count_AB_Negative',
-                                                                        'Month_Name', 'Json_Line_Chart'
+                                                                        'Month_Name', 'Json_Line_Chart',
+                                                                        'latest_inbox', 'latest_notification'
                                                                     ));
     }
 

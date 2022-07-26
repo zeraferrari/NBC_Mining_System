@@ -29,7 +29,10 @@ class TransactionDonorController extends Controller
                                     ->where('Status_Donor', '=', 'Medical Check')
                                     ->oldest()->get();
         $title = $this->title;
-        return view('Manajement.Antrian.index', compact('data_transaction_user', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Antrian.index', compact('data_transaction_user', 'title', 'latest_inbox', 'latest_notification'));
         
     }
     
@@ -164,13 +167,16 @@ class TransactionDonorController extends Controller
 
                 
         $rhesus_data = RhesusCategory::all();
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
         return view('Manajement.Antrian.edit', compact('TransactionDonor', 
                                                                             'rhesus_data',
                                                                             'title',
                                                                             'data_success_transaction_user',
                                                                             'data_fails_transaction_user', 
                                                                             'total_data_transaction_user', 
-                                                                            'history_transaction_user'));
+                                                                            'history_transaction_user', 'latest_inbox', 'latest_notification'));
     }
     
 
@@ -221,8 +227,11 @@ class TransactionDonorController extends Controller
         $title = 'Manajement Hasil Transaksi Donor';
         $result_transaction = TransactionDonor::with(['User_Connection', 'Petugas_Connection'])->latest()->get()
                                                 ->whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor']);
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
         return view('Manajement.HasilTransaksiDonor.index', compact('title',
-                                                                                    'result_transaction'));
+                                                                                    'result_transaction', 'latest_inbox', 'latest_notification'));
     }
     
     public function GetDetail_Transaction_Donor(TransactionDonor $TransactionDonor){
@@ -309,7 +318,9 @@ class TransactionDonorController extends Controller
         $result_normalization_class_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_layak, $result_probability_class_tidak_layak);
         $result_normalization_class_tidak_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_tidak_layak, $result_probability_class_layak);
         
-        
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
 
 
         return view('Manajement.HasilTransaksiDonor.show', compact('title',
@@ -346,6 +357,7 @@ class TransactionDonorController extends Controller
     
         'result_probability_class_layak', 'result_probability_class_tidak_layak',
     
-        'result_normalization_class_layak', 'result_normalization_class_tidak_layak'));
+        'result_normalization_class_layak', 'result_normalization_class_tidak_layak',
+        'latest_inbox', 'latest_notification'));
     }
 }

@@ -45,7 +45,13 @@
                                                 <td>{{ $result_transactions->Petugas_Connection->name ?? ''}}</td>
                                                 <td>{{ $result_transactions->Waktu_Donor}}</td>
                                                 <td>{{ $result_transactions->Kembali_Donor}}</td>
-                                                <td>{{ $result_transactions->Status_Donor }}</td>
+                                                <td>
+                                                    @if($result_transactions['Status_Donor'] === 'Berhasil Mendonor')
+                                                        <span class="badge badge-success rounded">{{ $result_transactions->Status_Donor }}</span>
+                                                    @elseif($result_transactions['Status_Donor'] === 'Gagal Donor')
+                                                        <span class="badge badge-danger rounded">{{ $result_transactions->Status_Donor }}</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <div class="buttons text-center">
                                                         <a href="{{ route('Manajement.Hasil_Transaksi_Donor.show', $result_transactions->Code_Transaction ?? 'Unknown') }}" class="btn btn-icon btn-sm btn-primary"><i class="fas fa-eye"></i></a>

@@ -32,7 +32,10 @@ class UserController extends Controller
     {
         $data = User::with('Rhesus_Connection')->get();
         $title = $this->title;
-        return view('Manajement.Users.index', compact('data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Users.index', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -45,7 +48,10 @@ class UserController extends Controller
         $data_role = Role::all();
         $rhesus = RhesusCategory::all();
         $title = $this->title;
-        return view('Manajement.Users.create', compact('data_role', 'rhesus', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Users.create', compact('data_role', 'rhesus', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -108,7 +114,12 @@ class UserController extends Controller
         $data_transaction_user = TransactionDonor::with('User_Connection')->latest()->get()
                     ->where('User_Connection.NIK', '=', $User->NIK)
                     ->whereNotIn('Status_Donor', 'Medical Check');
-        return view('Manajement.Users.show', compact('User', 'title', 'success_donor', 'fails_donor', 'total_donor', 'data_transaction_user'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Users.show', compact('User', 'title', 'success_donor', 'fails_donor', 
+                                                                    'total_donor', 'data_transaction_user',
+                                                                    'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -123,7 +134,10 @@ class UserController extends Controller
         $rhesus_data = RhesusCategory::all();
         $roles_data = Role::all();
         $title = $this->title;
-        return view('Manajement.Users.edit', compact('user_data', 'rhesus_data', 'roles_data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Users.edit', compact('user_data', 'rhesus_data', 'roles_data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**

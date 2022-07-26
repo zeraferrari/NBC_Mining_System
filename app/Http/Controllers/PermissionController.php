@@ -27,7 +27,10 @@ class PermissionController extends Controller
     {
         $data = Permission::all();
         $title = $this->title;
-        return view('Manajement.Permissions.index', compact('data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Permissions.index', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -38,7 +41,10 @@ class PermissionController extends Controller
     public function create()
     {
         $title = $this->title;
-        return view('Manajement.Permissions.create', compact('title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Permissions.create', compact('title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -75,7 +81,10 @@ class PermissionController extends Controller
     {
         $data = Permission::find($id);
         $title = $this->title;
-        return view('Manajement.Permissions.edit', compact('data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Permissions.edit', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**

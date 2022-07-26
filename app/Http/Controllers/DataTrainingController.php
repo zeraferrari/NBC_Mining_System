@@ -27,7 +27,10 @@ class DataTrainingController extends Controller
     {
         $title = $this->title;
         $data = DataTraining::with('Rhesus_Connection')->get();
-        return view('Manajement.DataTrainings.index', compact('data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.DataTrainings.index', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -39,7 +42,10 @@ class DataTrainingController extends Controller
     {
         $title = $this->title;
         $data_rhesus = RhesusCategory::all();
-        return view('Manajement.DataTrainings.create', compact('title', 'data_rhesus'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.DataTrainings.create', compact('title', 'data_rhesus', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -77,7 +83,10 @@ class DataTrainingController extends Controller
         $data = DataTraining::find($id);
         $data_rhesus = RhesusCategory::all();
         $title = $this->title;
-        return view('Manajement.DataTrainings.edit', compact('data', 'data_rhesus', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.DataTrainings.edit', compact('data', 'data_rhesus', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**

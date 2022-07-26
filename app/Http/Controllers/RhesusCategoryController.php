@@ -25,7 +25,10 @@ class RhesusCategoryController extends Controller
     {
         $data = RhesusCategory::all();
         $title = $this->title;
-        return view('Manajement.Rhesus.index', compact('data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Rhesus.index', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -36,7 +39,10 @@ class RhesusCategoryController extends Controller
     public function create()
     {
         $title = $this->title;
-        return view('Manajement.Rhesus.create', compact('title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Rhesus.create', compact('title', 'latest_inbox', 'latest_notification'));
     }
 
     /**
@@ -73,7 +79,10 @@ class RhesusCategoryController extends Controller
     {
         $data = RhesusCategory::findOrFail($id);
         $title = $this->title;
-        return view('Manajement.Rhesus.edit', compact('data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.Rhesus.edit', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     /**

@@ -100,9 +100,10 @@
     @endif
     <script>
         $(".confirmation-delete").click(function(e) {
-            id = e.target.dataset.id;
+            // id = e.target.dataset.id;
             console.log(e);
             let GetDataName = $(this).attr('data-name');
+            let GetDataId = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin Data Akan Di Hapus ?',
                 html: "Data training atas nama <b>"+GetDataName+"</b> akan dihapus",
@@ -114,7 +115,7 @@
                 cancelButtonColor: '#3085d6',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(`#${id}`).submit();
+                    $(`#${GetDataId}`).submit();
                 }
             })
         });

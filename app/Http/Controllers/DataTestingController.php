@@ -17,16 +17,21 @@ class DataTestingController extends Controller
     }
 
     public function index(){
-        $nbc = new CalculationNaiveBayesController;
         $data = DataTesting::with('Rhesus_Connection')->get();
         $title = $this->title;
-        return view('Manajement.DataTestings.index', compact('data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.DataTestings.index', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     public function create(){
         $data_rhesus = RhesusCategory::all();
         $title = $this->title;
-        return view('Manajement.DataTestings.create', compact('data_rhesus', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.DataTestings.create', compact('data_rhesus', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     public function store(DataTestingValidation $request){
@@ -46,7 +51,10 @@ class DataTestingController extends Controller
         $data_rhesus = RhesusCategory::all();
         $data = DataTesting::find($id);
         $title = $this->title;
-        return view('Manajement.DataTestings.edit', compact('data_rhesus', 'data', 'title'));
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+        return view('Manajement.DataTestings.edit', compact('data_rhesus', 'data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
     public function update(DataTestingValidation $request, $id){
@@ -151,6 +159,10 @@ class DataTestingController extends Controller
         $result_normalization_class_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_layak, $result_probability_class_tidak_layak);
         $result_normalization_class_tidak_layak = $naive_bayes->getNormalizationProbability_EachClass($result_probability_class_tidak_layak, $result_probability_class_layak);
         
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
+
         return view('Manajement.DataTestings.show', compact('data', 'title',
         'total_data_training',
         'total_data_class_layak', 'total_data_class_tidak_layak',
@@ -180,6 +192,7 @@ class DataTestingController extends Controller
     
         'result_probability_class_layak', 'result_probability_class_tidak_layak',
     
-        'result_normalization_class_layak', 'result_normalization_class_tidak_layak'));
+        'result_normalization_class_layak', 'result_normalization_class_tidak_layak',
+        'latest_inbox', 'latest_notification'));
     }
 }

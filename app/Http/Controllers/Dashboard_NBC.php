@@ -166,6 +166,9 @@ class Dashboard_NBC extends Controller
 
 
     public function index(){
+        $Navigator = new HomeController;
+        $latest_inbox = $Navigator->GetLatestInbox();
+        $latest_notification = $Navigator->GetLatestNotification();
         $amount_trainings = $this->getTotalDataTrainings();
         $amount_testings = $this->getTotalDataTestings();
         $amount_datasets = $this->getTotalDatasets($amount_trainings, $amount_testings);
@@ -190,6 +193,8 @@ class Dashboard_NBC extends Controller
                     'accuracy_model'    => $accuracy_model,
                     'precision_model'   => $precision_model,
                     'recall_model'      => $recall_model,
+                    'latest_inbox'      => $latest_inbox,
+                    'latest_notification' => $latest_notification,
             ]);
     }
 }
