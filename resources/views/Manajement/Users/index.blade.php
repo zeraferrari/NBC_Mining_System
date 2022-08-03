@@ -26,6 +26,7 @@
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Nama</th>
+                                        <th scope="col">Role</th>
                                         <th scope="col">NIK</th>
                                         <th scope="col">Gender</th>
                                         <th scope="Col">Gambar Profile</th>
@@ -39,6 +40,7 @@
                                         <tr>
                                             <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                                             <td>{{ $data_users->name }}</td>
+                                            <td>{{ $data_users->roles[0]->name }}</td>
                                             <td>{{ $data_users->NIK }}</td>
                                             <td>{{ $data_users->Gender }}</td>
                                             <td class="text-center">

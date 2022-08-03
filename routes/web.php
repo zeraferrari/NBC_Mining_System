@@ -41,7 +41,7 @@ Auth::routes();
 
 
 Route::GET('Manajement/Dashboard', [Dashboard::class, 'index'])->name('Manajement.Dashboard.index')->middleware('role:Administrator|Petugas Medis');
-Route::GET('Manajement/Naive-Bayes-Dashboard', [Dashboard_NBC::class, 'index'])->name('Manajement.NBC_Dashboard.index')->middleware('auth');
+Route::GET('Manajement/Naive-Bayes-Dashboard', [Dashboard_NBC::class, 'index'])->name('Manajement.NBC_Dashboard.index')->middleware('role:Administrator|Petugas Medis');
 
 Route::GET('Manajement/Role', [RoleController::class, 'index'])->name('Manajement.Roles.index')->middleware('role:Administrator');
 Route::GET('Manajement/Role/Create', [RoleController::class, 'create'])->name('Manajement.Roles.create')->middleware('role_or_permission:Administrator|Membuat Role Baru');
@@ -99,6 +99,5 @@ Route::GET('Manajement/Hasil-Transaksi', [TransactionDonorController::class, 'Ge
 Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Detail-Transaksi', [TransactionDonorController::class, 'GetDetail_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.show')->middleware('role:Administrator|Petugas Medis');
 
 
-Route::GET('/test', [Dashboard::class, 'test'])->name('test');
 
 

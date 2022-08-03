@@ -40,15 +40,15 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Statistik Data Rhesus User</h5>
-                    <form action="{{ route('test') }}">
+                    <form action="{{ route('Manajement.Dashboard.index') }}" method="GET">
                         <div class="row">
                             <div class="col-sm-6 col-md-5 col-lg-5 form-group">
                                 <label for="ChartFromData">Dari Tanggal</label>
-                                <input type="date" class="form-control" name="ChartFromData" id="ChartFromData">
+                                <input type="date" class="form-control" name="ChartFromData_Rhesus" id="ChartFromData_Rhesus">
                             </div>
                             <div class="col-sm-6 col-md-5 col-lg-5 form-group">
                                 <label for="ChartToData">Sampai Tanggal</label>
-                                <input type="date" class="form-control" name="ChartToData" id="ChartToData">
+                                <input type="date" class="form-control" name="ChartToData_Rhesus" id="ChartToData_Rhesus"">
                             </div>
                             <div class="col-sm-12 col-md-2 col-lg-2 mt-4">
                                 <div class="buttons">
@@ -58,80 +58,18 @@
                         </div>
                     </form>
                     <div class="row mt-4">
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>A+</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_A_Plus }}</div>
+                        @foreach ($Value_EachRhesus as $Value_Rhesus)
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
+                                    <div class="card-wrap">
+                                        <div class="card-header"><h4 class="text-dark">Rhesus <b>{{ $Value_Rhesus->Name }}</b></h4></div>
+                                        <div class="card-body">{{ $Value_Rhesus->Total_EachRhesus }}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>B+</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_B_Plus }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>O+</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_O_Plus }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>AB+</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_AB_Plus }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>A-</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_A_Negative }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>B-</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_B_Negative }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>O-</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_O_Negative }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                <div class="card-wrap">
-                                    <div class="card-header"><h4 class="text-dark">Rhesus <b>AB-</b></h4></div>
-                                    <div class="card-body">{{ $Rhesus_AB_Negative }}</div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-                    
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="card">
@@ -162,15 +100,15 @@
                 <div class="card-body">
                     <h5 class="card-title">Statistik Transaksi Donor Darah</h5>
                     <div class="container-fluid px-0">
-                        <form action="{{ route('test') }}">
+                        <form action="">
                             <div class="row">
                                 <div class="col-sm-6 col-md-5 col-lg-5 form-group">
-                                    <label for="ChartFromData">Dari Tanggal</label>
-                                    <input type="date" class="form-control" name="ChartFromData" id="ChartFromData">
+                                    <label for="ChartFromDataTransaction">Dari Tanggal</label>
+                                    <input type="date" class="form-control" name="ChartFromDataTransaction" id="ChartFromDataTransaction">
                                 </div>
                                 <div class="col-sm-6 col-md-5 col-lg-5 form-group">
-                                    <label for="ChartToData">Sampai Tanggal</label>
-                                    <input type="date" class="form-control" name="ChartToData" id="ChartToData">
+                                    <label for="ChartToDataTransaction">Sampai Tanggal</label>
+                                    <input type="date" class="form-control" name="ChartToDataTransaction" id="ChartToDataTransaction">
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2 mt-4">
                                     <div class="buttons">
@@ -211,78 +149,17 @@
                     </div>
                     <div class="container-fluid px-0">
                         <div class="row">
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>A+</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_A_Plus }}</div>
+                            @foreach ($Count_RhesusBloodTransaction as $Count_BloodTransaction)
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <div class="card card-statistic-1">
+                                        <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
+                                        <div class="card-wrap">
+                                            <div class="card-header"><h4 class="text-dark">Kantong Darah <b>{{ $Count_BloodTransaction->Name }}</b></h4></div>
+                                            <div class="card-body">{{ $Count_BloodTransaction->Total_CountRhesus_Transaction }}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>B+</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_B_Plus }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>O+</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_O_Plus }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>AB+</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_AB_Plus }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>A-</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_A_Negative }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>B-</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_B_Negative }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>O-</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_O_Negative }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon" style="background-color: #8A0707"><i class="fas fa-tint"></i></div>
-                                    <div class="card-wrap">
-                                        <div class="card-header"><h4 class="text-dark">Kantong Darah <b>AB-</b></h4></div>
-                                        <div class="card-body">{{ $TB_Count_AB_Negative }}</div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="row">

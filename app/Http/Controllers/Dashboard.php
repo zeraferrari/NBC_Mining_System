@@ -20,201 +20,403 @@ class Dashboard extends Controller
         $this->middleware('auth');
     }
 
-    public function CountingRhesus_Data($RhesusCategory){
-        return User::with('Rhesus_Connection')->get()
-        ->where('Rhesus_Connection.Name', '=', $RhesusCategory)->count();
+
+    public function CountingAllUser(){
+        $data = User::count();
+        return $data;
     }
 
-    public function CountBloodTransaction($TypeRhesus){
-        return TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
-                                ->where('Status_Donor', '=', 'Berhasil Mendonor')
-                                ->where('User_Connection.Rhesus_Connection.Name', '=', $TypeRhesus)
-                                ->count();
+    public function CountUser_AlreadyDonated(){
+        $data = User::where('Status_Donor', '=', 'Sudah Mendonor')->get()->count();
+        return $data;
     }
 
-    public function getNameMonth(){
-        $MonthNumber = TransactionDonor::with('User_Connection.Rhesus_Connection')->pluck('created_at');
-        
-        $temp_Month = [];
- 
-        foreach ($MonthNumber as $key => $value) {
-            $temp_Month[] = date('F-Y', strtotime($value));
-         }
- 
-         $MonthName = array_values(array_unique($temp_Month));
-         return $MonthName;
+    public function CountUser_HaventDonated(){
+        $data = User::where('Status_Donor', '=', 'Belum Mendonor')->get()->count();
+        return $data;
     }
 
+    public function GetEachRhesus_UserRegisterd(){
+        $TotalEachRhesus = RhesusCategory::with('User_Connection')
+        ->withCount('User_Connection as Total_EachRhesus')
+        ->get();
 
-    function getStructLineChartJSON(){
-        $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
-        ->where('Status_Donor', '=', 'Berhasil Mendonor')
-        ->groupBy(function($val){
-            return Carbon::parse($val->created_at)->format('F-Y');
-        });
-
-        $Data_Rhesus = RhesusCategory::all();
-        
-        $datasets = [];
-        foreach($Data_Rhesus as $index => $value){
-            array_push($datasets, (object) [
-                'label'  => $Data_Rhesus[$index]->Name,
-                'data'  => [],
-                'BorderColor' => '',
-                'BackgroundColor' => '',
-            ]);
-        }
-
-        foreach($Transaction_Each_Month as $Each_Month_Transaction){
-            foreach($Data_Rhesus as $Each_Data_Rhesus){
-                $count_data_each_rhesus = 0;
-                foreach($Each_Month_Transaction as $Each_Transaction){
-                    if($Each_Transaction->User_Connection->Rhesus_Connection->id === $Each_Data_Rhesus->id){
-                        $count_data_each_rhesus++;
-                    }
-                }
-
-                foreach ($Data_Rhesus as $key => $value) {
-                    if($Each_Data_Rhesus->Name == $datasets[$key]->label){
-                        $datasets[$key]->data[] = $count_data_each_rhesus;
-                        if($datasets[$key]->label == 'A+'){
-                            $datasets[$key]->BorderColor = 'rgba(255, 33, 33, 0.5)';
-                            $datasets[$key]->BackgroundColor = 'rgba(255, 33, 33, 0.5)';
-                        }
-                        elseif($datasets[$key]->label == 'A-'){
-                            $datasets[$key]->BorderColor = 'rgba(255, 204, 0, 0.5)';
-                            $datasets[$key]->BackgroundColor = 'rgba(255, 204, 0, 0.5)';
-                        }
-                        elseif($datasets[$key]->label == 'B+'){
-                            $datasets[$key]->BorderColor = 'rgba(40, 255, 0, 0.5)';
-                            $datasets[$key]->BackgroundColor = 'rgba(40, 255, 0, 0.5)';
-                        }
-                        elseif($datasets[$key]->label == 'B-'){
-                            $datasets[$key]->BorderColor = 'rgba(0, 255, 177, 0.5)';
-                            $datasets[$key]->BackgroundColor = 'rgba(0, 255, 177, 0.5)';
-                        }
-                        elseif($datasets[$key]->label == 'O+'){
-                            $datasets[$key]->BorderColor = 'rgba(0, 51, 255, 0.5)';
-                            $datasets[$key]->BackgroundColor = 'rgba(0, 51, 255, 0.5)';
-                        }
-                        elseif($datasets[$key]->label == 'O-'){
-                            $datasets[$key]->BorderColor = 'rgba(140, 0, 255, 0.5)';
-                            $datasets[$key]->BackgroundColor = 'rgba(140, 0, 255, 0.5)';
-                        }
-                        elseif($datasets[$key]->label == 'AB+'){
-                            $datasets[$key]->BorderColor = 'rgba(255, 0, 157, 0.66)';
-                            $datasets[$key]->BackgroundColor = 'rgba(255, 0, 157, 0.66)';
-                        }
-                        elseif($datasets[$key]->label == 'AB-'){
-                            $datasets[$key]->BorderColor = 'rgba(0, 78, 255, 0.76)';
-                            $datasets[$key]->BackgroundColor = 'rgba(0, 78, 255, 0.76)';
-                        }
-                    }
-                }
-            }
-        }
-        $structer_transaction_json = json_encode($datasets);
-        return $structer_transaction_json;
+        return $TotalEachRhesus;
     }
 
-    public function index(){
-        $Navigator = new HomeController();
-        $latest_inbox = $Navigator->GetLatestInbox();
-        $latest_notification = $Navigator->GetLatestNotification();
-        $title = $this->title;
-        $total_users = User::CountingUsers();
-        $already_donated_users = User::AlreadyDonated();
-        $havent_donated_users = User::HaventDonated();
-        $Rhesus_A_Plus = $this->CountingRhesus_Data('A+');
-        $Rhesus_B_Plus = $this->CountingRhesus_Data('B+');
-        $Rhesus_O_Plus = $this->CountingRhesus_Data('O+');
-        $Rhesus_AB_Plus = $this->CountingRhesus_Data('AB+');
-        $Rhesus_A_Negative = $this->CountingRhesus_Data('A-');
-        $Rhesus_B_Negative = $this->CountingRhesus_Data('B-');
-        $Rhesus_O_Negative = $this->CountingRhesus_Data('O-');
-        $Rhesus_AB_Negative = $this->CountingRhesus_Data('AB-');
-        $Count_Data_Each_Rhesus = RhesusCategory::with('User_Connection')->withCount('User_Connection as Jumlah_User')->pluck('Jumlah_User')->toArray(); 
-        $Name_Rhesus = RhesusCategory::with('Rhesus_Connection')->pluck('Name')->toArray();
-        $Total_Transaction = TransactionDonor::CountTransaction();
-        $Transaction_Success = TransactionDonor::CountTransactionSuccess();
-        $Transaction_Fails = TransactionDonor::CountTransactionFails();
-        $TB_Count_A_Plus = $this->CountBloodTransaction('A+');
-        $TB_Count_B_Plus = $this->CountBloodTransaction('B+');
-        $TB_Count_O_Plus = $this->CountBloodTransaction('O+');
-        $TB_Count_AB_Plus = $this->CountBloodTransaction('AB+');
-        $TB_Count_A_Negative = $this->CountBloodTransaction('A-');
-        $TB_Count_B_Negative = $this->CountBloodTransaction('B-');
-        $TB_Count_O_Negative = $this->CountBloodTransaction('O-');
-        $TB_Count_AB_Negative = $this->CountBloodTransaction('AB-');
-        // $Result = RhesusCategory::withCount(['User_Connection as Total_Kantong_Darah' => function($query){
-        //     $query->join('transaction_donors', 'transaction_donors.User_Pendonor_id', '=', 'users.id')
-        //             ->where('transaction_donors.Status_Donor', '=', 'Berhasil Mendonor')
-        //             ->where('transaction_donors.created_at', '>=', '2022-03-15 00:00:00')
-        //             ->where('transaction_donors.created_at', '<=', '2022-04-09 23:59:59');
-        // }])->with(['User_Connection.Transaction_Connect' => function($query){
-        //             $query->where('transaction_donors.created_at', '>=', '2022-03-15 00:00:00')
-        //             ->where('transaction_donors.created_at', '<=', '2022-04-09 23:59:59')
-        //             ->where('transaction_donors.Status_Donor', '=', 'Berhasil Mendonor');
-        // }])->get();
-        $Month_Name = $this->getNameMonth();
-        $Json_Line_Chart = $this->getStructLineChartJSON();
-        return view('Manajement.Dashboard.index', compact('title',
-                                                                        'total_users',
-                                                                        'already_donated_users',
-                                                                        'havent_donated_users',
-                                                                        'Rhesus_A_Plus', 'Rhesus_B_Plus', 'Rhesus_O_Plus', 'Rhesus_AB_Plus',
-                                                                        'Rhesus_A_Negative', 'Rhesus_B_Negative', 'Rhesus_O_Negative', 'Rhesus_AB_Negative',
-                                                                        'Count_Data_Each_Rhesus',
-                                                                        'Name_Rhesus',
-                                                                        'Total_Transaction',
-                                                                        'Transaction_Success',
-                                                                        'Transaction_Fails',
-                                                                        'TB_Count_A_Plus', 'TB_Count_B_Plus', 'TB_Count_O_Plus', 'TB_Count_AB_Plus',
-                                                                        'TB_Count_A_Negative', 'TB_Count_B_Negative', 'TB_Count_O_Negative', 'TB_Count_AB_Negative',
-                                                                        'Month_Name', 'Json_Line_Chart',
-                                                                        'latest_inbox', 'latest_notification'
-                                                                    ));
+    public function GetCountRhesus_BloodTransaction(){
+        $CountBlood_Transaction = RhesusCategory::with('User_Connection.Transaction_Connect')
+        ->withCount(['User_Connection as Total_CountRhesus_Transaction' => function($query){
+            $query->join('transaction_donors', 'User_Pendonor_id', '=', 'users.id')
+            ->where('transaction_donors.Status_Donor', '=', 'Berhasil Mendonor');
+        }])
+        ->get();
+
+        return $CountBlood_Transaction;
     }
 
+    public function GetCount_AllTransaction(){
+        $data = TransactionDonor::whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor'])->count();
+        return $data;
+    }
+
+    public function GetCount_SuccessTransaction(){
+        $data = TransactionDonor::where('Status_Donor', '=', 'Berhasil Mendonor')->count();
+        return $data;
+    }
+
+    public function GetCount_FailedTransaction(){
+        $data = TransactionDonor::where('Status_Donor', '=', 'Gagal Donor')->count();
+        return $data;
+    }
+
+    public function DataEachRhesus_UserByDate($FromDate, $ToDate){
+        $TotalUser_Each_Rhesus = RhesusCategory::with('User_Connection')
+        ->withCount(['User_Connection as Total_EachRhesus' => function($callbacks)use($FromDate, $ToDate){
+            $callbacks->where('users.created_at', '>=', $FromDate.' 00:00:00')
+                     ->where('users.created_at', '<=', $ToDate.' 23:59:59');
+        }])
+        ->get();
+        return $TotalUser_Each_Rhesus;
+    }
+
+    public function CountingDataUser_ByDate($FromDate, $ToDate){
+        $data = User::where('created_at', '>=', $FromDate.' 00:00:00')
+        ->where('created_at', '<=', $ToDate.' 23:59:59')
+        ->count();
+        return $data;
+    }
+
+    public function CountDataUser_AlreadyDonated_ByDate($FromDate, $ToDate){
+        $data = User::where('Status_Donor', '=', 'Sudah Mendonor')
+        ->where('created_at', '>=', $FromDate.' 00:00:00')
+        ->where('created_at', '<=', $ToDate.' 23:59:59')
+        ->count();
+        return $data;
+    }
+
+    public function CountDataUser_HaventDonated_ByDate($FromDate, $ToDate){
+        $data = User::where('Status_Donor', '=', 'Belum Mendonor')
+        ->where('created_at', '>=', $FromDate.' 00:00:00')
+        ->where('created_at', '<=', $ToDate.' 23:59:59')
+        ->count();
+        return $data;
+    }
+
+    public function GetCount_AllTransaction_ByDate($FromDate, $ToDate){
+        $data = TransactionDonor::whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor'])
+        ->where('created_at', '>=', $FromDate.' 00:00:00')
+        ->where('created_at', '<=', $ToDate.' 23:59:59')
+        ->count();
+        return $data;
+    }
+
+    public function GetCount_SuccessTransaction_ByDate($FromDate, $ToDate){
+        $data = TransactionDonor::where('Status_Donor', '=', 'Berhasil Mendonor')
+        ->where('created_at', '>=', $FromDate.' 00:00:00')
+        ->where('created_at', '<=', $ToDate.' 23:59:59')
+        ->count();
+        return $data;
+    }
+
+    public function GetCount_FailedTransaction_ByDate($FromDate, $ToDate){
+        $data = TransactionDonor::where('Status_Donor', '=', 'Gagal Donor')
+        ->where('created_at', '>=', $FromDate.' 00:00:00')
+        ->where('created_at', '<=', $ToDate.' 23:59:59')
+        ->count();
+        return $data;
+    }
+
+    public function GetCountRhesus_BloodTransaction_ByDate($FromDate, $ToDate){
+        $CountBlood_Transaction = RhesusCategory::with('User_Connection.Transaction_Connect')
+        ->withCount(['User_Connection as Total_CountRhesus_Transaction' => function($query)use($FromDate, $ToDate){
+            $query->join('transaction_donors', 'User_Pendonor_id', '=', 'users.id')
+            ->where('transaction_donors.Status_Donor', '=', 'Berhasil Mendonor')
+            ->where('transaction_donors.created_at', '>=', $FromDate.' 00:00:00')
+            ->where('transaction_donors.created_at', '<=', $ToDate.' 23:59:59');
+        }])
+        ->get();
+
+        return $CountBlood_Transaction;
+    }
+
+    public function getNameMonth($FromDate, $ToDate){
+
+        if(isset($FromDate) AND isset($ToDate)){
+            $MonthNumber = TransactionDonor::with('User_Connection.Rhesus_Connection')
+            ->where('created_at', '>=', $FromDate.' 00:00:00')
+            ->where('created_at', '<=', $ToDate.' 23:59:59')
+            ->pluck('created_at')
+            ->sortBy('created_at');
+            
+            
     
-
-    public function test(Request $request){
-        $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
-        ->where('created_at', '>=', $request->ChartFromData.' 00:00:00')
-        ->where('created_at', '<=', $request->ChartToData.' 23:59:59')
-        ->groupBy(function($val){
-            return Carbon::parse($val->created_at)->format('F-Y');
-        });
-
-        dd($Transaction_Each_Month);
-        
-
-        $Data_Rhesus = RhesusCategory::all();
-        
-        $datasets = [];
-        foreach($Data_Rhesus as $Each_Rhesus){
-            array_push($datasets, (object) [
-                'label'  => $Each_Rhesus->Name,
-                'data'  => [],
-            ]);
+            $temp_Month = [];
+     
+            foreach ($MonthNumber as $key => $value) {
+                $temp_Month[] = date('F-Y', strtotime($value));
+             }
+    
+             $MonthName = array_values(array_unique($temp_Month));
+             return $MonthName;
+        }else{
+            $MonthNumber = TransactionDonor::with('User_Connection.Rhesus_Connection')
+            ->pluck('created_at')
+            ->sortBy('created_at');
+            
+            
+    
+            $temp_Month = [];
+     
+            foreach ($MonthNumber as $key => $value) {
+                $temp_Month[] = date('F-Y', strtotime($value));
+             }
+    
+             $MonthName = array_values(array_unique($temp_Month));
+             return $MonthName;
         }
 
-        foreach($Transaction_Each_Month as $Each_Month_Transaction){
-            foreach($Data_Rhesus as $Each_Data_Rhesus){
-                $count_data_each_rhesus = 0;
-                foreach($Each_Month_Transaction as $Each_Transaction){
-                    if($Each_Transaction->User_Connection->Rhesus_Connection->id === $Each_Data_Rhesus->id){
-                        $count_data_each_rhesus++;
-                    }
-                }
+    }
 
-                foreach ($Data_Rhesus as $key => $value) {
-                    if($Each_Data_Rhesus->Name == $datasets[$key]->label){
-                        $datasets[$key]->data[] = $count_data_each_rhesus;
+
+    function getStructLineChartJSON($FromDate, $ToDate){
+        
+        if(isset($FromDate) AND isset($ToDate)){
+            $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
+            ->where('Status_Donor', '=', 'Berhasil Mendonor')
+            ->where('created_at', '>=', $FromDate.' 00:00:00')
+            ->where('created_at', '<=', $ToDate.' 23:59:59')
+            ->groupBy(function($val){
+                return Carbon::parse($val->created_at)->format('F-Y');
+            })->sortBy('created_at');
+        
+
+            $Data_Rhesus = RhesusCategory::all();
+            
+            $datasets = [];
+            foreach($Data_Rhesus as $index => $value){
+                array_push($datasets, (object) [
+                    'label'  => $Data_Rhesus[$index]->Name,
+                    'data'  => [],
+                    'BorderColor' => '',
+                    'BackgroundColor' => '',
+                ]);
+            }
+
+            foreach($Transaction_Each_Month as $Each_Month_Transaction){
+                foreach($Data_Rhesus as $Each_Data_Rhesus){
+                    $count_data_each_rhesus = 0;
+                    foreach($Each_Month_Transaction as $Each_Transaction){
+                        if($Each_Transaction->User_Connection->Rhesus_Connection->id === $Each_Data_Rhesus->id){
+                            $count_data_each_rhesus++;
+                        }
+                    }
+
+                    foreach ($Data_Rhesus as $key => $value) {
+                        if($Each_Data_Rhesus->Name == $datasets[$key]->label){
+                            $datasets[$key]->data[] = $count_data_each_rhesus;
+                            if($datasets[$key]->label == 'A+'){
+                                $datasets[$key]->BorderColor = 'rgba(255, 33, 33, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 33, 33, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'A-'){
+                                $datasets[$key]->BorderColor = 'rgba(255, 204, 0, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 204, 0, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'B+'){
+                                $datasets[$key]->BorderColor = 'rgba(40, 255, 0, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(40, 255, 0, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'B-'){
+                                $datasets[$key]->BorderColor = 'rgba(0, 255, 177, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(0, 255, 177, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'O+'){
+                                $datasets[$key]->BorderColor = 'rgba(0, 51, 255, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(0, 51, 255, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'O-'){
+                                $datasets[$key]->BorderColor = 'rgba(140, 0, 255, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(140, 0, 255, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'AB+'){
+                                $datasets[$key]->BorderColor = 'rgba(255, 0, 157, 0.66)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 0, 157, 0.66)';
+                            }
+                            elseif($datasets[$key]->label == 'AB-'){
+                                $datasets[$key]->BorderColor = 'rgba(0, 78, 255, 0.76)';
+                                $datasets[$key]->BackgroundColor = 'rgba(0, 78, 255, 0.76)';
+                            }
+                        }
                     }
                 }
             }
+            $structer_transaction_json = json_encode($datasets);
+            return $structer_transaction_json;  
+        }else{
+            $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
+            ->where('Status_Donor', '=', 'Berhasil Mendonor')
+            ->groupBy(function($val){
+                return Carbon::parse($val->created_at)->format('F-Y');
+            })->sortBy('created_at');
+        
+
+            $Data_Rhesus = RhesusCategory::all();
+            
+            $datasets = [];
+            foreach($Data_Rhesus as $index => $value){
+                array_push($datasets, (object) [
+                    'label'  => $Data_Rhesus[$index]->Name,
+                    'data'  => [],
+                    'BorderColor' => '',
+                    'BackgroundColor' => '',
+                ]);
+            }
+
+            foreach($Transaction_Each_Month as $Each_Month_Transaction){
+                foreach($Data_Rhesus as $Each_Data_Rhesus){
+                    $count_data_each_rhesus = 0;
+                    foreach($Each_Month_Transaction as $Each_Transaction){
+                        if($Each_Transaction->User_Connection->Rhesus_Connection->id === $Each_Data_Rhesus->id){
+                            $count_data_each_rhesus++;
+                        }
+                    }
+
+                    foreach ($Data_Rhesus as $key => $value) {
+                        if($Each_Data_Rhesus->Name == $datasets[$key]->label){
+                            $datasets[$key]->data[] = $count_data_each_rhesus;
+                            if($datasets[$key]->label == 'A+'){
+                                $datasets[$key]->BorderColor = 'rgba(255, 33, 33, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 33, 33, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'A-'){
+                                $datasets[$key]->BorderColor = 'rgba(255, 204, 0, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 204, 0, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'B+'){
+                                $datasets[$key]->BorderColor = 'rgba(40, 255, 0, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(40, 255, 0, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'B-'){
+                                $datasets[$key]->BorderColor = 'rgba(0, 255, 177, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(0, 255, 177, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'O+'){
+                                $datasets[$key]->BorderColor = 'rgba(0, 51, 255, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(0, 51, 255, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'O-'){
+                                $datasets[$key]->BorderColor = 'rgba(140, 0, 255, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(140, 0, 255, 0.5)';
+                            }
+                            elseif($datasets[$key]->label == 'AB+'){
+                                $datasets[$key]->BorderColor = 'rgba(255, 0, 157, 0.66)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 0, 157, 0.66)';
+                            }
+                            elseif($datasets[$key]->label == 'AB-'){
+                                $datasets[$key]->BorderColor = 'rgba(0, 78, 255, 0.76)';
+                                $datasets[$key]->BackgroundColor = 'rgba(0, 78, 255, 0.76)';
+                            }
+                        }
+                    }
+                }
+            }
+            $structer_transaction_json = json_encode($datasets);
+            return $structer_transaction_json;   
         }
-    $structer_transaction_json = json_encode($datasets);
-    } 
+    }
+
+    public function index(Request $request){
+        if($request->has('ChartFromData_Rhesus') AND $request->has('ChartToData_Rhesus')){
+            $Navigator = new HomeController();
+            $latest_inbox = $Navigator->GetLatestInbox();
+            $latest_notification = $Navigator->GetLatestNotification();
+            $title = $this->title;
+            $total_users = $this->CountingDataUser_ByDate($request->ChartFromData_Rhesus, $request->ChartToData_Rhesus);
+            $already_donated_users = $this->CountDataUser_AlreadyDonated_ByDate($request->ChartFromData_Rhesus, $request->ChartToData_Rhesus);
+            $havent_donated_users = $this->CountDataUser_HaventDonated_ByDate($request->ChartFromData_Rhesus, $request->ChartToData_Rhesus);
+            $Value_EachRhesus = $this->DataEachRhesus_UserByDate($request->ChartFromData_Rhesus, $request->ChartToData_Rhesus);
+            $Count_RhesusBloodTransaction = $this->GetCountRhesus_BloodTransaction();
+            $Total_Transaction = $this->GetCount_AllTransaction();
+            $Transaction_Success = $this->GetCount_SuccessTransaction();
+            $Transaction_Fails = $this->GetCount_FailedTransaction();
+            $Count_Data_Each_Rhesus = $Value_EachRhesus->pluck('Total_EachRhesus')->toArray();
+            $Name_Rhesus = RhesusCategory::with('Rhesus_Connection')->pluck('Name')->toArray();
+            $Month_Name = $this->getNameMonth($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            $Json_Line_Chart = $this->getStructLineChartJSON($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            return view('Manajement.Dashboard.index', compact('title',
+                                                                            'latest_inbox', 'latest_notification',
+                                                                            'total_users',
+                                                                            'already_donated_users',
+                                                                            'havent_donated_users',
+                                                                            'Value_EachRhesus', 'Count_RhesusBloodTransaction',
+                                                                            'Count_Data_Each_Rhesus',
+                                                                            'Name_Rhesus',
+                                                                            'Total_Transaction',
+                                                                            'Transaction_Success',
+                                                                            'Transaction_Fails',
+                                                                            'Month_Name', 'Json_Line_Chart',
+                                                                        ));
+        }elseif($request->has('ChartFromDataTransaction') AND $request->has('ChartToDataTransaction')){
+            $Navigator = new HomeController();
+            $latest_inbox = $Navigator->GetLatestInbox();
+            $latest_notification = $Navigator->GetLatestNotification();
+            $title = $this->title;
+            $total_users = $this->CountingAllUser();
+            $already_donated_users = $this->CountUser_AlreadyDonated();
+            $havent_donated_users = $this->CountUser_HaventDonated();
+            $Value_EachRhesus = $this->GetEachRhesus_UserRegisterd();
+            $Count_RhesusBloodTransaction = $this->GetCountRhesus_BloodTransaction_ByDate($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            $Total_Transaction = $this->GetCount_AllTransaction_ByDate($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            $Transaction_Success = $this->GetCount_SuccessTransaction_ByDate($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            $Transaction_Fails = $this->GetCount_FailedTransaction_ByDate($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            $Count_Data_Each_Rhesus = $Value_EachRhesus->pluck('Total_EachRhesus')->toArray();
+            $Name_Rhesus = RhesusCategory::with('Rhesus_Connection')->pluck('Name')->toArray();
+            $Month_Name = $this->getNameMonth($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            $Json_Line_Chart = $this->getStructLineChartJSON($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            return view('Manajement.Dashboard.index', compact('title',
+                                                                            'latest_inbox', 'latest_notification',
+                                                                            'total_users',
+                                                                            'already_donated_users',
+                                                                            'havent_donated_users',
+                                                                            'Value_EachRhesus', 'Count_RhesusBloodTransaction',
+                                                                            'Count_Data_Each_Rhesus',
+                                                                            'Name_Rhesus',
+                                                                            'Total_Transaction',
+                                                                            'Transaction_Success',
+                                                                            'Transaction_Fails',
+                                                                            'Month_Name', 'Json_Line_Chart',
+                                                                        ));
+        }else{
+            $Navigator = new HomeController();
+            $latest_inbox = $Navigator->GetLatestInbox();
+            $latest_notification = $Navigator->GetLatestNotification();
+            $title = $this->title;
+            $total_users = $this->CountingAllUser();
+            $already_donated_users = $this->CountUser_AlreadyDonated();
+            $havent_donated_users = $this->CountUser_HaventDonated();
+            $Value_EachRhesus = $this->GetEachRhesus_UserRegisterd();
+            $Count_RhesusBloodTransaction = $this->GetCountRhesus_BloodTransaction();
+            $Total_Transaction = $this->GetCount_AllTransaction();
+            $Transaction_Success = $this->GetCount_SuccessTransaction();
+            $Transaction_Fails = $this->GetCount_FailedTransaction();
+            $Count_Data_Each_Rhesus = $Value_EachRhesus->pluck('Total_EachRhesus')->toArray();
+            $Name_Rhesus = RhesusCategory::with('Rhesus_Connection')->pluck('Name')->toArray();
+            $Month_Name = $this->getNameMonth($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            $Json_Line_Chart = $this->getStructLineChartJSON($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            return view('Manajement.Dashboard.index', compact('title',
+                                                                            'latest_inbox', 'latest_notification',
+                                                                            'total_users',
+                                                                            'already_donated_users',
+                                                                            'havent_donated_users',
+                                                                            'Value_EachRhesus', 'Count_RhesusBloodTransaction',
+                                                                            'Count_Data_Each_Rhesus',
+                                                                            'Name_Rhesus',
+                                                                            'Total_Transaction',
+                                                                            'Transaction_Success',
+                                                                            'Transaction_Fails',
+                                                                            'Month_Name', 'Json_Line_Chart',
+                                                                        ));
+        }
+    }
 }
