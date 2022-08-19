@@ -97,7 +97,6 @@ Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Me
 
 Route::GET('Manajement/Hasil-Transaksi', [TransactionDonorController::class, 'GetResult_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.index')->middleware('role:Administrator|Petugas Medis');
 Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Detail-Transaksi', [TransactionDonorController::class, 'GetDetail_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.show')->middleware('role:Administrator|Petugas Medis');
-
-
-
+Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Printout', [TransactionDonorController::class, 'PrintOut'])->name('Manajement.Hasil_Transaksi_Donor.Printout');
+Route::GET('/Manajement/Hasil-Transaksi/Generated-PDF', [TransactionDonorController::class, 'Generated_PDF'])->name('Generated-PDF');
 

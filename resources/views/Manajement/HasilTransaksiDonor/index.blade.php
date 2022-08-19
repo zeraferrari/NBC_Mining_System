@@ -21,7 +21,22 @@
                     <div class="collapse" id="HasilTransaksi">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="DataTables">
+                                <table class="table table-bordered table-hover" id="TabelTransaksiDonor">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-6 col-md-5 col-lg-5 form-group">
+                                            <label for="FromDate">Dari Tanggal</label>
+                                            <input type="text" class="form-control" name="FromDate" id="FromDate">
+                                        </div>
+                                        <div class="col-sm-6 col-md-5 col-lg-5 form-group">
+                                            <label for="ToDate">Sampai Tanggal</label>
+                                            <input type="text" class="form-control" name="ToDate" id="ToDate">
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center mb-5">
+                                        <a href="{{ route('Generated-PDF') }}" class="btn btn-md btn-danger col-sm-12 col-md-3 col-lg-3" id="PDF_Download">Download PDF</a>
+                                        <a href="" class="btn btn-md btn-success col-sm-12 col-md-3 col-lg-3 offset-lg-1 offset-md-1">Download Excel</a>
+                                        <a href="" class="btn btn-md btn-warning col-sm-12 col-md-3 col-lg-3 offset-lg-1 offset-md-1">Print</a>
+                                    </div>
                                     <thead class="thead-light align-center">
                                         <tr>
                                             <th scope="col">No</th>
@@ -55,7 +70,7 @@
                                                 <td>
                                                     <div class="buttons text-center">
                                                         <a href="{{ route('Manajement.Hasil_Transaksi_Donor.show', $result_transactions->Code_Transaction ?? 'Unknown') }}" class="btn btn-icon btn-sm btn-primary"><i class="fas fa-eye"></i></a>
-                                                        <a href="" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-print"></i></a>
+                                                        <a href="{{ route('Manajement.Hasil_Transaksi_Donor.Printout', $result_transactions->Code_Transaction ?? 'Unknown') }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-print"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -120,5 +135,85 @@
                 </div>
             </div>
         </div>
-</section>  
+</section>
+@endsection
+@section('Filter')
+    <script>
+        // var minDate, maxDate;
+        var minDate = document.getElementById("FromDate");
+        var maxDate = document.getElementById("ToDate");
+
+        // Custom filtering function which will search data in column four between two values
+        $.fn.dataTable.ext.search.push(
+            function( settings, data, dataIndex ) {
+                var min = minDate.val();
+                var max = maxDate.val();
+                var date = new Date( data[5] );
+                if (
+                    (min === null && max === null) ||
+                    (min <= date && max >= date) ||
+                    (min >= date && max === null) ||
+                    (min === null && date <= max)
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $(document).ready(function() {
+            moment().locale('id-ID');
+            // Create date inputs
+            minDate = new DateTime($('#FromDate'), {
+                format: 'DD/MM/YYYY'
+            });
+            
+            maxDate = new DateTime($('#ToDate'), {
+                format: 'DD/MM/YYYY'
+            });
+            var printCounter = 0;
+            
+            // console.log(FromDate);
+            // DataTables initialisation
+            var table = $('#TabelTransaksiDonor').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        messageTop: 'Informasi Data Transaksi Pada Tanggal',
+                        title: 'Data Hasil Transaksi Donor Darah'
+                    },
+                    {
+                        extend: 'pdf',
+                        messageBottom: null,
+                        title: 'Data Hasil Transaksi Donor Darah'
+                    },
+                    {
+                        extend: 'print',
+                        title: 'Data Hasil Transaksi Donor Darah',
+                        messageTop: function () {
+                            printCounter++;
+        
+                            if ( printCounter === 1 ) {
+                                return 'Cetakan Dokumen Pertama';
+                            }
+                            else {
+                                return 'Cetakan Dokumen Ke '+printCounter;
+                            }
+                        },
+                        messageBottom: null
+                    }
+                ]
+            });
+
+        
+            // Refilter the table
+            $('#FromDate, #ToDate').on('change', function () {
+                table.draw();
+            });
+        });
+
+        
+    </script>
 @endsection

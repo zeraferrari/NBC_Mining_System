@@ -101,7 +101,6 @@
     <script>
         $(".confirmation-delete").click(function(e) {
             // id = e.target.dataset.id;
-            console.log(e);
             let GetDataName = $(this).attr('data-name');
             let GetDataId = $(this).attr('data-id');
             Swal.fire({

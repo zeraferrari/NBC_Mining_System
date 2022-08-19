@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
@@ -32,6 +33,7 @@ class TransactionDonorController extends Controller
         $Navigator = new HomeController;
         $latest_inbox = $Navigator->GetLatestInbox();
         $latest_notification = $Navigator->GetLatestNotification();
+
         return view('Manajement.Antrian.index', compact('data_transaction_user', 'title', 'latest_inbox', 'latest_notification'));
         
     }
@@ -359,5 +361,11 @@ class TransactionDonorController extends Controller
     
         'result_normalization_class_layak', 'result_normalization_class_tidak_layak',
         'latest_inbox', 'latest_notification'));
+    }
+
+    public function Generated_PDF(){
+        $data_transaction = TransactionDonor::with('User_Connection.Rhesus_Connection')->get();
+        $pdf = PDF::loadView('Manajement.HasilTransaksiDonor.PDF', ['data_transaction' => $data_transaction])->setPaper('A4', 'potrait');
+        return $pdf->stream("Laporan_Hasil_Transaksi_Donor_Darah");
     }
 }
