@@ -32,11 +32,6 @@
                                             <input type="text" class="form-control" name="ToDate" id="ToDate">
                                         </div>
                                     </div>
-                                    <div class="row justify-content-center mb-5">
-                                        <a href="{{ route('Generated-PDF') }}" class="btn btn-md btn-danger col-sm-12 col-md-3 col-lg-3" id="PDF_Download">Download PDF</a>
-                                        <a href="" class="btn btn-md btn-success col-sm-12 col-md-3 col-lg-3 offset-lg-1 offset-md-1">Download Excel</a>
-                                        <a href="" class="btn btn-md btn-warning col-sm-12 col-md-3 col-lg-3 offset-lg-1 offset-md-1">Print</a>
-                                    </div>
                                     <thead class="thead-light align-center">
                                         <tr>
                                             <th scope="col">No</th>
@@ -70,7 +65,7 @@
                                                 <td>
                                                     <div class="buttons text-center">
                                                         <a href="{{ route('Manajement.Hasil_Transaksi_Donor.show', $result_transactions->Code_Transaction ?? 'Unknown') }}" class="btn btn-icon btn-sm btn-primary"><i class="fas fa-eye"></i></a>
-                                                        <a href="{{ route('Manajement.Hasil_Transaksi_Donor.Printout', $result_transactions->Code_Transaction ?? 'Unknown') }}" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-print"></i></a>
+                                                        <a href="{{ route('Manajement.Hasil_Transaksi_Donor.Printout', $result_transactions->Code_Transaction ?? 'Unknown') }}" target="_blank" class="btn btn-icon btn-sm btn-warning"><i class="fas fa-print"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -173,21 +168,47 @@
             });
             var printCounter = 0;
             
-            // console.log(FromDate);
-            // DataTables initialisation
+            let Value_MinDate = minDate.s.d;
+            let Value_MaxDate = maxDate.s.d;
+            let Transfrom_MinDate = moment(Value_MinDate).locale('id-ID').format('DD-MM-YYYY');
+            let Transfrom_MaxDate = moment(Value_MaxDate).locale('id-ID').format('DD-MM-YYYY');
+            
+            
+            // Refilter the table
+            $('#FromDate, #ToDate').on('change', function () {
+                table.draw();
+            });
+
             var table = $('#TabelTransaksiDonor').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                    'copy',
                     {
                         extend: 'excelHtml5',
-                        messageTop: 'Informasi Data Transaksi Pada Tanggal',
-                        title: 'Data Hasil Transaksi Donor Darah'
+                        messageTop: () => {
+                            if(Transfrom_MinDate != 'Invalid date' && Transfrom_MaxDate != 'Invalid date'){
+                                return 'Data Transaksi Donor Darah Dari Tanggal : '+Transfrom_MinDate+' sampai dengan : '+Transfrom_MaxDate;
+                            }else if(Transfrom_MinDate == 'Invalid date' && Transfrom_MaxDate != 'Invalid date'){
+                                return 'Data Transaksi Donor Darah Sebelum Tanggal : ' +Transfrom_MaxDate;
+                            }else if(Transfrom_MinDate != 'Invalid date' && Transfrom_MaxDate == 'Invalid date'){
+                                return 'Data Transaksi Donor Darah Mulai Dari Tanggal : '+Transfrom_MinDate+' Sampai Sekarang';
+                            }else{
+                                return 'Data Transaksi Donor Darah Seluruh Transaksi Donor Darah';
+                            }
+                        },
+                        title: 'Data Hasil Transaksi Donor Darah',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7]
+                        }
                     },
                     {
-                        extend: 'pdf',
+                        extend: 'pdfHtml5',
                         messageBottom: null,
-                        title: 'Data Hasil Transaksi Donor Darah'
+                        title: 'Data Hasil Transaksi Donor Darah',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7]
+                        },
+                        pageSize: 'A4',
+                        orientation: 'landscape'
                     },
                     {
                         extend: 'print',
@@ -202,15 +223,12 @@
                                 return 'Cetakan Dokumen Ke '+printCounter;
                             }
                         },
-                        messageBottom: null
-                    }
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7]
+                        }
+                    },
+                    'colvis'
                 ]
-            });
-
-        
-            // Refilter the table
-            $('#FromDate, #ToDate').on('change', function () {
-                table.draw();
             });
         });
 

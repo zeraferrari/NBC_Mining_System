@@ -363,9 +363,10 @@ class TransactionDonorController extends Controller
         'latest_inbox', 'latest_notification'));
     }
 
-    public function Generated_PDF(){
-        $data_transaction = TransactionDonor::with('User_Connection.Rhesus_Connection')->get();
-        $pdf = PDF::loadView('Manajement.HasilTransaksiDonor.PDF', ['data_transaction' => $data_transaction])->setPaper('A4', 'potrait');
-        return $pdf->stream("Laporan_Hasil_Transaksi_Donor_Darah");
+    public function Printout(TransactionDonor $TransactionDonor){
+        $data = $TransactionDonor::with('User_Connection.Rhesus_Connection')
+                ->where('Code_Transaction', '=', $TransactionDonor->Code_Transaction)->first();
+        $Waktu_Donor = Carbon::parse($data->Waktu_Donor)->isoFormat('dddd DD MMMM YYYY');
+        return view('Manajement.HasilTransaksiDonor.Printout', compact('data', 'Waktu_Donor'));
     }
 }
