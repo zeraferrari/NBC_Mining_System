@@ -97,5 +97,6 @@ Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Me
 
 Route::GET('Manajement/Hasil-Transaksi', [TransactionDonorController::class, 'GetResult_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.index')->middleware('role:Administrator|Petugas Medis');
 Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Detail-Transaksi', [TransactionDonorController::class, 'GetDetail_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.show')->middleware('role:Administrator|Petugas Medis');
-Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Printout', [TransactionDonorController::class, 'Printout'])->name('Manajement.Hasil_Transaksi_Donor.Printout');
+Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Printout', [TransactionDonorController::class, 'Printout'])->name('Manajement.Hasil_Transaksi_Donor.Printout')->middleware('role:Administrator|Petugas Medis');
+Route::GET('/History-Donor/{TransactionDonor:Code_Transaction}/Printout', [HomeController::class, 'Printout_Transaction'])->name('Printout-Transaction')->middleware('role:Petugas Medis|Pendonor');
 

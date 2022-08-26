@@ -365,8 +365,12 @@ class TransactionDonorController extends Controller
 
     public function Printout(TransactionDonor $TransactionDonor){
         $data = $TransactionDonor::with('User_Connection.Rhesus_Connection')
-                ->where('Code_Transaction', '=', $TransactionDonor->Code_Transaction)->first();
+                ->where('Code_Transaction', '=', $TransactionDonor->Code_Transaction)->firstOrFail();
         $Waktu_Donor = Carbon::parse($data->Waktu_Donor)->isoFormat('dddd DD MMMM YYYY');
-        return view('Manajement.HasilTransaksiDonor.Printout', compact('data', 'Waktu_Donor'));
+        
+        $bayes = new CalculationNaiveBayesController;
+        $nest = $bayes->Classifier_Naive_Bayes($TransactionDonor->Age, $TransactionDonor->Weight, $TransactionDonor->Hemoglobin,
+        $TransactionDonor->Pressure_sistole, $TransactionDonor->Pressure_diastole);
+        return view('Manajement.HasilTransaksiDonor.Printout', compact('data', 'Waktu_Donor', 'nest'));
     }
 }

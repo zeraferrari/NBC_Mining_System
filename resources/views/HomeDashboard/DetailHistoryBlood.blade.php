@@ -61,7 +61,7 @@
                         pada tanggal <b class="text-dark">{{ $Transactions->Kembali_Donor ?? ''}}</b> sesuai ketentuan yang berlaku
                         </p>
                         <div class="col text-center">
-                            <a href="" class="btn btn-primary mb-2"><i class="fas fa-print"></i> Print Out</a>
+                            <a href="{{ route('Printout-Transaction', $Transactions->Code_Transaction) }}" class="btn btn-primary mb-2"><i class="fas fa-print"></i> Print Out</a>
                         </div>
                     </div>
                 </div>

@@ -62,18 +62,17 @@
         <h2 style="text-decoration: underline;">Hasil Klasifikasi Transaksi Donor Darah</h2>
     </div>
     <table style="width: 100%;">
-        {{-- <tr>
-            <td style="text-align: right;">Samarinda, {{ $Waktu_Donor }}</td>
-        </tr> --}}
-        <tr>
-            <td>
-                <p style="text-align: justify;">
-                    Hasil klasifikasi menunjukan bahwa hasil transaksi donor darah dengan kode : <b>{{ $data->Code_Transaction }}</b>
-                    pada pendonor darah atas nama <b>{{ $data->User_Connection->name }}</b> dinyatakan sebagai <b>{{ $data->Status_Transaction }}</b>
-                    donor darah. Dengan rincian data perhitungan sebagai berikut :
-                </p>
-            </td>
-        </tr>
+        <tbody>
+            <tr>
+                <td>
+                    <p style="text-align: justify;">
+                        Hasil klasifikasi menunjukan bahwa hasil transaksi donor darah dengan kode : <b>{{ $data->Code_Transaction }}</b>
+                        pada pendonor darah atas nama <b>{{ $data->User_Connection->name }}</b> dinyatakan sebagai <b>{{ $data->Status_Transaction }}</b>
+                        donor darah. Dengan rincian data perhitungan sebagai berikut :
+                    </p>
+                </td>
+            </tr>
+        </tbody>
     </table>
     <div class="mt-10"><b>Data Pendonor Darah</b></div>
     <table border="1">
@@ -116,27 +115,32 @@
             <tr>
                 <td>Hemoglobin</td>
                 <td>:</td>
-                <td>{{ $data->Hemoglobin }}</td>
+                <td>{{ $data->Hemoglobin }} g/dL</td>
             </tr>
             <tr>
                 <td>Berat Badan</td>
                 <td>:</td>
-                <td>{{ $data->Weight }}</td>
+                <td>{{ $data->Weight }} Kg</td>
             </tr>
             <tr>
                 <td>Umur</td>
                 <td>:</td>
-                <td>{{ $data->Age }}</td>
+                <td>{{ $data->Age }} Tahun</td>
             </tr>
             <tr>
                 <td>Tekanan Sistole/Tekanan Atas</td>
                 <td>:</td>
-                <td>{{ $data->Pressure_sistole }}</td>
+                <td>{{ $data->Pressure_sistole }} mmHg</td>
             </tr>
             <tr>
                 <td>Tekanan Diastole/Tekanan Bawah</td>
                 <td>:</td>
-                <td>{{ $data->Pressure_diastole }}</td>
+                <td>{{ $data->Pressure_diastole }} mmHg</td>
+            </tr>
+            <tr>
+                <td>Tanggal Mendonor Darah</td>
+                <td>:</td>
+                <td>{{ \Carbon\Carbon::parse($data->Waktu_Donor)->isoFormat('dddd DD MMMM YYYY') }}</td>
             </tr>
         </tbody>
     </table>
@@ -156,6 +160,7 @@
             </tr>
         </tbody>
     </table>
+    {{ dd($nest) }}
 </body>
     <script>
         // window.print();

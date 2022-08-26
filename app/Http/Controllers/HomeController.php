@@ -86,4 +86,12 @@ class HomeController extends Controller
         return view('HomeDashboard.DetailHistoryBlood', compact('Transactions', 'date_today', 'latest_inbox', 'latest_notification'));
     }
 
+    public function Printout_Transaction(TransactionDonor $TransactionDonor){
+        $data = $TransactionDonor::with('User_Connection.Rhesus_Connection')
+                    ->where('User_Pendonor_id', '=', Auth::user()->id)
+                    ->where('Code_Transaction', '=', $TransactionDonor->Code_Transaction)
+                    ->firstorFail();
+        return view('HomeDashboard.PrintDetail', compact('data'));
+    }
+
 }
