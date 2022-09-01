@@ -14,7 +14,8 @@
             font-size: 16px;
         }
 
-        body :nth-child(6), body :nth-child(8){
+        body :nth-child(6), body :nth-child(8), body :nth-child(10), body :nth-child(11),
+        body :nth-child(12), body :nth-child(13), body :nth-child(14), body :nth-child(15){
             width: 100%;
             margin: 10px auto; 
             border-collapse: collapse;
@@ -35,6 +36,31 @@
 
         .mt-10{
             margin-top: 10px;
+        }
+
+        body table:nth-child(10) tbody tr:nth-child(2) td, 
+        body table:nth-child(11) tbody tr:nth-child(2) td,
+        body table:nth-child(12) tbody tr:nth-child(2) td{
+            width: 16.16%;
+        }
+
+        body table:nth-child(10) tbody tr:nth-child(2) td:nth-child(n+2), 
+        body table:nth-child(10) tbody tr:nth-child(3) td:nth-child(n+2), 
+        body table:nth-child(10) tbody tr:nth-child(4) td:nth-child(n+2),
+        body table:nth-child(11) tbody tr:nth-child(2) td:nth-child(n+2),
+        body table:nth-child(11) tbody tr:nth-child(3) td:nth-child(n+2),
+        body table:nth-child(11) tbody tr:nth-child(4) td:nth-child(n+2),
+        body table:nth-child(12) tbody tr:nth-child(2) td:nth-child(n+2),
+        body table:nth-child(12) tbody tr:nth-child(3) td:nth-child(n+2),
+        body table:nth-child(12) tbody tr:nth-child(4) td:nth-child(n+2){
+            text-align: center;
+        }
+
+        body table:nth-child(13) tbody tr:nth-child(2) td:nth-child(2), body table:nth-child(13) tbody tr:nth-child(3) td:nth-child(2),
+        body table:nth-child(14) tbody tr:nth-child(2) td:nth-child(2), body table:nth-child(14) tbody tr:nth-child(3) td:nth-child(2),
+        body table:nth-child(15) tbody tr:nth-child(2) td:nth-child(2), body table:nth-child(15) tbody tr:nth-child(3) td:nth-child(2){
+            text-align: center;
+            width: 50%;
         }
 
         </style>
@@ -140,7 +166,151 @@
             <tr>
                 <td>Tanggal Mendonor Darah</td>
                 <td>:</td>
-                <td>{{ \Carbon\Carbon::parse($data->Waktu_Donor)->isoFormat('dddd DD MMMM YYYY') }}</td>
+                <td>{{ \Carbon\Carbon::parse($data->Waktu_Donor)->isoFormat('dddd, DD MMMM YYYY') }}</td>
+            </tr>
+            <tr>
+                <td>Tanggal Kembali Mendonor Darah</td>
+                <td>:</td>
+                <td>{{ \Carbon\Carbon::parse($data->Kembali_Donor)->isoFormat('dddd, DD MMMM YYYY') }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="mt-10"><b>Perhitungan Naive Bayes Classifier</b></div>
+    <table border="1">
+        <tbody>
+            <tr>
+                <th colspan="6">Nilai Mean</th>
+            </tr>
+            <tr>
+                <td><b>Attribute</b></td>
+                <td>Umur</td>
+                <td>Berat Badan</td>
+                <td>Hemoglobin</td>
+                <td>Tekanan Sistole</td>
+                <td>Tekanan Diastole</td>
+            </tr>
+            <tr>
+                <td><b>Class Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Layak']['Age'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Layak']['Weight'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Layak']['Hemoglobin'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Layak']['Pressure_Sistole'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Layak']['Pressure_Diastole'] }}</td>
+            </tr>
+            <tr>
+                <td><b>Class Tidak Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Tidak_Layak']['Age'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Tidak_Layak']['Weight'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Tidak_Layak']['Hemoglobin'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Tidak_Layak']['Pressure_Sistole'] }}</td>
+                <td>{{ $Result_Classifier[0]->Mean_Each_Class['Class_Tidak_Layak']['Pressure_Diastole'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table border="1">
+        <tbody>
+            <tr>
+                <th colspan="6">Nilai Standar Deviasi</th>
+            </tr>
+            <tr>
+                <td><b>Attribute</b></td>
+                <td>Umur</td>
+                <td>Berat Badan</td>
+                <td>Hemoglobin</td>
+                <td>Tekanan Sistole</td>
+                <td>Tekanan Diastole</td>
+            </tr>
+            <tr>
+                <td><b>Class Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Layak']['Age'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Layak']['Weight'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Layak']['Hemoglobin'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Layak']['Pressure_Sistole'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Layak']['Pressure_Diastole'] }}</td>
+            </tr>
+            <tr>
+                <td><b>Class Tidak Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Age'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Weight'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Hemoglobin'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Pressure_Sistole'] }}</td>
+                <td>{{ $Result_Classifier[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Pressure_Diastole'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table border="1">
+        <tbody>
+            <tr>
+                <th colspan="6">Nilai Distribusi Gaussian</th>
+            </tr>
+            <tr>
+                <td><b>Attribute</b></td>
+                <td>Umur</td>
+                <td>Berat Badan</td>
+                <td>Hemoglobin</td>
+                <td>Tekanan Sistole</td>
+                <td>Tekanan Diastole</td>
+            </tr>
+            <tr>
+                <td><b>Class Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Layak']['Age'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Layak']['Weight'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Layak']['Hemoglobin'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Layak']['Pressure_Sistole'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Layak']['Pressure_Diastole'] }}</td>
+            </tr>
+            <tr>
+                <td><b>Class Tidak Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Age'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Weight'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Hemoglobin'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Pressure_Sistole'] }}</td>
+                <td>{{ $Result_Classifier[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Pressure_Diastole'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table border="1">
+        <tbody>
+            <tr>
+                <th colspan="2">Hasil Probabilitas Setiap Attribute Berdasarkan Class</th>
+            </tr>
+            <tr>
+                <td><b>Class Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Probability_All_Attribute_Each_Class['Class_Layak'] }}</td>
+            </tr>
+            <tr>
+                <td><b>Class Tidak Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Probability_All_Attribute_Each_Class['Class_Tidak_Layak'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table border="1">
+        <tbody>
+            <tr>
+                <th colspan="2">Hasil Akhir Probabilitas Berdasarkan Class</th>
+            </tr>
+            <tr>
+                <td><b>Class Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Probability_Each_Class_Not_Normalization['Class_Layak'] }}</td>
+            </tr>
+            <tr>
+                <td><b>Class Tidak Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Probability_Each_Class_Not_Normalization['Class_Tidak_Layak'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table border="1">
+        <tbody>
+            <tr>
+                <th colspan="2">Hasil Normalisasi Berdasarkan Class</th>
+            </tr>
+            <tr>
+                <td><b>Class Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Probability_Each_Class_Normalization['Class_Layak'] }}</td>
+            </tr>
+            <tr>
+                <td><b>Class Tidak Layak</b></td>
+                <td>{{ $Result_Classifier[0]->Probability_Each_Class_Normalization['Class_Tidak_Layak'] }}</td>
             </tr>
         </tbody>
     </table>
@@ -160,7 +330,6 @@
             </tr>
         </tbody>
     </table>
-    {{ dd($nest) }}
 </body>
     <script>
         // window.print();

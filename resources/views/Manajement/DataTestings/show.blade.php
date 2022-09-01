@@ -88,15 +88,15 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <address>
-                                    <br><strong>Total Jumlah Data Training =  {{ $total_data_training }}</strong>
-                                    <br>Total Data <i>Class</i> <strong>Layak = {{ $total_data_class_layak }}</strong> 
-                                    <br>Total Data <i>Class</i> <strong>Tidak Layak = {{ $total_data_class_tidak_layak }}</strong> 
+                                    <br><strong>Total Jumlah Data Training =  {{ $Result_Classification[0]->Total_Data_Trainings }}</strong>
+                                    <br>Total Data <i>Class</i> <strong>Layak = {{ $Result_Classification[0]->TotalValue_Class_Layak }}</strong> 
+                                    <br>Total Data <i>Class</i> <strong>Tidak Layak = {{ $Result_Classification[0]->TotalValue_Class_Tidak_Layak }}</strong> 
                                 </address>
                             </div>
                             <div class="col-md-6 text-md-right">
                                 <address>
-                                    <br>Hasil <i>Prior Probability Class</i> <strong>Layak = {{ $result_prior_probability_class_layak }}</strong>
-                                    <br>Hasil <i>Prior Probability Class</i> <strong>Tidak Layak = {{ $result_prior_probability_class_tidak_layak }}</strong>
+                                    <br>Hasil <i>Prior Probability Class</i> <strong>Layak = {{ $Result_Classification[0]->Prior_Prob_Class_Layak }}</strong>
+                                    <br>Hasil <i>Prior Probability Class</i> <strong>Tidak Layak = {{ $Result_Classification[0]->Prior_Prob_Class_Tidak_Layak }}</strong>
                                 </address>
                             </div>
                         </div>
@@ -113,27 +113,27 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="Mean_layak_Umur"><strong><i>Mean (Class Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_layak_Umur" name="Mean_layak_Umur" value="{{ $mean_atr_umur_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_layak_Umur" name="Mean_layak_Umur" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Layak']['Age'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Mean_tidak_layak_Umur"><strong><i>Mean (Class Tidak Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_tidak_layak_Umur" name="Mean_tidak_layak_Umur" value="{{ $mean_atr_umur_tidak_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_tidak_layak_Umur" name="Mean_tidak_layak_Umur" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Tidak_Layak']['Age'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Layak_Umur"><strong><i>Standar Deviasi (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Umur" id="Standar_Deviasi_Layak_Umur" value="{{ $standar_deviasi_atr_umur_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Umur" id="Standar_Deviasi_Layak_Umur" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Layak']['Age'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Tidak_Layak_Umur"><strong><i>Standar Deviasi (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Umur" id="Standar_Deviasi_Tidak_Layak_Umur" value="{{ $standar_deviasi_atr_umur_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Umur" id="Standar_Deviasi_Tidak_Layak_Umur" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Age'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Umur_Layak"><strong><i>Distribusi Gaussian (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Umur_Layak" id="Gaussian_Umur_Layak" value="{{ $gaussian_atr_umur_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Umur_Layak" id="Gaussian_Umur_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Layak']['Age'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Umur_Tidak_Layak"><strong><i>Distribusi Gaussian (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Umur_Tidak_Layak" id="Gaussian_Umur_Tidak_Layak" value="{{ $gaussian_atr_umur_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Umur_Tidak_Layak" id="Gaussian_Umur_Tidak_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Age'] }}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -151,27 +151,27 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="Mean_layak_Berat_Badan"><strong><i>Mean (Class Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_layak_Berat_Badan" name="Mean_layak_Berat_Badan" value="{{ $mean_atr_bb_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_layak_Berat_Badan" name="Mean_layak_Berat_Badan" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Layak']['Weight'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Mean_tidak_layak_Berat_Badan"><strong><i>Mean (Class Tidak Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_tidak_layak_Berat_Badan" name="Mean_tidak_layak_Berat_Badan" value="{{ $mean_atr_bb_tidak_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_tidak_layak_Berat_Badan" name="Mean_tidak_layak_Berat_Badan" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Tidak_Layak']['Weight'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Layak_Berat_Badan"><strong><i>Standar Deviasi (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Umur" id="Standar_Deviasi_Layak_Umur" value="{{ $standar_deviasi_atr_bb_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Berat_Badan" id="Standar_Deviasi_Layak_Berat_Badan" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Layak']['Weight'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Tidak_Layak_Berat_Badan"><strong><i>Standar Deviasi (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Berat_Badan" id="Standar_Deviasi_Tidak_Layak_Berat_Badan" value="{{ $standar_deviasi_atr_bb_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Berat_Badan" id="Standar_Deviasi_Tidak_Layak_Berat_Badan" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Weight'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Berat_Badan_Layak"><strong><i>Distribusi Gaussian (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Berat_Badan_Layak" id="Gaussian_Berat_Badan_Layak" value="{{ $gaussian_atr_bb_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Berat_Badan_Layak" id="Gaussian_Berat_Badan_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Layak']['Weight'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Berat_Badan_Tidak_Layak"><strong><i>Distribusi Gaussian (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Berat_Badan_Tidak_Layak" id="Gaussian_Berat_Badan_Tidak_Layak" value="{{ $gaussian_atr_bb_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Berat_Badan_Tidak_Layak" id="Gaussian_Berat_Badan_Tidak_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Weight'] }}" readonly>
                                             </div>      
                                         </div>
                                     </div>
@@ -189,27 +189,27 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="Mean_layak_Hemoglobin"><strong><i>Mean (Class Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_layak_Hemoglobin" name="Mean_layak_Hemoglobin" value="{{ $mean_atr_hemoglobin_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_layak_Hemoglobin" name="Mean_layak_Hemoglobin" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Layak']['Hemoglobin'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Mean_tidak_layak_Hemoglobin"><strong><i>Mean (Class Tidak Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_tidak_layak_Hemoglobin" name="Mean_tidak_layak_Hemoglobin" value="{{ $mean_atr_hemoglobin_tidak_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_tidak_layak_Hemoglobin" name="Mean_tidak_layak_Hemoglobin" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Tidak_Layak']['Hemoglobin'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Layak_Hemoglobin"><strong><i>Standar Deviasi (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Hemoglobin" id="Standar_Deviasi_Layak_Hemoglobin" value="{{ $standar_deviasi_atr_hemoglobin_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Hemoglobin" id="Standar_Deviasi_Layak_Hemoglobin" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Layak']['Hemoglobin'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Tidak_Layak_Hemoglobin"><strong><i>Standar Deviasi (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Hemoglobin" id="Standar_Deviasi_Tidak_Layak_Hemoglobin" value="{{ $standar_deviasi_atr_hemoglobin_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Hemoglobin" id="Standar_Deviasi_Tidak_Layak_Hemoglobin" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Hemoglobin'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Hemoglobin_Layak"><strong><i>Distribusi Gaussian (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Hemoglobin_Layak" id="Gaussian_Hemoglobin_Layak" value="{{ $gaussian_atr_hemoglobin_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Hemoglobin_Layak" id="Gaussian_Hemoglobin_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Layak']['Hemoglobin'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Hemoglobin_Tidak_Layak"><strong><i>Distribusi Gaussian (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Hemoglobin_Tidak_Layak" id="Gaussian_Hemoglobin_Tidak_Layak" value="{{ $gaussian_atr_hemoglobin_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Hemoglobin_Tidak_Layak" id="Gaussian_Hemoglobin_Tidak_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Hemoglobin'] }}" readonly>
                                             </div>   
                                         </div>
                                     </div>
@@ -227,27 +227,27 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="Mean_layak_Pressure_Sistole"><strong><i>Mean (Class Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_layak_Pressure_Sistole" name="Mean_layak_Pressure_Sistole" value="{{ $mean_atr_pressure_sistole_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_layak_Pressure_Sistole" name="Mean_layak_Pressure_Sistole" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Layak']['Pressure_Sistole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Mean_tidak_layak_Pressure_Sistole"><strong><i>Mean (Class Tidak Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_tidak_layak_Pressure_Sistole" name="Mean_tidak_layak_Pressure_Sistole" value="{{ $mean_atr_pressure_sistole_tidak_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_tidak_layak_Pressure_Sistole" name="Mean_tidak_layak_Pressure_Sistole" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Tidak_Layak']['Pressure_Sistole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Layak_Pressure_Sistole"><strong><i>Standar Deviasi (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Pressure_Sistole" id="Standar_Deviasi_Layak_Pressure_Sistole" value="{{ $standar_deviasi_atr_pressure_sistole_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Pressure_Sistole" id="Standar_Deviasi_Layak_Pressure_Sistole" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Layak']['Pressure_Sistole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Tidak_Layak_Pressure_Sistole"><strong><i>Standar Deviasi (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Pressure_Sistole" id="Standar_Deviasi_Tidak_Layak_Pressure_Sistole" value="{{ $standar_deviasi_atr_pressure_sistole_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Pressure_Sistole" id="Standar_Deviasi_Tidak_Layak_Pressure_Sistole" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Pressure_Sistole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Pressure_Sistole_Layak"><strong><i>Distribusi Gaussian (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Pressure_Sistole_Layak" id="Gaussian_Pressure_Sistole_Layak" value="{{ $gaussian_atr_pressure_sistole_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Pressure_Sistole_Layak" id="Gaussian_Pressure_Sistole_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Layak']['Pressure_Sistole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Pressure_Sistole_Tidak_Layak"><strong><i>Distribusi Gaussian (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Pressure_Sistole_Tidak_Layak" id="Gaussian_Pressure_Sistole_Tidak_Layak" value="{{ $gaussian_atr_pressure_sistole_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Pressure_Sistole_Tidak_Layak" id="Gaussian_Pressure_Sistole_Tidak_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Pressure_Sistole'] }}" readonly>
                                             </div>   
                                         </div>
                                     </div>
@@ -265,27 +265,27 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="Mean_layak_Pressure_Diastole"><strong><i>Mean (Class Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_layak_Pressure_Diastole" name="Mean_layak_Pressure_Diastole" value="{{ $mean_atr_pressure_diastole_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_layak_Pressure_Diastole" name="Mean_layak_Pressure_Diastole" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Layak']['Pressure_Diastole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Mean_tidak_layak_Pressure_Diastole"><strong><i>Mean (Class Tidak Layak)</i></strong></label>
-                                                <input type="text" class="form-control" id="Mean_tidak_layak_Pressure_Diastole" name="Mean_tidak_layak_Pressure_Diastole" value="{{ $mean_atr_pressure_diastole_tidak_layak }}" readonly>
+                                                <input type="text" class="form-control" id="Mean_tidak_layak_Pressure_Diastole" name="Mean_tidak_layak_Pressure_Diastole" value="{{ $Result_Classification[0]->Mean_Each_Class['Class_Tidak_Layak']['Pressure_Diastole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Layak_Pressure_Diastole"><strong><i>Standar Deviasi (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Pressure_Diastole" id="Standar_Deviasi_Layak_Pressure_Diastole" value="{{ $standar_deviasi_atr_pressure_diastole_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Layak_Pressure_Diastole" id="Standar_Deviasi_Layak_Pressure_Diastole" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Layak']['Pressure_Diastole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Standar_Deviasi_Tidak_Layak_Pressure_Diastole"><strong><i>Standar Deviasi (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Pressure_Diastole" id="Standar_Deviasi_Tidak_Layak_Pressure_Diastole" value="{{ $standar_deviasi_atr_pressure_diastole_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Standar_Deviasi_Tidak_Layak_Pressure_Diastole" id="Standar_Deviasi_Tidak_Layak_Pressure_Diastole" value="{{ $Result_Classification[0]->Standar_Deviasi_Each_Class['Class_Tidak_Layak']['Pressure_Diastole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Pressure_Diastole_Layak"><strong><i>Distribusi Gaussian (Class Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Pressure_Diastole_Layak" id="Gaussian_Pressure_Diastole_Layak" value="{{ $gaussian_atr_pressure_diastole_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Pressure_Diastole_Layak" id="Gaussian_Pressure_Diastole_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Layak']['Pressure_Diastole'] }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="Gaussian_Pressure_Diastole_Tidak_Layak"><strong><i>Distribusi Gaussian (Class Tidak Layak)</i></strong></label>
-                                                <input class="form-control" type="text" name="Gaussian_Pressure_Diastole_Tidak_Layak" id="Gaussian_Pressure_Diastole_Tidak_Layak" value="{{ $gaussian_atr_pressure_diastole_tidak_layak }}" readonly>
+                                                <input class="form-control" type="text" name="Gaussian_Pressure_Diastole_Tidak_Layak" id="Gaussian_Pressure_Diastole_Tidak_Layak" value="{{ $Result_Classification[0]->Gaussian_Each_Class['Class_Tidak_Layak']['Pressure_Diastole'] }}" readonly>
                                             </div>   
                                         </div>
                                     </div>
@@ -296,37 +296,37 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label for="Result_Probability_Each_Attribute_Class_Layak">Hasil Probabilitas Setiap Attribute Berdasarkan Class Layak</label>
-                                    <input class="form-control" type="text" name="Result_Probability_Each_Attribute_Class_Layak" id="Result_Probability_Each_Attribute_Class_Layak" value="{{ $result_probability_each_attribute_class_layak }}" readonly>
+                                    <input class="form-control" type="text" name="Result_Probability_Each_Attribute_Class_Layak" id="Result_Probability_Each_Attribute_Class_Layak" value="{{ $Result_Classification[0]->Probability_All_Attribute_Each_Class['Class_Layak'] }}" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label for="Result_Probability_Each_Attribute_Class_Tidak_Layak">Hasil Probabilitas Setiap Attribute Berdasarkan Class Tidak Layak</label>
-                                    <input class="form-control" type="text" name="Result_Probability_Each_Attribute_Class_Tidak_Layak" id="Result_Probability_Each_Attribute_Class_Tidak_Layak" value="{{ $result_probability_each_attribute_class_tidak_layak }}" readonly>
+                                    <input class="form-control" type="text" name="Result_Probability_Each_Attribute_Class_Tidak_Layak" id="Result_Probability_Each_Attribute_Class_Tidak_Layak" value="{{ $Result_Classification[0]->Probability_All_Attribute_Each_Class['Class_Tidak_Layak'] }}" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label for="Result_Probability_Class_Layak">Hasil Akhir Probabilitas Berdasarkan Class Layak</label>
-                                    <input class="form-control" type="text" name="Result_Probability_Class_Layak" id="Result_Probability_Class_Layak" value="{{ $result_probability_class_layak }}" readonly>
+                                    <input class="form-control" type="text" name="Result_Probability_Class_Layak" id="Result_Probability_Class_Layak" value="{{ $Result_Classification[0]->Probability_Each_Class_Not_Normalization['Class_Layak'] }}" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label for="Result_Probability_Class_Tidak_Layak">Hasil Akhir Probabilitas Berdasarkan Class Tidak Layak</label>
-                                    <input class="form-control" type="text" name="Result_Probability_Class_Tidak_Layak" id="Result_Probability_Class_Tidak_Layak" value="{{ $result_probability_class_tidak_layak }}" readonly>
+                                    <input class="form-control" type="text" name="Result_Probability_Class_Tidak_Layak" id="Result_Probability_Class_Tidak_Layak" value="{{ $Result_Classification[0]->Probability_Each_Class_Not_Normalization['Class_Tidak_Layak'] }}" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label for="Normalization_Class_Layak">Hasil Normalisasi Class Layak</label>
-                                    <input class="form-control" type="text" name="Normalization_Class_Layak" id="Normalization_Class_Layak" value="{{ $result_normalization_class_layak }}" readonly>
+                                    <input class="form-control" type="text" name="Normalization_Class_Layak" id="Normalization_Class_Layak" value="{{ $Result_Classification[0]->Probability_Each_Class_Normalization['Class_Layak'] }}" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label for="Normalization_Class_Tidak_Layak">Hasil Normalisasi Class Tidak Layak</label>
-                                    <input class="form-control" type="text" name="Normalization_Class_Tidak_Layak" id="Normalization_Class_Tidak_Layak" value="{{ $result_normalization_class_tidak_layak }}" readonly>
+                                    <input class="form-control" type="text" name="Normalization_Class_Tidak_Layak" id="Normalization_Class_Tidak_Layak" value="{{ $Result_Classification[0]->Probability_Each_Class_Normalization['Class_Tidak_Layak'] }}" readonly>
                                 </div>
                             </div>
                         </div>
