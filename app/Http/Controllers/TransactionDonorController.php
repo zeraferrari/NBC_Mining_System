@@ -33,7 +33,7 @@ class TransactionDonorController extends Controller
         $Navigator = new HomeController;
         $latest_inbox = $Navigator->GetLatestInbox();
         $latest_notification = $Navigator->GetLatestNotification();
-
+        
         return view('Manajement.Antrian.index', compact('data_transaction_user', 'title', 'latest_inbox', 'latest_notification'));
         
     }
@@ -89,15 +89,39 @@ class TransactionDonorController extends Controller
      */
     public function store(Request $request)
     {   
+        $now = Carbon::now()->isoFormat('YYYY-MM-DD');
         if(Auth::check()){
             if(Auth::user()->roles[0]->name == 'Petugas Medis' || Auth::user()->roles[0]->name == 'Pendonor'){
                 if(Auth::user()->Status_Donor == 'Belum Mendonor'){
                     if(TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->pluck('Status_Donor')->first() == 'Medical Check'){
                         return redirect()->route('home')->with('response_check_queue_transaction', 'Kamu masih dalam melakukan transaksi donor darah, Silahkan pergi ke PMI terdekat untuk melakukan medical check donor darah ');
                     }elseif(TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->pluck('Status_Donor')->first() == 'Gagal Donor'){
-                        $Date_Donor_User = TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->first();
-                        $date = Carbon::parse($Date_Donor_User->Kembali_Donor)->locale('id')->isoFormat('dddd, D-MMMM-Y');
-                        return redirect()->route('home')->with('response_failed_donor_transaction', 'Mohon maaf transaksi terakhir donor kamu gagal, Silahkan kembali donor darah pada tanggal <b>'.$date.'</b>');
+                        if($now >= TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->pluck('Kembali_Donor')->first()){
+                            $input = $request->all();
+                            $validate = Validator::make($input, [
+                                'Code_Transaction' => 'required',
+                                'Age'   =>  'nullable',
+                                'Weight' => 'nullable',
+                                'Hemoglobin' => 'nullable',
+                                'Pressure_sistole' => 'nullable',
+                                'Pressure_distole' => 'nullable',
+                                'Kembali_Donor' => 'nullable',
+                                'Status_Transaction' => 'nullable',
+                                'Status_Donor' => 'required',
+                                'User_PMI_id' => 'nullable'
+                            ]);
+                            $has_valid = $validate->validated();
+                            $has_valid['Code_Transaction'] = $this->GeneratedTransactionCode();
+                            $has_valid['User_Pendonor_id'] = Auth::id();
+                            $has_valid['Waktu_Donor'] = Carbon::now('Asia/Makassar');
+                            $has_valid['Status_Donor'] = 'Medical Check';
+                            TransactionDonor::create($has_valid);
+                            return redirect()->back()->with('response_success_request_transaction','Selamat, kamu sudah masuk dalam list transaksi donor darah. Silahkan ke PMI terdekat untuk melakukan medical check donor darah');
+                        }else{
+                            $Date_Donor_User = TransactionDonor::where('User_Pendonor_id', '=', Auth::user()->id)->latest()->first();
+                            $date = Carbon::parse($Date_Donor_User->Kembali_Donor)->locale('id')->isoFormat('dddd, D-MMMM-Y');
+                            return redirect()->route('home')->with('response_failed_donor_transaction', 'Mohon maaf transaksi terakhir donor kamu gagal, Silahkan kembali donor darah pada tanggal <b>'.$date.'</b>');
+                        }
                     }
                     $input = $request->all();
                     $validate = Validator::make($input, [

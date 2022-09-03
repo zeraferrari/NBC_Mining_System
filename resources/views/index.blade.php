@@ -23,6 +23,12 @@
                 </div>
             </div>
         </section>
+        <div class="row align-items-center justify-content-center" style="height: 50vh; background-color: rgba(56, 56, 56, 0.1);" id="test">
+            <h1 style="position: absolute; top: 0;">Kantong darah yang diterima hari</h1>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                Statistik Kantong Darah Yang Diterima
+            </div>
+        </div>
     </main>
 @endsection
 

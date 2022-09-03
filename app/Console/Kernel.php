@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('CheckQueueDonor:EveryFifteenMinute')->timezone('Asia/Makassar')->everyMinute();
+        $schedule->command('CheckStatusDonorUsers:Daily')->timezone('Asia/Makassar')->dailyAt('22:00');
     }
 
     /**
