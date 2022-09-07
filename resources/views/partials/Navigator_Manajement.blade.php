@@ -80,7 +80,7 @@
                         </div>
                         <div class="dropdown-list-content dropdown-list-icons">
                             @forelse ( $latest_notification as $latest_notifications )
-                                <a href="" class="dropdown-item">
+                                <a href="{{ route('Manajement.Hasil_Transaksi_Donor.show',$latest_notifications->Code_Transaction) }}" class="dropdown-item">
                                     <div class="dropdown-item-icon bg-info text-white">
                                         <i class="far fa-user"></i>
                                     </div>

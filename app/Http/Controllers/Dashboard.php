@@ -149,7 +149,6 @@ class Dashboard extends Controller
             ->pluck('created_at')
             ->sortBy('created_at');
             
-            
     
             $temp_Month = [];
      
@@ -158,14 +157,15 @@ class Dashboard extends Controller
              }
     
              $MonthName = array_values(array_unique($temp_Month));
+             usort($MonthName, function($x, $y){
+                return strtotime($x) - strtotime($y);
+             });
              return $MonthName;
         }else{
             $MonthNumber = TransactionDonor::with('User_Connection.Rhesus_Connection')
             ->pluck('created_at')
             ->sortBy('created_at');
             
-            
-    
             $temp_Month = [];
      
             foreach ($MonthNumber as $key => $value) {
@@ -173,6 +173,10 @@ class Dashboard extends Controller
              }
     
              $MonthName = array_values(array_unique($temp_Month));
+             usort($MonthName, function($x, $y){
+                return strtotime($x) - strtotime($y);
+             });
+             
              return $MonthName;
         }
 
@@ -186,10 +190,10 @@ class Dashboard extends Controller
             ->where('Status_Donor', '=', 'Berhasil Mendonor')
             ->where('created_at', '>=', $FromDate.' 00:00:00')
             ->where('created_at', '<=', $ToDate.' 23:59:59')
+            ->sortBy('created_at')
             ->groupBy(function($val){
                 return Carbon::parse($val->created_at)->format('F-Y');
-            })->sortBy('created_at');
-        
+            });
 
             $Data_Rhesus = RhesusCategory::all();
             
@@ -256,10 +260,10 @@ class Dashboard extends Controller
         }else{
             $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
             ->where('Status_Donor', '=', 'Berhasil Mendonor')
+            ->sortBy('created_at')
             ->groupBy(function($val){
                 return Carbon::parse($val->created_at)->format('F-Y');
-            })->sortBy('created_at');
-        
+            });
 
             $Data_Rhesus = RhesusCategory::all();
             
@@ -344,6 +348,7 @@ class Dashboard extends Controller
             $Name_Rhesus = RhesusCategory::with('Rhesus_Connection')->pluck('Name')->toArray();
             $Month_Name = $this->getNameMonth($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
             $Json_Line_Chart = $this->getStructLineChartJSON($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            session()->flashInput($request->input());
             return view('Manajement.Dashboard.index', compact('title',
                                                                             'latest_inbox', 'latest_notification',
                                                                             'total_users',
@@ -374,6 +379,7 @@ class Dashboard extends Controller
             $Name_Rhesus = RhesusCategory::with('Rhesus_Connection')->pluck('Name')->toArray();
             $Month_Name = $this->getNameMonth($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
             $Json_Line_Chart = $this->getStructLineChartJSON($request->ChartFromDataTransaction, $request->ChartToDataTransaction);
+            session()->flashInput($request->input());
             return view('Manajement.Dashboard.index', compact('title',
                                                                             'latest_inbox', 'latest_notification',
                                                                             'total_users',

@@ -6,9 +6,10 @@
                 <i class="fas fa-bars"></i>
             </a>
             <ul class="navbar-nav">
-                <li class="nav-item"><a href="#test" class="nav-link">Application</a></li>
-                <li class="nav-item"><a href="" class="nav-link">Application</a></li>
-                <li class="nav-item"><a href="" class="nav-link">Application</a></li>
+                <li class="nav-item"><a href="#Statistik-Kantong-Darah" class="nav-link">Kantong Darah</a></li>
+                <li class="nav-item"><a href="#Statistik-Donor-Darah" class="nav-link">Grafik Donor Darah</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Uji Donor Darah</a></li>
+                <li class="nav-item"><a href="#Contact-us" class="nav-link">Kontak Kami</a></li>
             </ul>
         </div>
         <div class="form-inline ml-auto">

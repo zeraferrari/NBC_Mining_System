@@ -44,11 +44,11 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-5 col-lg-5 form-group">
                                 <label for="ChartFromData">Dari Tanggal</label>
-                                <input type="date" class="form-control" name="ChartFromData_Rhesus" id="ChartFromData_Rhesus">
+                                <input type="date" class="form-control" name="ChartFromData_Rhesus" id="ChartFromData_Rhesus" value="{{ old('ChartFromData_Rhesus') }}">
                             </div>
                             <div class="col-sm-6 col-md-5 col-lg-5 form-group">
                                 <label for="ChartToData">Sampai Tanggal</label>
-                                <input type="date" class="form-control" name="ChartToData_Rhesus" id="ChartToData_Rhesus"">
+                                <input type="date" class="form-control" name="ChartToData_Rhesus" id="ChartToData_Rhesus" value="{{ old('ChartToData_Rhesus') }}">
                             </div>
                             <div class="col-sm-12 col-md-2 col-lg-2 mt-4">
                                 <div class="buttons">
@@ -104,11 +104,11 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-5 col-lg-5 form-group">
                                     <label for="ChartFromDataTransaction">Dari Tanggal</label>
-                                    <input type="date" class="form-control" name="ChartFromDataTransaction" id="ChartFromDataTransaction">
+                                    <input type="date" class="form-control" name="ChartFromDataTransaction" id="ChartFromDataTransaction" value="{{ old('ChartFromDataTransaction') }}">
                                 </div>
                                 <div class="col-sm-6 col-md-5 col-lg-5 form-group">
                                     <label for="ChartToDataTransaction">Sampai Tanggal</label>
-                                    <input type="date" class="form-control" name="ChartToDataTransaction" id="ChartToDataTransaction">
+                                    <input type="date" class="form-control" name="ChartToDataTransaction" id="ChartToDataTransaction" value="{{ old('ChartToDataTransaction') }}">
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2 mt-4">
                                     <div class="buttons">
