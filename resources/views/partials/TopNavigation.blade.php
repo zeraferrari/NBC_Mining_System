@@ -8,7 +8,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item"><a href="#Statistik-Kantong-Darah" class="nav-link">Kantong Darah</a></li>
                 <li class="nav-item"><a href="#Statistik-Donor-Darah" class="nav-link">Grafik Donor Darah</a></li>
-                <li class="nav-item"><a href="" class="nav-link">Uji Donor Darah</a></li>
+                <li class="nav-item"><a href="#Uji-Donor" class="nav-link">Uji Donor Darah</a></li>
                 <li class="nav-item"><a href="#Contact-us" class="nav-link">Kontak Kami</a></li>
             </ul>
         </div>

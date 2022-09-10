@@ -117,10 +117,10 @@
             <div class="row my-5 text-center" id="Statistik-Donor-Darah">
                 <div class="col-md-10 offset-md-1">
                     <h2 style="margin-bottom: 0;">Grafik Kantong Darah Palang Merah Indonesia</h2>
-                    <p>Berikut merupakan grafik jumlah kantong darah berdasarkan range tanggal</p>
+                    <p>Berikut merupakan grafik jumlah kantong darah yang diterima Palang Merah Indonesia pada tahun {{ \Carbon\Carbon::now()->format('Y') }} atau berdasarkan range tanggal</p>
                 </div>
             </div>
-            <form action="">
+            <form action="{{ route('home') }}" method="GET">
                 <div class="row justify-content-between">
                     <div class="col-sm-6 col-md-5 col-lg-5 form-group">
                         <label for="ChartFromData">Dari Tanggal</label>
@@ -139,9 +139,78 @@
             </form>
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card shadow-lg">
                         <div class="card-body">
-                            <canvas></canvas>
+                            <canvas id="LineTransactionThisYears"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row" id="Uji-Donor">
+                <div class="col-lg-10 offset-lg-1 text-center">
+                    <h3>Pengujian Untuk Mendonorkan Darah</h3>
+                </div>
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="card shadow-lg">
+                        <div class="card-body">
+                            <form action="{{ route('home') }}">
+                                <div class="form-group">
+                                    <label for="Umur">Umur</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Age" value="{{ old('Age') }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Weight">Berat Badan</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Weight" value="{{ old('Weight') }}">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                Kg
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Hemoglobin">Hemoglobin</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Hemoglobin" value="{{ old('Hemoglobin') }}">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                g/DL
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Pressure_Sistole">Tekanan Sistole</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Pressure_Sistole" value="{{ old('Pressure_Sistole') }}">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                mmHg
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Pressure_Diastole">Tekanan Diastole</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Pressure_Diastole" value="{{ old('Pressure_Diastole') }}">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                mmHg
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-4 offset-lg-4">
+                                    <div class="buttons">
+                                        <button class="btn btn-primary col-12" type="submit" style="background-color: #8A0707">Check Data</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -174,7 +243,6 @@
         </div>
     </main>
 @endsection
-
 
 @section('SweetAlert')
     @if(Session::has('response_login'))
@@ -234,4 +302,49 @@
             });
         </script>
     @endif
+    <script>
+        var data_transaction = @json($Data_Transaction_Each_Month);
+        var name_each_month = @json($Data_Name_Month);
+        data_transaction = JSON.parse(data_transaction);
+        
+        const Data_New_Transaction = data_transaction.map(EachData => {
+            return {
+                label: EachData.label,
+                data: EachData.data,
+                borderColor: EachData.BorderColor,
+                backgroundColor: EachData.BackgroundColor,
+            }
+        });
+
+        const Data_Line = {
+            labels: name_each_month,
+            datasets: Data_New_Transaction,
+        };
+
+        const Config_Data = {
+            type: 'line',
+            data: Data_Line,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels:{
+                            boxWidth: 20,
+                        },
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            precision: 0,
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 20,
+                    }, 
+                },
+            }
+        };
+        const DashboardLineTransaction = new Chart(document.getElementById('LineTransactionThisYears'), Config_Data);
+    </script>
 @endsection

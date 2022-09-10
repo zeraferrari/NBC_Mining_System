@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\RhesusCategory;
 use App\Models\TransactionDonor;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -133,13 +134,206 @@ class HomeController extends Controller
         return $datasets_today_blood;
     }
 
-    public function index()
+    public function getMonthNameTransaction($FromDate, $ToDate){
+        if(isset($FromDate) AND isset($ToDate)){
+            $data_month = TransactionDonor::with('User_Connection.Rhesus_Connection')
+                            ->where('created_at', '>=', $FromDate.' 00:00:00')
+                            ->where('created_at', '<=', $ToDate.' 23:59:59')
+                            ->pluck('created_at')
+                            ->sortBy('created_at')->toArray();
+
+            $monthTime = array_map(function ($value){
+                return strtotime($value);
+            }, $data_month);
+
+            sort($monthTime);
+            $Month_Name = array_map(function($value){
+                return \Carbon\Carbon::parse($value)->isoFormat('MMMM-YYYY');
+            },$monthTime);
+
+
+            $Name_Month = array_values(array_unique($Month_Name));
+            return $Name_Month;
+            
+        }else{
+            $data_month = TransactionDonor::with('User_Connection.Rhesus_Connection')
+                            ->pluck('created_at')
+                            ->sortBy('created_at')->toArray();
+            
+            $monthTime = array_map(function ($value){
+                return strtotime($value);
+            }, $data_month);
+
+            sort($monthTime);
+            $Month_Name = array_map(function($value){
+                return \Carbon\Carbon::parse($value)->isoFormat('MMMM-YYYY');
+            },$monthTime);
+
+
+            $Name_Month = array_values(array_unique($Month_Name));
+            return $Name_Month;
+        }
+    }
+
+    public function getDataLineChartDashboard($FromDate, $ToDate){
+        if(isset($FromDate) AND isset($ToDate)){
+            $data_transaction = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
+                                ->where('Status_Donor', '=', 'Berhasil Mendonor')
+                                ->where('created_at', '>=', $FromDate.' 00:00:00')
+                                ->where('created_at', '<=', $ToDate.' 23:59:59')
+                                ->sortBy('created_at')
+                                ->groupBy(function($val){
+                                    return Carbon::parse($val->created_at)->isoFormat('MMMM-YYYY');
+                                });
+            $data_rhesus = RhesusCategory::all();
+            $datasets = [];
+            
+            foreach($data_rhesus as $each_rhesus){
+                array_push($datasets, (object)[
+                    'label'  => $each_rhesus->Name,
+                    'data'  => [],
+                    'BorderColor' => '',
+                    'BackgroundColor' => '',
+                ]);
+            }
+
+            foreach($data_transaction as $all_transaction_each_month){
+                foreach($data_rhesus as $key => $value){
+                    $count_data_transaction_each_rhesus = 0;
+                    foreach($all_transaction_each_month as $each_transaction_month){
+                        if($each_transaction_month->User_Connection->Rhesus_id === $data_rhesus[$key]->id){
+                            $count_data_transaction_each_rhesus++;
+                        }
+                    }
+
+                    if($data_rhesus[$key]->Name == $datasets[$key]->label){
+                        $datasets[$key]->data[] = $count_data_transaction_each_rhesus;
+                        if($datasets[$key]->label === 'A+'){
+                            $datasets[$key]->BorderColor = 'rgba(255, 33, 33, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 33, 33, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'A-'){
+                            $datasets[$key]->BorderColor = 'rgba(255, 204, 0, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(255, 204, 0, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'B+'){
+                            $datasets[$key]->BorderColor = 'rgba(40, 255, 0, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(40, 255, 0, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'B-'){
+                            $datasets[$key]->BorderColor = 'rgba(0, 255, 177, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(0, 255, 177, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'O+'){
+                            $datasets[$key]->BorderColor = 'rgba(0, 51, 255, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(0, 51, 255, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'O-'){
+                            $datasets[$key]->BorderColor = 'rgba(140, 0, 255, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(140, 0, 255, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'AB+'){
+                            $datasets[$key]->BorderColor = 'rgba(255, 0, 157, 0.66)';
+                            $datasets[$key]->BackgroundColor = 'rgba(255, 0, 157, 0.66)';
+                        }
+                        elseif($datasets[$key]->label == 'AB-'){
+                            $datasets[$key]->BorderColor = 'rgba(0, 78, 255, 0.76)';
+                            $datasets[$key]->BackgroundColor = 'rgba(0, 78, 255, 0.76)';
+                        }
+                    }
+                }
+            }
+            $struct_datasets = json_encode($datasets);
+            return $struct_datasets;
+        }else{
+            $Years = Carbon::now()->format('Y');
+            $data_transaction = TransactionDonor::with('User_Connection.Rhesus_Connection')
+                                ->where('Status_Donor', '=', 'Berhasil Mendonor')
+                                ->where('created_at', 'like', '%'.$Years.'%')->get()
+                                ->sortBy('created_at')
+                                ->groupBy(function($val){
+                                    return Carbon::parse($val->created_at)->isoFormat('MMMM-YYYY');
+                                });
+            $data_rhesus = RhesusCategory::all();
+            $datasets = [];
+            
+            foreach($data_rhesus as $each_rhesus){
+                array_push($datasets, (object)[
+                    'label'  => $each_rhesus->Name,
+                    'data'  => [],
+                    'BorderColor' => '',
+                    'BackgroundColor' => '',
+                ]);
+            }
+
+            foreach($data_transaction as $all_transaction_each_month){
+                foreach($data_rhesus as $key => $value){
+                    $count_data_transaction_each_rhesus = 0;
+                    foreach($all_transaction_each_month as $each_transaction_month){
+                        if($each_transaction_month->User_Connection->Rhesus_id === $data_rhesus[$key]->id){
+                            $count_data_transaction_each_rhesus++;
+                        }
+                    }
+
+                    if($data_rhesus[$key]->Name == $datasets[$key]->label){
+                        $datasets[$key]->data[] = $count_data_transaction_each_rhesus;
+                        if($datasets[$key]->label === 'A+'){
+                            $datasets[$key]->BorderColor = 'rgba(255, 33, 33, 0.5)';
+                                $datasets[$key]->BackgroundColor = 'rgba(255, 33, 33, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'A-'){
+                            $datasets[$key]->BorderColor = 'rgba(255, 204, 0, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(255, 204, 0, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'B+'){
+                            $datasets[$key]->BorderColor = 'rgba(40, 255, 0, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(40, 255, 0, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'B-'){
+                            $datasets[$key]->BorderColor = 'rgba(0, 255, 177, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(0, 255, 177, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'O+'){
+                            $datasets[$key]->BorderColor = 'rgba(0, 51, 255, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(0, 51, 255, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'O-'){
+                            $datasets[$key]->BorderColor = 'rgba(140, 0, 255, 0.5)';
+                            $datasets[$key]->BackgroundColor = 'rgba(140, 0, 255, 0.5)';
+                        }
+                        elseif($datasets[$key]->label == 'AB+'){
+                            $datasets[$key]->BorderColor = 'rgba(255, 0, 157, 0.66)';
+                            $datasets[$key]->BackgroundColor = 'rgba(255, 0, 157, 0.66)';
+                        }
+                        elseif($datasets[$key]->label == 'AB-'){
+                            $datasets[$key]->BorderColor = 'rgba(0, 78, 255, 0.76)';
+                            $datasets[$key]->BackgroundColor = 'rgba(0, 78, 255, 0.76)';
+                        }
+                    }
+                }
+            }
+            $struct_datasets = json_encode($datasets);
+            return $struct_datasets;
+        }
+    }
+
+    public function index(Request $request)
     {
         $latest_inbox = $this->GetLatestInbox();
         $latest_notification = $this->GetLatestNotification();
         $datasets_today_blood = $this->Statistic_Blood();
-
-        return view('index', compact('latest_inbox', 'latest_notification', 'datasets_today_blood'));
+        if($request->has('ChartFromData') AND $request->has('ChartToData')){
+            $Data_Name_Month = $this->getMonthNameTransaction($request->ChartFromData, $request->ChartToData);
+            $Data_Transaction_Each_Month = $this->getDataLineChartDashboard($request->ChartFromData, $request->ChartToData);
+            Session()->flashInput($request->input());
+            return view('index', compact('latest_inbox', 'latest_notification', 
+                                                        'datasets_today_blood', 'Data_Name_Month', 'Data_Transaction_Each_Month'));
+        }else{
+            $Data_Name_Month = $this->getMonthNameTransaction($request->ChartFromData, $request->ChartToData);
+            $Data_Transaction_Each_Month = $this->getDataLineChartDashboard($request->ChartFromData, $request->ChartToData);
+            return view('index', compact('latest_inbox', 'latest_notification', 'datasets_today_blood', 
+                                                        'Data_Name_Month', 'Data_Transaction_Each_Month'));
+        }
     }
 
     public function CekHistoryDonor(){

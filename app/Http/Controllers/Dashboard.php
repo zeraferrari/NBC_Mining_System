@@ -147,37 +147,39 @@ class Dashboard extends Controller
             ->where('created_at', '>=', $FromDate.' 00:00:00')
             ->where('created_at', '<=', $ToDate.' 23:59:59')
             ->pluck('created_at')
-            ->sortBy('created_at');
+            ->sortBy('created_at')->toArray();
             
-    
-            $temp_Month = [];
-     
-            foreach ($MonthNumber as $key => $value) {
-                $temp_Month[] = date('F-Y', strtotime($value));
-             }
-    
-             $MonthName = array_values(array_unique($temp_Month));
-             usort($MonthName, function($x, $y){
-                return strtotime($x) - strtotime($y);
-             });
-             return $MonthName;
+            $Month_Time = array_map(function($value){
+                return strtotime($value);
+            }, $MonthNumber);
+            
+            sort($Month_Time);
+
+            $Month_Name = array_map(function($value){
+                return \Carbon\Carbon::parse($value)->isoFormat('MMMM-YYYY');
+            }, $Month_Time);
+
+            $Month_Name = array_values(array_unique($Month_Name));
+
+            return $Month_Name;
         }else{
             $MonthNumber = TransactionDonor::with('User_Connection.Rhesus_Connection')
             ->pluck('created_at')
-            ->sortBy('created_at');
+            ->sortBy('created_at')->toArray();
             
-            $temp_Month = [];
-     
-            foreach ($MonthNumber as $key => $value) {
-                $temp_Month[] = date('F-Y', strtotime($value));
-             }
-    
-             $MonthName = array_values(array_unique($temp_Month));
-             usort($MonthName, function($x, $y){
-                return strtotime($x) - strtotime($y);
-             });
-             
-             return $MonthName;
+            $Month_Time = array_map(function($value){
+                return strtotime($value);
+            }, $MonthNumber);
+            
+            sort($Month_Time);
+
+            $Month_Name = array_map(function($value){
+                return \Carbon\Carbon::parse($value)->isoFormat('MMMM-YYYY');
+            }, $Month_Time);
+
+            $Month_Name = array_values(array_unique($Month_Name));
+
+            return $Month_Name;
         }
 
     }
@@ -192,9 +194,9 @@ class Dashboard extends Controller
             ->where('created_at', '<=', $ToDate.' 23:59:59')
             ->sortBy('created_at')
             ->groupBy(function($val){
-                return Carbon::parse($val->created_at)->format('F-Y');
+                // return Carbon::parse($val->created_at)->format('F-Y');
+                return Carbon::parse($val->created_at)->isoFormat('MMMM-YYYY');
             });
-
             $Data_Rhesus = RhesusCategory::all();
             
             $datasets = [];
@@ -262,7 +264,8 @@ class Dashboard extends Controller
             ->where('Status_Donor', '=', 'Berhasil Mendonor')
             ->sortBy('created_at')
             ->groupBy(function($val){
-                return Carbon::parse($val->created_at)->format('F-Y');
+                // return Carbon::parse($val->created_at)->format('F-Y');
+                return Carbon::parse($val->created_at)->isoFormat('MMMM-YYYY');
             });
 
             $Data_Rhesus = RhesusCategory::all();
