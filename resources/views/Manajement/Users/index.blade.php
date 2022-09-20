@@ -51,7 +51,13 @@
                                                 @endif
                                             </td>
                                             <td>{{ $data_users->Rhesus_Connection->Name ?? 'Belum Diketahui' }}</td>
-                                            <td>{{ $data_users->Status_Donor }}</td>
+                                            <td>
+                                                @if ($data_users['Status_Donor'] == 'Belum Mendonor')
+                                                    <span class="badge badge-warning rounded">{{ $data_users->Status_Donor }}</span>
+                                                @elseif ($data_users['Status_Donor'] == 'Sudah Mendonor')
+                                                    <span class="badge badge-success rounded">{{ $data_users->Status_Donor }}</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="buttons">
                                                     <form action="{{ route('Manajement.Users.delete', $data_users->NIK) }}" id="{{ $data_users->NIK }}" method="POST">
@@ -103,7 +109,7 @@
     @endif
     <script>
         $(".confirmation-delete").click(function(e) {
-            nik = e.target.dataset.nik;
+            let GetDataNIK = $(this).attr('data-NIK');
             let GetDataName = $(this).attr('data-Name');
             Swal.fire({
                 title: 'Yakin Data Akan Di Hapus ?',
@@ -116,7 +122,7 @@
                 cancelButtonColor: '#3085d6',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(`#${nik}`).submit();
+                    $(`#${GetDataNIK}`).submit();
                 }
             })
         });

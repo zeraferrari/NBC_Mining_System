@@ -223,7 +223,7 @@
                             </a>
                         @endrole
                         @role('Petugas Medis|Pendonor')
-                            <a href="" class="dropdown-item has-icon">
+                            <a href="{{ route('RedirectSettingsAccount') }}" class="dropdown-item has-icon">
                                 <i class="fas fa-cog"></i>Setting Akun
                             </a>
                             <a href="{{ route('checking_history') }}" class="dropdown-item has-icon">

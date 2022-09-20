@@ -100,7 +100,6 @@
     @endif
     <script>
         $(".confirmation-delete").click(function(e) {
-            // id = e.target.dataset.id;
             let GetDataName = $(this).attr('data-name');
             let GetDataId = $(this).attr('data-id');
             Swal.fire({

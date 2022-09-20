@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
 
+use App\Http\Requests\AccountSettingValidation;
+use App\Http\Requests\HomeValidation;
 use App\Models\RhesusCategory;
 use App\Models\TransactionDonor;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -82,6 +87,7 @@ class HomeController extends Controller
         $transaction_today = TransactionDonor::with('User_Connection.Rhesus_Connection')
         ->where('created_at', '>=', \Carbon\Carbon::now()->isoFormat('YYYY-MM-DD').' 00:00:00')
         ->where('created_at', '<=', \Carbon\Carbon::now()->isoFormat('YYYY-MM-DD').' 23:59:59')
+        ->whereIn('Status_Donor', ['Berhasil Mendonor', 'Gagal Donor'])
         ->get();
 
         foreach($data_rhesus as $index => $value){
@@ -322,17 +328,76 @@ class HomeController extends Controller
         $latest_inbox = $this->GetLatestInbox();
         $latest_notification = $this->GetLatestNotification();
         $datasets_today_blood = $this->Statistic_Blood();
+
         if($request->has('ChartFromData') AND $request->has('ChartToData')){
             $Data_Name_Month = $this->getMonthNameTransaction($request->ChartFromData, $request->ChartToData);
             $Data_Transaction_Each_Month = $this->getDataLineChartDashboard($request->ChartFromData, $request->ChartToData);
             Session()->flashInput($request->input());
             return view('index', compact('latest_inbox', 'latest_notification', 
                                                         'datasets_today_blood', 'Data_Name_Month', 'Data_Transaction_Each_Month'));
-        }else{
+        }
+        elseif($request->has('Age') OR $request->has('Weight') OR $request->has('Hemoglobin') OR $request->has('Pressure_Sistole') OR $request->has('Pressure_Diastole')){
+            if(
+                $request->Age >= 17 AND $request->Age <= 65 AND
+                $request->Weight >= 45 AND
+                $request->Hemoglobin >= 12.5 AND $request->Hemoglobin <= 17 AND
+                $request->Pressure_Sistole >= 100 AND $request->Pressure_Sistole <= 170 AND
+                $request->Pressure_Diastole >= 70 AND $request->Pressure_Diastole <= 100
+            ){
+                session()->flash('result', 'Layak untuk mendonorkan darah');
+                $request->session()->now('reset_button', 'Reset Button');
+            }else{
+                if(empty($request->Age) AND empty($request->Weight) AND empty($request->Hemoglobin) AND empty($request->Pressure_Sistole) AND empty($request->Pressure_Diastole)){
+                }else{
+                    session()->flash('result', 'Tidak layak untuk mendonorkan darah');
+                    session()->flashInput($request->input());
+                }
+            }           
+            Validator::make($request->all(), [
+                'Age'               =>  ['required', 'integer', 'min:17', 'max:65'],
+                'Weight'            => ['required', 'integer', 'min:45'],
+                'Hemoglobin'        => ['required', 'numeric', 'min:12.5', 'max:17.0'],
+                'Pressure_Sistole'  => ['required', 'integer', 'min:100', 'max:170'],
+                'Pressure_Diastole' => ['required', 'integer', 'min:70', 'max:100']
+            ], [
+                'Age.required'  =>  'Mohon field umur diisi ',
+                'Age.integer'   =>  'Field umur hanya menerima inputan angka bulat ',
+                'Age.min'       =>  'Nilai umur minimal 17 tahun',
+                'Age.max'       =>  'Nilai umur maksimal 65 tahun',
+
+                'Weight.required'  =>  'Mohon field berat badan diisi ',
+                'Weight.numeric'   =>  'Field berat badan hanya menerima inputan angka bulat ',
+                'Weight.min'       =>   'Nilai berat badan minimal 45 Kg',
+
+                'Hemoglobin.required'  =>  'Mohon field hemoglobin diisi ',
+                'Hemoglobin.numeric'   =>  'Field hemoglobin hanya menerima inputan angka ',
+                'Hemoglobin.min'       =>  'Nilai hemoglobin minimal 12.5 g/dL',
+                'Hemoglobin.max'       =>  'Nilai hemoglobin maksimal 17.0 g/dL',
+
+
+                'Pressure_Sistole.required'  =>  'Mohon field tekanan sistole diisi ',
+                'Pressure_Sistole.integer'   =>  'Field tekanan sistole hanya menerima inputan angka bulat ',
+                'Pressure_Sistole.min'       =>  'Nilai tekanan sistole minimal 100 mmHg',
+                'Pressure_Sistole.max'       =>  'Nilai tekanan sistole maksimal 170 mmHg',
+
+                'Pressure_Diastole.required'  =>  'Mohon field tekanan diastole diisi ',
+                'Pressure_Diastole.integer'   =>  'Field tekanan diastole hanya menerima inputan angka bulat ',
+                'Pressure_Diastole.min'       =>  'Nilai tekanan diastole minimal 70 mmHg',
+                'Pressure_Diastole.max'       =>  'Nilai tekanan diastole maksimal 100 mmHg'
+            ])->validate();
+
             $Data_Name_Month = $this->getMonthNameTransaction($request->ChartFromData, $request->ChartToData);
             $Data_Transaction_Each_Month = $this->getDataLineChartDashboard($request->ChartFromData, $request->ChartToData);
+            session()->flashInput($request->input());
             return view('index', compact('latest_inbox', 'latest_notification', 'datasets_today_blood', 
                                                         'Data_Name_Month', 'Data_Transaction_Each_Month'));
+        }
+        else{
+            $Data_Name_Month = $this->getMonthNameTransaction($request->ChartFromData, $request->ChartToData);
+            $Data_Transaction_Each_Month = $this->getDataLineChartDashboard($request->ChartFromData, $request->ChartToData);
+            Session()->flashInput($request->input());
+            return view('index', compact('latest_inbox', 'latest_notification', 
+                                                        'datasets_today_blood', 'Data_Name_Month', 'Data_Transaction_Each_Month'));
         }
     }
 
@@ -359,6 +424,37 @@ class HomeController extends Controller
                     ->where('Code_Transaction', '=', $TransactionDonor->Code_Transaction)
                     ->firstorFail();
         return view('HomeDashboard.PrintDetail', compact('data'));
+    }
+
+    public function RedirectSettingsAccount(){
+        $latest_inbox = $this->GetLatestInbox();
+        $latest_notification = $this->GetLatestNotification();
+        $data_user = User::with('Rhesus_Connection', 'Transaction_Connect')
+                            ->where('NIK', '=', Auth::user()->NIK)
+                            ->firstOrFail();
+        return view('HomeDashboard.SettingAccount', compact('data_user', 'latest_inbox', 'latest_notification'));
+    }
+
+    public function UpdateSettingsAccount(AccountSettingValidation $request){
+        
+        $data_has_been_validated = $request->validated();
+        $data_has_been_validated['update_at'] = Carbon::now('Asia/Makassar');
+
+        if($request->hasFile('profile_picture')){
+            if($request->oldImage){
+                Storage::delete($request->oldImage);
+            }
+            $date = Carbon::now('Asia/Makassar')->format('dmYHi');
+            $HashNameImage = $request->file('profile_picture')->hashName();
+            $ImageName = $date."-".$HashNameImage;
+            $path_name = $request->file('profile_picture')->storeAs('image-profiles', $ImageName);
+            $data_has_been_validated['profile_picture'] = $path_name;
+        }
+
+        $account_user = User::findOrFail(Auth::user()->id);
+        $account_user->update($data_has_been_validated);
+
+        return redirect()->back()->with('Status_Success', 'Data akun anda berhasil diperbaharui !');
     }
 
 }

@@ -205,12 +205,67 @@
                                         </div>
                                     </div>
                                 </div>
+                            @if(Session::has('reset_button'))
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-4 offset-lg-1">
+                                        <div class="buttons">
+                                            <a href="{{ route('home') }}" class="btn btn-warning col-12"><i class="fas fa-redo" style=></i> Reset</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4 offset-lg-2">
+                                        <div class="buttons">
+                                            <button class="btn btn-primary col-12" type="submit" style="background-color: #8A0707">Check Data</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
                                 <div class="col-sm-12 col-lg-4 offset-lg-4">
                                     <div class="buttons">
                                         <button class="btn btn-primary col-12" type="submit" style="background-color: #8A0707">Check Data</button>
                                     </div>
                                 </div>
+                            @endif
                             </form>
+                            @if ($errors->any())
+                                <p><i>** Note **</i></p>
+                                @if ($errors->has('Age'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <p><i>{{ $errors->first('Age') }} <i class="fas fa-times" style="color: white; float: right; margin-top: 10px;"></i></i></p>
+                                    </div>
+                                @endif
+                                @if ($errors->has('Weight'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <p><i>{{ $errors->first('Weight') }} <i class="fas fa-times" style="color: white; float: right; margin-top: 10px;"></i></i></p>
+                                    </div>
+                                @endif
+                                @if($errors->has('Hemoglobin'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <p><i>{{ $errors->first('Hemoglobin') }} <i class="fas fa-times" style="color: white; float: right; margin-top: 10px;"></i></i></p>
+                                    </div>
+                                @endif
+                                @if ($errors->has('Pressure_Sistole'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <p><i>{{ $errors->first('Pressure_Sistole') }} <i class="fas fa-times" style="color: white; float: right; margin-top: 10px;"></i></i></p>
+                                    </div>
+                                @endif
+                                @if ($errors->has('Pressure_Diastole'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <p><i>{{ $errors->first('Pressure_Diastole') }} <i class="fas fa-times" style="color: white; float: right; margin-top: 10px;"></i></i></p>
+                                    </div>
+                                @endif
+                            @endif
+                            @if (Session::has('result'))
+                                <hr>
+                                @if(session()->get('result') == 'Layak untuk mendonorkan darah')
+                                    <div class="alert alert-success text-center">
+                                        {{ Session::get('result') }}
+                                    </div>
+                                @elseif(session()->get('result') == 'Tidak layak untuk mendonorkan darah')
+                                    <div class="alert alert-danger text-center">
+                                        {{ Session::get('result') }}
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>

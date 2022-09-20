@@ -151,7 +151,6 @@ class UserController extends Controller
     {
         $data_has_been_validated = $request->validated();
         $data_has_been_validated['update_at'] = Carbon::now('Asia/Makassar');
-
         if($request->hasFile('profile_picture')){
             if($request->oldImage){
                 Storage::delete($request->oldImage);

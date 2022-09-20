@@ -19,7 +19,7 @@
                             <div class="accordion-header" role="button" data-toggle="collapse" data-target="#guideline_permissions" aria-expanded="true">
                                 <h4 class="text-center">Panduan Role Akun</h4>
                             </div>
-                            <div class="accordian-body collapse show" id="guideline_permissions" data-parent=".accordion">
+                            <div class="accordian-body collapse show" id="guideline_permissions" data-parent="accordion">
                                 <div class="list-group">
                                     <div class="list-group-item flex-column aligns-items-start">
                                         <div class="d-flex w-100 justify-content-between">
