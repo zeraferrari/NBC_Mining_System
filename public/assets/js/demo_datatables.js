@@ -4,6 +4,17 @@ $(document).ready(function(){
     $('#HistoryTransaction').DataTable();
 });
 
+function showData(Rhesus_Pie){
+  let TotalSum = 0;
+  let i = 0;
+  for(i; i < Rhesus_Pie.data.datasets[0].data.length; i++){
+    if(Rhesus_Pie.getDataVisibility(i) === true){
+      var k = parseInt(Rhesus_Pie.config.data.datasets[0].data[i]);
+      TotalSum += k;
+    }
+  }
+  return TotalSum;
+}
 
 const labels = Data_Rhesus;
 const BgColorEachBar = [];
@@ -46,7 +57,7 @@ const config_bar = {
             let visibility = [];
             for(let i=0; i < chart.config._config.data.labels.length; i++){
               (chart.getDataVisibility(i) === true) ? visibility.push(false) : visibility.push(true);
-            };
+            }
             return chart.config.data.labels.map(
                 (label, index) => ({
                   text: label,
@@ -54,7 +65,7 @@ const config_bar = {
                   fillStyle: chart.config._config.data.datasets[0].backgroundColor[index],
                   hidden: visibility[index],
               })
-            )
+            );
           },
           boxWidth: 20,
         }
@@ -76,10 +87,7 @@ const config_bar = {
   }
 };
 
-const DashboardBar = new Chart(
-  document.getElementById('DashboardBar'),
-  config_bar
-);
+const DashboardBar = new Chart(document.getElementById('DashboardBar'),config_bar);
 
 /* =========================================================================*/
 
@@ -108,7 +116,7 @@ const config_pie = {
     plugins: {
       labels: {
         render: (context) => {
-            const percentage = context.value / showData(this) * 100;
+            const percentage = context.value / showData(DashboardPie) * 100;
             return percentage.toFixed(1) + '%';
         },
         precision: 1,
@@ -127,17 +135,6 @@ const config_pie = {
   }
   // plugins: [ChartDataLabels],
 };
-
-function showData(){
-  let TotalSum = 0;
-  let i = 0;
-  for(i; i < DashboardPie.config.data.datasets[0].data.length; i++){
-    if(DashboardPie.getDataVisibility(i) === true){
-      TotalSum += DashboardPie.config.data.datasets[0].data[i];
-    }
-  }
-  return TotalSum;
-}
 
 const DashboardPie = new Chart(document.getElementById('DashboardPie'), config_pie);
 

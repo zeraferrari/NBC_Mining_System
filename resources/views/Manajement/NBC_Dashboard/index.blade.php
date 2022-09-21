@@ -153,14 +153,13 @@
                     <h3>Tabel Confusion Matrix</h3>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row table-responsive">
                         <div class="col-12">
                             <table class="table table-bordered text-center responsive">
                                 <tbody>
                                     <tr>
                                         <th rowspan="2" colspan="2">Confusion Matrix</th>
                                         <th colspan="2">Hasil Klasifikasi</th>
-                                        {{-- <th rowspan="2">Class Precision</th> --}}
                                     </tr>
                                     <tr>
                                         <td>Layak</td>
@@ -171,19 +170,12 @@
                                         <td>Layak</td>
                                         <td>{{ $confusion_matrix[0]->Count }}</td>
                                         <td>{{ $confusion_matrix[2]->Count }}</td>
-                                        {{-- <td colspan="2">0</td> --}}
                                     </tr>
                                     <tr>
                                         <td>Tidak Layak</td>
                                         <td>{{ $confusion_matrix[1]->Count }}</td>
                                         <td>{{ $confusion_matrix[3]->Count }}</td>
-                                        {{-- <td colspan="2">0</td> --}}
                                     </tr>
-                                    {{-- <tr>
-                                        <td colspan="2">Class Recall</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>
@@ -205,30 +197,32 @@
                         <div class="col-sm-12 col-md-6 col-lg-6 align-self-center">
                             <div class="card">
                                 <div class="card-body">
-                                    <table class="table table-bordered text-center">
-                                        <tr>
-                                            @foreach ($confusion_matrix as $matrixs)
-                                                <td><i>{{ $matrixs->Result }}</i></td>
-                                            @endforeach
-                                        </tr>
-                                        <tr>
-                                            @foreach ($confusion_matrix as $matrixs)
-                                                <td>{{ $matrixs->Count }}</td>
-                                            @endforeach
-                                        </tr>
-                                        <tr>
-                                            <td>Tingkat Akurasi</td>
-                                            <td colspan="3">{{ $accuracy_model }} %</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tingkat Presisi</td>
-                                            <td colspan="3">{{ $precision_model }} %</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Recall</td>
-                                            <td colspan="3">{{ $recall_model }} %</td>
-                                        </tr>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-center">
+                                            <tr>
+                                                @foreach ($confusion_matrix as $matrixs)
+                                                    <td><i>{{ $matrixs->Result }}</i></td>
+                                                @endforeach
+                                            </tr>
+                                            <tr>
+                                                @foreach ($confusion_matrix as $matrixs)
+                                                    <td>{{ $matrixs->Count }}</td>
+                                                @endforeach
+                                            </tr>
+                                            <tr>
+                                                <td>Tingkat Akurasi</td>
+                                                <td colspan="3">{{ $accuracy_model }} %</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tingkat Presisi</td>
+                                                <td colspan="3">{{ $precision_model }} %</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Recall</td>
+                                                <td colspan="3">{{ $recall_model }} %</td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -17,7 +17,6 @@ use App\Models\DataTesting;
 use App\Models\TransactionDonor;
 use App\Models\User;
 use Spatie\Permission\Contracts\Role;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
