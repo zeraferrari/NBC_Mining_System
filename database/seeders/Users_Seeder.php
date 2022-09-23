@@ -28,23 +28,23 @@ class Users_Seeder extends Seeder
                 'Rhesus_id'     =>  NULL
             ],
             [
-                'name'      =>  'Raudhatun Nisya',
-                'email'     =>  'atun_nisya@gmail.com',
-                'password'  =>  Hash::make('atun1122'),
-                'NIK'       =>  '647205010000013',
+                'name'      =>  'Anselma Putri',
+                'email'     =>  'ansel_putri@gmail.com',
+                'password'  =>  Hash::make('ansel123'),
+                'NIK'       =>  '6473211234567001',
                 'Gender'    =>  'Perempuan',
-                'phone_number'  =>  '081250063932',
+                'phone_number'  =>  '081125671234',
                 'alamat'        =>  'Jalan M.Yamin Gang Rambutan Gunung Kelua, Kota Samarinda',
                 'Status_Donor'  =>  'Belum Mendonor',
                 'Rhesus_id'     =>  '7'
             ],
             [
                 'name'      =>  'Zacky Burhan',
-                'email'     =>  'burha_unyu@gmail.com',
+                'email'     =>  'burhan_unyu@gmail.com',
                 'password'  =>  Hash::make('unyuunyu123'),
-                'NIK'       =>  '6472050103012390',
+                'NIK'       =>  '6473211234567002',
                 'Gender'    =>  'Laki-laki',
-                'phone_number'  =>  '081344557493',
+                'phone_number'  =>  '081345671234',
                 'alamat'        =>  'Jalan Sutomo Gang 2, Kota Samarinda',
                 'Status_Donor'  =>  'Belum Mendonor',
                 'Rhesus_id'     =>  '5'

@@ -29,7 +29,7 @@ class UserUpdateValidation extends FormRequest
             'roles' => ['required'],
             'NIK' => ['required', 'numeric', 'digits:16', Rule::unique('users')->ignore($this->user->id, 'id')],
             'Gender' => ['required'],
-            'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
+            'phone_number' => ['required', 'numeric', 'digits_between:10,13', Rule::unique('users', 'phone_number')->ignore($this->user->id, 'id')],
             'alamat' => ['required', 'string', 'max:100'],
             'profile_picture' => ['nullable','image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
             'Rhesus_id' => ['nullable'],
@@ -58,6 +58,7 @@ class UserUpdateValidation extends FormRequest
             'phone_number.required' => 'Mohon field ini diisi !',
             'phone_number.numeric'  => 'Inputan hanya berupa angka !',
             'phone_number.digits_between' => 'Inputan minimal :min digit maksimal :max digit !',
+            'phone_number.unique'       =>  'Nomor handphone ini telah teregistrasi, silahkan pakai nomor yang berbeda !',
         //========================================================
         // Pesan Kolom Alamat
             'alamat.required'   =>  'Mohon field ini diisi !',

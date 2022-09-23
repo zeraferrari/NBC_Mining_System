@@ -23,54 +23,55 @@
                                 <div class="list-group">
                                     <div class="list-group-item flex-column aligns-items-start">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Roles Section</h5>
+                                            <h5 class="mb-1">Role Administrator</h5>
                                         </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data role baru</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data role</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data role</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data role</p>
+                                        <p>Hak akses yang diberikan antara lain : </p>
+                                        <ol style="padding-left: 15px;">
+                                            <li>Mengakses Dashboard Master</li>
+                                            <li>Membuat Role Baru</li>
+                                            <li>Mengupdate Detail Role</li>
+                                            <li>Menghapus Role</li>
+                                            <li>Membuat Hak Akses Role</li>
+                                            <li>Mengupdate Hak Akses Role</li>
+                                            <li>Menghapus Hak Akses Role</li>
+                                            <li>Membuat Kategori Rhesus Baru</li>
+                                            <li>Mengupdate Kategori Rhesus</li>
+                                            <li>Menghapus Kategori Rhesus</li>
+                                            <li>Membuat Akun User Baru</li>
+                                            <li>Melihat Detail Akun User</li>
+                                            <li>Mengupdate Akun User</li>
+                                            <li>Menghapus Akun User</li>
+                                            <li>Membuat Data Training</li>
+                                            <li>Mengupdate Data Training</li>
+                                            <li>Menghapus Data Training</li>
+                                            <li>Membuat Data Testing</li>
+                                            <li>Mengupdate Data Testing</li>
+                                            <li>Melihat Detail Data Testing</li>
+                                            <li>Menghapus Data Testing</li>
+                                            <li>Melihat Detail Hasil Klasifikasi Donor</li>
+                                            <li>Mendownload Data PDF Hasil Klasifikasi</li>
+                                        </ol>
                                     </div>
                                     <div class="list-group-item flex-column aligns-items-start">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Permission Section</h5>
+                                            <h5 class="mb-1">Role Petugas Medis</h5>
                                         </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data hak akses baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data hak akses</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data hak akses</p>
+                                        <p>Hak akses yang diberikan antara lain : </p>
+                                        <ol style="padding-left: 15px;">
+                                            <li>Melakukan Transaksi Donor</li>
+                                            <li>Mengupdate Transaksi Donor</li>
+                                            <li>Melihat Detail Hasil Klasifikasi Donor</li>
+                                            <li>Mendownload Data PDF Hasil Klasifikasi</li>
+                                        </ol>
                                     </div>
                                     <div class="list-group-item flex-column aligns-items-start">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Rhesus Section</h5>
+                                            <h5 class="mb-1">Role Pendonor</h5>
                                         </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data kategori rhesus baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate rhesus</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data kategori rhesus</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">User Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data user atau pengguna baru</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data user atau pengguna baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data user atau pengguna sistem</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data user atau pengguna sistem</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Data Training Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data training baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data training</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data training</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Antrian Donor Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data pengajuan donor darah</p>
+                                        <p>Hak akses yang diberikan antara lain : </p>
+                                        <ol style="padding-left: 15px;">
+                                            <li>Melakukan Transaksi Donor</li>
+                                        </ol>
                                     </div>
                                 </div>
                             </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AccountSettingValidation extends FormRequest
 {
@@ -25,9 +26,9 @@ class AccountSettingValidation extends FormRequest
     {
         return [
             'Gender'        =>  ['required'],
-            'phone_number'  =>  ['required', 'numeric'],
+            'phone_number'  =>  ['required', 'numeric', 'digits_between:10,13', Rule::unique('users', 'phone_number')->ignore($this->user()->id, 'id')],
             'profile_picture'   =>  ['nullable','image', 'mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
-            'alamat'        =>  ['required']
+            'alamat'        =>  ['required'],
         ];
     }
 
@@ -37,6 +38,8 @@ class AccountSettingValidation extends FormRequest
 
             'phone_number.required'     =>  'Mohon field ini diisi !',
             'phone_number.numeric'      =>  'Field ini hanya boleh angka !',
+            'phone_number.digits_between'   =>  'Inputan minimal :min digit maksimal :max digit !',
+            'phone_number.unique'       =>  'Nomor handphone ini telah teregistrasi, silahkan pakai nomor yang berbeda !',
 
             'profile_picture.image'           =>    'Field ini hanya boleh mengupload file photo',
             'profile_picture.mimes'           =>    'Format hanya diperbolehkan: jpg, png, jpeg',

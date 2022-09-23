@@ -67,7 +67,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'NIK' => ['required', 'numeric', 'digits:16', 'unique:users'],
             'Gender' => ['required'],
-            'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
+            'phone_number' => ['required', 'numeric', 'digits_between:10,13', 'unique:users,phone_number'],
             'alamat' => ['required', 'string', 'max:100'],
             'profile_picture' => ['image','mimes:jpg,png,jpeg', 'min:256', 'max:6144'],
             'Rhesus_id' => ['nullable'],
@@ -106,6 +106,7 @@ class RegisterController extends Controller
             'phone_number.required' => 'Mohon field ini diisi !',
             'phone_number.numeric'  => 'Inputan hanya berupa angka !',
             'phone_number.digits_between' => 'Inputan minimal :min digit maksimal :max digit !',
+            'phone_number.unique'   =>  'Nomor handphone ini telah teregistrasi, silahkan pakai nomor yang berbeda !',
         //========================================================
         // Pesan Kolom Alamat
             'alamat.required'   =>  'Mohon field ini diisi !',

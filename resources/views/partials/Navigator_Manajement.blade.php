@@ -96,7 +96,7 @@
                                     </div>
                                 </a>
                             @empty
-                                <p class="text-dark">Data kamu belum ada</p>
+                                <p class="text-dark text-center">Data kamu belum ada</p>
                             @endforelse
                         </div>
                     <div class="dropdown-footer text-center">
@@ -129,7 +129,7 @@
                                         </div>
                                     </a>
                                     @empty
-                                        <p class="text-dark">Data kamu belum ada</p>
+                                        <p class="text-dark text-center">Data kamu belum ada</p>
                                 @endforelse
                             </div>
                         <div class="dropdown-footer text-center">
@@ -167,10 +167,10 @@
                         </a>
                     @endrole
                     @role('Petugas Medis|Pendonor')
-                        <a href="" class="dropdown-item has-icon">
+                        <a href="{{ route('RedirectSettingsAccount') }}" class="dropdown-item has-icon">
                             <i class="fas fa-cog"></i>Setting Akun
                         </a>
-                        <a href="" class="dropdown-item has-icon">
+                        <a href="{{ route('checking_history') }}" class="dropdown-item has-icon">
                             <i class="fas fa-tasks"></i>Riwayat Donorku
                         </a>
                     @endrole

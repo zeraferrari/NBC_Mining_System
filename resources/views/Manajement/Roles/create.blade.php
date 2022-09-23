@@ -17,60 +17,17 @@
                     <div class="card-body">
                         <div class="accordion mb-0">
                             <div class="accordion-header" role="button" data-toggle="collapse" data-target="#guideline_permissions" aria-expanded="true">
-                                <h4 class="text-center">Panduan Hak Akses</h4>
+                                <h4 class="text-center">Panduan Hak akses untuk role akun</h4>
                             </div>
                             <div class="accordian-body collapse show" id="guideline_permissions" data-parent=".accordion">
                                 <div class="list-group">
                                     <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Roles Section</h5>
+                                        <div class="d-flex w-100 justify-content-center">
+                                            <h5 class="mb-1">Hak Akses</h5>
                                         </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data role baru</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data role</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data role</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data role</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Permission Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data hak akses baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data hak akses</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data hak akses</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Rhesus Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data kategori rhesus baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate rhesus</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data kategori rhesus</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">User Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data user atau pengguna baru</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data user atau pengguna baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data user atau pengguna sistem</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data user atau pengguna sistem</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Data Training Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data training baru</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data training</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data training</p>
-                                    </div>
-                                    <div class="list-group-item flex-column aligns-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Antrian Donor Section</h5>
-                                        </div>
-                                        <p class="mb-0"><b>Create : </b> Memberikan hak akses untuk membuat data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Read : </b> Memberikan hak akses untuk melihat detail data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Update : </b> Memberikan hak akses untuk memperbaharui atau mengupdate data pengajuan donor darah</p>
-                                        <p class="mb-0"><b>Delete : </b> Memberikan hak akses untuk menghapus data pengajuan donor darah</p>
+                                        <p>Setiap role untuk akun user tertentu yang akan dibuat harus memiliki hak akses tertentu sesuai dengan
+                                            keperluan yang dibutuhkan, untuk hak akses dapat digunakan seluruhnya minimal menggunakan 1 hak akses
+                                        </p>
                                     </div>
                                 </div>
                             </div>

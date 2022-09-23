@@ -436,8 +436,11 @@ class HomeController extends Controller
         return view('HomeDashboard.SettingAccount', compact('data_user', 'latest_inbox', 'latest_notification'));
     }
 
+    public function ChangePasswordAccount($OldPassword, $Password_New, $Confirm_Password_New){
+        return $OldPassword;
+    }
+
     public function UpdateSettingsAccount(AccountSettingValidation $request){
-        
         $data_has_been_validated = $request->validated();
         $data_has_been_validated['update_at'] = Carbon::now('Asia/Makassar');
 
@@ -458,4 +461,5 @@ class HomeController extends Controller
         return redirect()->back()->with('Status_Success', 'Data akun anda berhasil diperbaharui !');
     }
 
+   
 }

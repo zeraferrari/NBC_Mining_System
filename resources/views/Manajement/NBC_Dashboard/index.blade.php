@@ -153,31 +153,33 @@
                     <h3>Tabel Confusion Matrix</h3>
                 </div>
                 <div class="card-body">
-                    <div class="row table-responsive">
-                        <div class="col-12">
-                            <table class="table table-bordered text-center responsive">
-                                <tbody>
-                                    <tr>
-                                        <th rowspan="2" colspan="2">Confusion Matrix</th>
-                                        <th colspan="2">Hasil Klasifikasi</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Layak</td>
-                                        <td>Tidak Layak</td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Hasil Aktual</td>
-                                        <td>Layak</td>
-                                        <td>{{ $confusion_matrix[0]->Count }}</td>
-                                        <td>{{ $confusion_matrix[2]->Count }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tidak Layak</td>
-                                        <td>{{ $confusion_matrix[1]->Count }}</td>
-                                        <td>{{ $confusion_matrix[3]->Count }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="row">
+                        <div class="table-responsive">
+                            <div class="col-12">
+                                <table class="table table-bordered text-center">
+                                    <tbody>
+                                        <tr>
+                                            <th rowspan="2" colspan="2">Confusion Matrix</th>
+                                            <th colspan="2">Hasil Klasifikasi</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Layak</td>
+                                            <td>Tidak Layak</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Hasil Aktual</td>
+                                            <td>Layak</td>
+                                            <td>{{ $confusion_matrix[0]->Count }}</td>
+                                            <td>{{ $confusion_matrix[2]->Count }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tidak Layak</td>
+                                            <td>{{ $confusion_matrix[1]->Count }}</td>
+                                            <td>{{ $confusion_matrix[3]->Count }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6 align-self-center">
                             <div class="card">
