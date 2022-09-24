@@ -148,7 +148,7 @@ class Dashboard extends Controller
             ->where('created_at', '<=', $ToDate.' 23:59:59')
             ->pluck('created_at')
             ->sortBy('created_at')->toArray();
-            
+        
             $Month_Time = array_map(function($value){
                 return strtotime($value);
             }, $MonthNumber);

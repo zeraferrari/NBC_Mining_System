@@ -280,6 +280,7 @@ class TransactionDonorController extends Controller
             $TransactionDonor->Pressure_sistole,
             $TransactionDonor->Pressure_diastole
         );
+        
         $Navigator = new HomeController;
         $latest_inbox = $Navigator->GetLatestInbox();
         $latest_notification = $Navigator->GetLatestNotification();

@@ -162,10 +162,11 @@ class HomeController extends Controller
             return $Name_Month;
             
         }else{
+            $Years = Carbon::now()->format('Y');
             $data_month = TransactionDonor::with('User_Connection.Rhesus_Connection')
+                            ->where('created_at', 'like', '%'.$Years.'%')->get()
                             ->pluck('created_at')
                             ->sortBy('created_at')->toArray();
-            
             $monthTime = array_map(function ($value){
                 return strtotime($value);
             }, $data_month);
@@ -177,6 +178,7 @@ class HomeController extends Controller
 
 
             $Name_Month = array_values(array_unique($Month_Name));
+            
             return $Name_Month;
         }
     }

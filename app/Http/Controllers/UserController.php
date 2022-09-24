@@ -64,7 +64,6 @@ class UserController extends Controller
     {
         $data_has_been_validated = $request->validated();
         $data_has_been_validated['Status_Donor'] = 'Belum Mendonor';
-        $data_has_been_validated['create_at'] = Carbon::now('Asia/Makassar');
         if($request->hasFile('profile_picture')){
             $date = Carbon::now('Asia/Makassar')->format('dmYHi');
             $HashNameImage = $request->file('profile_picture')->hashName();
@@ -150,7 +149,6 @@ class UserController extends Controller
     public function update(UserUpdateValidation $request, User $user)
     {
         $data_has_been_validated = $request->validated();
-        $data_has_been_validated['update_at'] = Carbon::now('Asia/Makassar');
         if($request->hasFile('profile_picture')){
             if($request->oldImage){
                 Storage::delete($request->oldImage);

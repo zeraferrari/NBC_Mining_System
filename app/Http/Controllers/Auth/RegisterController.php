@@ -144,7 +144,6 @@ class RegisterController extends Controller
                 'profile_picture'   =>  $data['profile_picture'],
                 'alamat'    => $data['alamat'],
                 'Status_Donor' => 'Belum Mendonor',
-                'create_at'    => Carbon::now('Asia/Makassar'),
             ]);
         } else{
             $data_user = User::create([
@@ -156,7 +155,6 @@ class RegisterController extends Controller
                 'phone_number' => $data['phone_number'],
                 'alamat'    => $data['alamat'],
                 'Status_Donor' => 'Belum Mendonor',
-                'create_at'    => Carbon::now('Asia/Makassar'),
             ]);
         }
 
