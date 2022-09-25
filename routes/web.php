@@ -95,8 +95,8 @@ Route::POST('/', [TransactionDonorController::class, 'store'])->name('Antrian.Me
 
 
 Route::GET('Manajement/Hasil-Transaksi', [TransactionDonorController::class, 'GetResult_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.index')->middleware('role:Administrator|Petugas Medis');
-Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Detail-Transaksi', [TransactionDonorController::class, 'GetDetail_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.show')->middleware('role:Administrator|Petugas Medis');
-Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Printout', [TransactionDonorController::class, 'Printout'])->name('Manajement.Hasil_Transaksi_Donor.Printout')->middleware('role:Administrator|Petugas Medis');
+Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Detail-Transaksi', [TransactionDonorController::class, 'GetDetail_Transaction_Donor'])->name('Manajement.Hasil_Transaksi_Donor.show')->middleware('role_or_permission:Administrator|Petugas Medis|Melihat Detail Hasil Klasifikasi Donor');
+Route::GET('/Manajement/Hasil-Transaksi/{TransactionDonor:Code_Transaction}/Printout', [TransactionDonorController::class, 'Printout'])->name('Manajement.Hasil_Transaksi_Donor.Printout')->middleware('role_or_permission:Administrator|Petugas Medis|Ngeprint hasil klasifikasi detail donor darah');
 Route::GET('/History-Donor/{TransactionDonor:Code_Transaction}/Printout', [HomeController::class, 'Printout_Transaction'])->name('Printout-Transaction')->middleware('role:Petugas Medis|Pendonor');
 Route::GET('/Setting-Akun', [HomeController::class, 'RedirectSettingsAccount'])->name('RedirectSettingsAccount')->middleware('role:Pendonor|Petugas Medis');
 Route::PATCH('/Setting-Akun/{User:NIK}', [HomeController::class, 'UpdateSettingsAccount'])->name('UpdateSettingsAccount')->middleware('role:Pendonor|Petugas Medis');

@@ -77,58 +77,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="text-reset">Tabel Hasil Klasifikasi</h4>
-                        <div class="card-header-form">
-                            <button class="badge badge-primary rounded-sm" data-toggle="collapse" type="button" data-target="#HasilKlasifikasi" aria-expanded="false" aria-controls="HasilKlasifikasi">Tampilkan</button>
-                        </div>
-                    </div>
-                    <div class="collapse" id="HasilKlasifikasi">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="DataTables_2">
-                                    <thead class="thead-light align-center">
-                                        <tr>
-                                            <th scope="col">No</th>
-                                            <th scope="col">Kode Transaksi</th>
-                                            <th scope="col">Nama Pendonor Darah</th>
-                                            <th scope="col">NIK</th>
-                                            <th scope="col">Hasil Klasifikasi</th>
-                                            <th scope="col">Status Donor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($result_transaction as $result_transactions)
-                                            <tr>
-                                                <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                                                <td>{{ $result_transactions->Code_Transaction }}</td>
-                                                <td>{{ $result_transactions->User_Connection->name }}</td>
-                                                <td>{{ $result_transactions->User_Connection->NIK }}</td>
-                                                <td>
-                                                    @if($result_transactions['Status_Transaction'] === 'Layak')
-                                                        <span class="badge badge-success rounded">{{ $result_transactions->Status_Transaction }}</span>
-                                                    @else
-                                                        <span class="badge badge-danger rounded">{{ $result_transactions->Status_Transaction }}</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if($result_transactions['Status_Donor'] === 'Berhasil Mendonor')
-                                                        <span class="badge badge-success rounded">{{ $result_transactions->Status_Donor }}</span>
-                                                    @elseif($result_transactions['Status_Donor'] === 'Gagal Donor')
-                                                        <span class="badge badge-danger rounded">{{ $result_transactions->Status_Donor }}</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 </section>
 @endsection

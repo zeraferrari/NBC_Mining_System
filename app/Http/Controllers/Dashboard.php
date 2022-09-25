@@ -163,7 +163,9 @@ class Dashboard extends Controller
 
             return $Month_Name;
         }else{
+            $now = Carbon::now()->format('Y');
             $MonthNumber = TransactionDonor::with('User_Connection.Rhesus_Connection')
+            ->where('created_at', 'like', '%'.$now.'%')
             ->pluck('created_at')
             ->sortBy('created_at')->toArray();
             
@@ -260,8 +262,10 @@ class Dashboard extends Controller
             $structer_transaction_json = json_encode($datasets);
             return $structer_transaction_json;  
         }else{
-            $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')->get()
+            $now = Carbon::now()->format('Y');
+            $Transaction_Each_Month = TransactionDonor::with('User_Connection.Rhesus_Connection')
             ->where('Status_Donor', '=', 'Berhasil Mendonor')
+            ->where('created_at', 'like', '%'.$now.'%')->get()
             ->sortBy('created_at')
             ->groupBy(function($val){
                 // return Carbon::parse($val->created_at)->format('F-Y');

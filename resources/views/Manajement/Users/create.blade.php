@@ -150,7 +150,11 @@
                                 <select name="Rhesus_id" id="Rhesus" class="form-control @error('Rhesus_id') is-invalid @enderror">
                                         <option value="" selected disabled>-- Jenis Rhesus --</option>
                                     @foreach ($rhesus as $data_rhesus)
-                                        <option value="{{ $data_rhesus->id }}">{{ $data_rhesus->Name }}</option>
+                                        @if(old('Rhesus_id') == $data_rhesus->id)
+                                           <option value="{{ $data_rhesus->id }}" selected>{{ $data_rhesus->Name }}</option>                                    
+                                        @else
+                                            <option value="{{ $data_rhesus->id }}">{{ $data_rhesus->Name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 @error('Rhesus_id')
@@ -162,9 +166,13 @@
                             <div class="form-group">
                                 <label for="roles">Kategori Role Akun</label>
                                 <select name="roles" id="roles" class="form-control @error('roles') is-invalid @enderror">
-                                        <option value="" selected disabled>-- Akun Role --</option>
+                                    <option value="" selected disabled>-- Akun Role --</option>
                                     @foreach ($data_role as $roles)
-                                        <option value="{{ $roles->id }}">{{ $roles->name }}</option>
+                                        @if(old('roles') == $roles->id)
+                                            <option value="{{ $roles->id }}" selected>{{ $roles->name }}</option>
+                                        @else
+                                            <option value="{{ $roles->id }}">{{ $roles->name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 @error('roles')
