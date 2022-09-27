@@ -62,6 +62,70 @@
                 </div>
             </div>
         </div>
+        {{-- <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-reset">Tabel Hasil Klasifikasi Data Testing</h4>
+                        <div class="card-header-form">
+                            <button class="badge badge-primary rounded-sm" data-toggle="collapse" type="button" data-target="#HasilKlasifikasiDataTestings" aria-expanded="false" aria-controls="HasilKlasifikasiDataTestings">Tampilkan</button>
+                        </div>
+                    </div>
+                    <div class="collapse" id="HasilKlasifikasiDataTestings">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="DataTables_2">
+                                    <thead class="thead-light align-center">
+                                        <tr>
+                                            <th scope="col">No</th>
+                                            <th scope="col">Nama Pendonor Darah</th>
+                                            <th scope="col">Umur</th>
+                                            <th scope="col">Berat Badan</th>
+                                            <th scope="col">Hemoglobin</th>
+                                            <th scope="col">Tekanan Sistole</th>
+                                            <th scope="col">Tekanan Diastole</th>
+                                            <th scope="col">Nilai Mean <i>Class Layak</i></th>
+                                            <th scope="col">Nilai Mean <i>Class Tidak Layak</i></th>
+                                            <th scope="col">Nilai Standar Deviasi <i>Class Layak</i></th>
+                                            <th scope="col">Nilai Standar Deviasi <i>Class Tidak Layak</i></th>
+                                            <th scope="col">Nilai Distribusi Gaussian <i>Class Layak</i></th>
+                                            <th scope="col">Nilai Distribusi Gaussian <i>Class Tidak Layak</i></th>
+                                            <th scope="col">Hasil probabilitas setiap attribute berdasarkan class <i>Class Layak</i></th>
+                                            <th scope="col">Hasil probabilitas setiap attribute berdasarkan class <i>Class Tidak Layak</i></th>
+                                            <th scope="col">Hasil Akhir Probabilitas Berdasarkan <i>Class Layak</i></th>
+                                            <th scope="col">Hasil Akhir Probabilitas Berdasarkan <i>Class Tidak Layak</i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($data_calculation as $item)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->Name }}</td>
+                                                <td>{{ $item->Age }}</td>
+                                                <td>{{ $item->Weight }}</td>
+                                                <td>{{ $item->Hemoglobin }}</td>
+                                                <td>{{ $item->Pressure_Sistole }}</td>
+                                                <td>{{ $item->Pressure_diastole }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
     </section>
 @endsection
 @section('SweetAlert')

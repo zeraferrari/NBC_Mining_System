@@ -18,6 +18,23 @@ class DataTestingController extends Controller
 
     public function index(){
         $data = DataTesting::with('Rhesus_Connection')->get();
+        // $data_calculation = DataTesting::with('Rhesus_Connection')->get(['Name', 'Age', 'Weight', 'Hemoglobin', 'Pressure_Sistole', 'Pressure_diastole'])->take(2)->toArray();
+        // $data_calculation = [];
+        // $naive_bayes = new CalculationNaiveBayesController;
+        // foreach($data as $all_data){
+        //     array_push($data_calculation, (object)[
+        //         'Name' => $all_data->Name,
+        //         'Umur' => $all_data->Age,
+        //         'Berat_Badan'   => $all_data->Weight,
+        //         'Hemoglobin'    => $all_data->Hemoglobin,
+        //         'Pressure_Sistole'  =>  $all_data->Pressure_Sistole,
+        //         'Pressure_Diastole' =>  $all_data->Pressure_diastole,
+        //         'Naive_Bayes'   =>  $naive_bayes->Core_Classification($all_data->Age,
+        //                                                                     $all_data->Weight, $all_data->Hemoglobin,
+        //                                                                     $all_data->Pressure_Sistole, $all_data->Pressure_diastole)
+        //     ]);
+        // };
+
         $title = $this->title;
         $Navigator = new HomeController;
         $latest_inbox = $Navigator->GetLatestInbox();

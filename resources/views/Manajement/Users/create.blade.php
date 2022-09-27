@@ -49,7 +49,7 @@
                                             <li>Melihat Detail Data Testing</li>
                                             <li>Menghapus Data Testing</li>
                                             <li>Melihat Detail Hasil Klasifikasi Donor</li>
-                                            <li>Mendownload Data PDF Hasil Klasifikasi</li>
+                                            <li>Ngeprint hasil klasifikasi detail donor darah</li>
                                         </ol>
                                     </div>
                                     <div class="list-group-item flex-column aligns-items-start">
