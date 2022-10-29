@@ -156,7 +156,7 @@ class Dashboard extends Controller
             sort($Month_Time);
 
             $Month_Name = array_map(function($value){
-                return \Carbon\Carbon::parse($value)->isoFormat('MMMM-YYYY');
+                return \Carbon\Carbon::parse($value)->timezone('Asia/Makassar')->isoFormat('MMMM-YYYY');
             }, $Month_Time);
 
             $Month_Name = array_values(array_unique($Month_Name));
@@ -197,8 +197,9 @@ class Dashboard extends Controller
             ->sortBy('created_at')
             ->groupBy(function($val){
                 // return Carbon::parse($val->created_at)->format('F-Y');
-                return Carbon::parse($val->created_at)->isoFormat('MMMM-YYYY');
+                return Carbon::parse($val->created_at)->timezone('Asia/Makassar')->isoFormat('MMMM-YYYY');
             });
+
             $Data_Rhesus = RhesusCategory::all();
             
             $datasets = [];
@@ -269,7 +270,7 @@ class Dashboard extends Controller
             ->sortBy('created_at')
             ->groupBy(function($val){
                 // return Carbon::parse($val->created_at)->format('F-Y');
-                return Carbon::parse($val->created_at)->isoFormat('MMMM-YYYY');
+                return Carbon::parse($val->created_at)->timezone('Asia/Makassar')->isoFormat('MMMM-YYYY');
             });
 
             $Data_Rhesus = RhesusCategory::all();

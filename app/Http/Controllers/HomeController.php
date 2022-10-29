@@ -209,7 +209,7 @@ class HomeController extends Controller
                 foreach($data_rhesus as $key => $value){
                     $count_data_transaction_each_rhesus = 0;
                     foreach($all_transaction_each_month as $each_transaction_month){
-                        if($each_transaction_month->User_Connection->Rhesus_id === $data_rhesus[$key]->id){
+                        if($each_transaction_month->User_Connection->Rhesus_id == $data_rhesus[$key]->id){
                             $count_data_transaction_each_rhesus++;
                         }
                     }

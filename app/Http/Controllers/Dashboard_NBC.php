@@ -144,9 +144,10 @@ class Dashboard_NBC extends Controller
         foreach($confusion_matrix as $CountMatrix){
             $temp_value_count[] = $CountMatrix->Count;
         }
+        
 
         $accuracy_model = ($confusion_matrix[0]->Count + $confusion_matrix[3]->Count) / (array_sum($temp_value_count));
-
+        
         if($accuracy_model < 1){
             return $accuracy_model = substr_replace(substr(round($accuracy_model, 4), 2), '.', 2, 0);
         }elseif($accuracy_model == 1){
@@ -160,7 +161,7 @@ class Dashboard_NBC extends Controller
     }
 
     function RecallModel($confusion_matrix){
-        $recall_model = round(($confusion_matrix[0]->Count / ($confusion_matrix[0]->Count + $confusion_matrix[3]->Count)) * 100, 2);
+        $recall_model = round(($confusion_matrix[0]->Count / ($confusion_matrix[0]->Count + $confusion_matrix[2]->Count)) * 100, 2);
         return $recall_model;
     }
 

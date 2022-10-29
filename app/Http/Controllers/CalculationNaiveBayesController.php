@@ -46,7 +46,7 @@ class CalculationNaiveBayesController extends Controller
         $query = DataTraining::where('Status', $Class)->pluck($attribute);
         $array = array();
         foreach ($query as $key => $value) {    
-            $each_data = pow($query[$key]-$mean_result, 2);
+            $each_data = pow(($query[$key]-$mean_result), 2);
             $array [] = $each_data;
         }
         $result_deviasi = sqrt(array_sum($array)/($Total_EachClass-1));
@@ -90,20 +90,21 @@ class CalculationNaiveBayesController extends Controller
         /* Attribute Age ===========================================================*/
         $Value_Sum_Age_Class_Layak = $this->getJumlahValue_EachAttribute('Layak', 'Age');
         $Value_Sum_Age_Class_Tidak_Layak = $this->getJumlahValue_EachAttribute('Tidak Layak', 'Age');
-
+        
         $Mean_Age_Class_Layak = $this->getMeanResult_EachClass($Value_Sum_Age_Class_Layak, $Value_Class_Layak);
         $Mean_Age_Class_Tidak_Layak = $this->getMeanResult_EachClass($Value_Sum_Age_Class_Tidak_Layak, $Value_Class_Tidak_Layak);
-
+        
         $Standar_Deviasi_Age_Class_Layak = $this->getResultAttribute_Deviasi_EachClass('Layak', 'Age', $Mean_Age_Class_Layak, $Value_Class_Layak);
         $Standar_Deviasi_Age_Class_Tidak_Layak = $this->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Age', $Mean_Age_Class_Tidak_Layak, $Value_Class_Tidak_Layak);
-    
+        
+
         $Gaussian_Age_Class_Layak = $this->getResultDistribusi_Gaussian($Age, $Mean_Age_Class_Layak, $Standar_Deviasi_Age_Class_Layak);
         $Gaussian_Age_Class_Tidak_Layak = $this->getResultDistribusi_Gaussian($Age, $Mean_Age_Class_Tidak_Layak, $Standar_Deviasi_Age_Class_Tidak_Layak);
         
         /* Attribute Weight ====================================================================== */
         $Value_Sum_Weight_Class_Layak = $this->getJumlahValue_EachAttribute('Layak', 'Weight');
         $Value_Sum_Weight_Class_Tidak_Layak = $this->getJumlahValue_EachAttribute('Tidak Layak', 'Weight');
-
+    
         $Mean_Weight_Class_Layak = $this->getMeanResult_EachClass($Value_Sum_Weight_Class_Layak, $Value_Class_Layak);
         $Mean_Weight_Class_Tidak_Layak = $this->getMeanResult_EachClass($Value_Sum_Weight_Class_Tidak_Layak, $Value_Class_Tidak_Layak);
 
@@ -291,13 +292,13 @@ class CalculationNaiveBayesController extends Controller
         /* Attribute Age ===========================================================*/
         $Value_Sum_Age_Class_Layak = $this->getJumlahValue_EachAttribute('Layak', 'Age');
         $Value_Sum_Age_Class_Tidak_Layak = $this->getJumlahValue_EachAttribute('Tidak Layak', 'Age');
-
+        
         $Mean_Age_Class_Layak = $this->getMeanResult_EachClass($Value_Sum_Age_Class_Layak, $Value_Class_Layak);
         $Mean_Age_Class_Tidak_Layak = $this->getMeanResult_EachClass($Value_Sum_Age_Class_Tidak_Layak, $Value_Class_Tidak_Layak);
 
         $Standar_Deviasi_Age_Class_Layak = $this->getResultAttribute_Deviasi_EachClass('Layak', 'Age', $Mean_Age_Class_Layak, $Value_Class_Layak);
         $Standar_Deviasi_Age_Class_Tidak_Layak = $this->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Age', $Mean_Age_Class_Tidak_Layak, $Value_Class_Tidak_Layak);
-    
+        
         $Gaussian_Age_Class_Layak = $this->getResultDistribusi_Gaussian($Age, $Mean_Age_Class_Layak, $Standar_Deviasi_Age_Class_Layak);
         $Gaussian_Age_Class_Tidak_Layak = $this->getResultDistribusi_Gaussian($Age, $Mean_Age_Class_Tidak_Layak, $Standar_Deviasi_Age_Class_Tidak_Layak);
         

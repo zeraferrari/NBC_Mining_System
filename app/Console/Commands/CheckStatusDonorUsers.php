@@ -6,6 +6,7 @@ use App\Models\TransactionDonor;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class CheckStatusDonorUsers extends Command
 {
@@ -57,5 +58,6 @@ class CheckStatusDonorUsers extends Command
                 ]);
             }
         }
+        Log::info('Schedule Status Donor Check Successfully Running !');
     }
 }

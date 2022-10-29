@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\TransactionDonor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class CheckQueueDonor extends Command
 {
@@ -49,5 +50,6 @@ class CheckQueueDonor extends Command
                 $data[$key]->delete();
             }
         }
+        Log::info('Schedule Queue Transaction Successfully Running !');
     }
 }
