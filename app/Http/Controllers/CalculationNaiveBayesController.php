@@ -49,6 +49,7 @@ class CalculationNaiveBayesController extends Controller
             $each_data = pow(($query[$key]-$mean_result), 2);
             $array [] = $each_data;
         }
+        
         $result_deviasi = sqrt(array_sum($array)/($Total_EachClass-1));
         return $result_deviasi;
     }
@@ -104,13 +105,13 @@ class CalculationNaiveBayesController extends Controller
         /* Attribute Weight ====================================================================== */
         $Value_Sum_Weight_Class_Layak = $this->getJumlahValue_EachAttribute('Layak', 'Weight');
         $Value_Sum_Weight_Class_Tidak_Layak = $this->getJumlahValue_EachAttribute('Tidak Layak', 'Weight');
-    
+        
         $Mean_Weight_Class_Layak = $this->getMeanResult_EachClass($Value_Sum_Weight_Class_Layak, $Value_Class_Layak);
         $Mean_Weight_Class_Tidak_Layak = $this->getMeanResult_EachClass($Value_Sum_Weight_Class_Tidak_Layak, $Value_Class_Tidak_Layak);
-
+        
         $Standar_Deviasi_Weight_Class_Layak = $this->getResultAttribute_Deviasi_EachClass('Layak', 'Weight', $Mean_Weight_Class_Layak, $Value_Class_Layak);
         $Standar_Deviasi_Weight_Class_Tidak_Layak = $this->getResultAttribute_Deviasi_EachClass('Tidak Layak', 'Weight', $Mean_Weight_Class_Tidak_Layak, $Value_Class_Tidak_Layak);
-    
+
         $Gaussian_Weight_Class_Layak = $this->getResultDistribusi_Gaussian($Weight, $Mean_Weight_Class_Layak, $Standar_Deviasi_Weight_Class_Layak);
         $Gaussian_Weight_Class_Tidak_Layak = $this->getResultDistribusi_Gaussian($Weight, $Mean_Weight_Class_Tidak_Layak, $Standar_Deviasi_Weight_Class_Tidak_Layak);
         

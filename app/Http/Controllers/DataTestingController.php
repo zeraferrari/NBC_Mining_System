@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DataTestingValidation;
 use App\Models\DataTesting;
+
 use App\Models\RhesusCategory;
-use RealRashid\SweetAlert\Facades\Alert;
+
 
 class DataTestingController extends Controller
 {
@@ -22,6 +23,20 @@ class DataTestingController extends Controller
         $Navigator = new HomeController;
         $latest_inbox = $Navigator->GetLatestInbox();
         $latest_notification = $Navigator->GetLatestNotification();
+        // $naive_bayes = new CalculationNaiveBayesController;
+        // ini_set('max_execution_time', 180);
+        // foreach($data as $index){
+        //     $result = $naive_bayes->Classifier_Naive_Bayes(
+        //         $index->Age,
+        //         $index->Weight,
+        //         $index->Hemoglobin,
+        //         $index->Pressure_Sistole,
+        //         $index->Pressure_diastole,
+        //     );
+        //     $temp['Result_Classification'] = $result[0]->Result_Classification;
+        //     $data_testing = DataTesting::findorFail($index->id);
+        //     $data_testing->update($temp);
+        // }
         return view('Manajement.DataTestings.index', compact('data', 'title', 'latest_inbox', 'latest_notification'));
     }
 
