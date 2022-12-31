@@ -121,7 +121,7 @@
             let Transfrom_MinDate = moment(Value_MinDate).locale('id-ID').format('DD-MM-YYYY');
             let Transfrom_MaxDate = moment(Value_MaxDate).locale('id-ID').format('DD-MM-YYYY');
             
-            
+         
             // Refilter the table
             $('#FromDate, #ToDate').on('change', function () {
                 table.draw();

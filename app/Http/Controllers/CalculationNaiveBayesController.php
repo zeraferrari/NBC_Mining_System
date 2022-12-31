@@ -49,7 +49,6 @@ class CalculationNaiveBayesController extends Controller
             $each_data = pow(($query[$key]-$mean_result), 2);
             $array [] = $each_data;
         }
-        
         $result_deviasi = sqrt(array_sum($array)/($Total_EachClass-1));
         return $result_deviasi;
     }
